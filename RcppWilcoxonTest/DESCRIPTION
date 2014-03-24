@@ -1,0 +1,10 @@
+Package: RcppWilcoxonTest
+Title: RcppWilcoxonTest
+Description:
+Version: 0.1
+Author: Stenver Jerkku
+Maintainer: Stenver Jerkku <stenver@ut.ee>
+Depends: R (>= 2.11.0), Rcpp (>= 0.9.9)
+LinkingTo: Rcpp
+License: # getOptions('devtools.desc.license')
+LazyData: true

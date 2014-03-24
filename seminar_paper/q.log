@@ -1,0 +1,37 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=latex 2014.2.5)  23 FEB 2014 11:24
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**tlmgr
+(/usr/share/texlive/texmf-dist/tex/latex/tools/q.tex
+! Interruption.
+<to be read again> 
+                   \begingroup 
+l.1 
+    %%
+? tlmgr
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+H for help, X to quit.
+? tlmgr install todonotes
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+H for help, X to quit.
+? H
+You rang?
+Try to insert some instructions for me (e.g.,`I\showlists'),
+unless you just want to quit by typing `X'.
+
+? X
+ 
+Here is how much of TeX's memory you used:
+ 8 strings out of 495060
+ 254 string characters out of 3182054
+ 45057 words of memory out of 3000000
+ 3288 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 3i,0n,1p,34b,6s stack positions out of 5000i,500n,10000p,200000b,50000s
+No pages of output.
