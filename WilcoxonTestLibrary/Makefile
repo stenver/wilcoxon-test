@@ -1,4 +1,4 @@
-EXTERNALLIBS = -lnetcdf_c++ -lgsl -lgslcblas -lboost_program_options
+EXTERNALLIBS = -lgsl -lgslcblas
 LIBCPP = src/WilcoxonTest.cpp
 LIBOBJS_NAME = WilcoxonTest.o
 LIBOBJS = obj/$(LIBOBJS_NAME)
@@ -20,7 +20,7 @@ install: all
 				sudo cp -r $(LIBRARY) $(INSTALL_LIB)
 				sudo cp -r $(HEADER) $(INSTALL_HEADER)
 				sudo mkdir -p /usr/lib/wilcoxonTest
-				sudo cp -rf pTable80.txt /usr/lib/wilcoxonTest
+				sudo cp -rf approximateTable500.txt /usr/lib/wilcoxonTest
 				sudo ldconfig
 
 uninstall:

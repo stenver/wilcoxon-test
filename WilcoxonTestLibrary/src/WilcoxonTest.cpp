@@ -12,7 +12,7 @@ WilcoxonTest::WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, string
         cout << "This program implements paired Wilcoxon test, so please use data groups with the same size." << endl;
         throw;
     }
-    readPValueMatrix();
+    readApproximatePtable();
 }
 
 WilcoxonTest::WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, vector<int> * _testIndexes, vector<int> * _controlIndexes)
@@ -27,7 +27,7 @@ WilcoxonTest::WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, vector
         cout << "This program implements paired Wilcoxon test, so please use data groups with the same size." << endl;
         throw;
     }
-    readPValueMatrix();
+    readApproximatePtable();
 }
 
 vector<double> * WilcoxonTest::test()
@@ -58,7 +58,7 @@ vector<int> * WilcoxonTest::parseIntString(string input)
     return intVector;
 }
 
-void WilcoxonTest::readPValueMatrix()
+void WilcoxonTest::readApproximatePtable()
 {
     string fileLocation = "/usr/lib/wilcoxonTest/pTable80.txt";
     ifstream listFile(fileLocation.c_str());
@@ -67,7 +67,7 @@ void WilcoxonTest::readPValueMatrix()
         cerr << "P values table file does not exist at " << fileLocation << endl;
         throw;
     }
-    pValueMatrix = new std::vector<std::vector<string> * >;
+    approximatePTable = new std::vector<std::vector<approximatePosition> * >;
 
     string sLine = "";
     while (!listFile.eof())
@@ -75,10 +75,31 @@ void WilcoxonTest::readPValueMatrix()
         getline(listFile, sLine);
         if(sLine.compare("") != 0)
         {
-            pValueMatrix->push_back(splitLine(sLine));
+            approximatePTable->push_back(getPositions(sLine));
         }
     }
     listFile.close();
+}
+
+std::vector<approximatePosition> * WilcoxonTest::getPositions(string positionsLine)
+{
+    std::vector<approximatePosition> * positions = new std::vector<approximatePosition>;
+    string trimmed_input = positionsLine.substr(1, positionsLine.length() - 1);
+
+    std::vector<string> * positionsStrings = splitLine(positionsLine, ']');
+    for(unsigned int i = 0; i < positionsStrings->size(); i++){
+        string rawPosistionString = positionsStrings->at(i);
+        unsigned beginning = rawPosistionString.find('[');
+        unsigned middle = rawPosistionString.substr(beginning).find(',');
+        string x_str = rawPosistionString.substr(beginning, middle);
+        string y_str = rawPosistionString.substr(middle, rawPosistionString.length());
+        approximatePosition pos;
+        pos.x = atoi(x_str.c_str());
+        pos.y = atof(y_str.c_str());
+        positions->push_back(pos);
+    }
+
+    return positions;
 }
 
 std::vector<string> * WilcoxonTest::splitLine(string inputString, char lineSplit)
@@ -144,7 +165,7 @@ double WilcoxonTest::calculatePValue(float w, int numberOfZeroes)
     }
     else
     {
-        return atof(pValueMatrix->at(testIndexes->size())->at((int)w).c_str());
+        return getApproximatePValue(w);
     }
 }
 
@@ -152,6 +173,40 @@ float WilcoxonTest::calculateZValue(float w, int Nr)
 {
     float sigma = sqrt((Nr * (Nr+1) * (2*Nr + 1)) / 6);
     return (w - 0.5) / sigma;
+}
+
+double WilcoxonTest::getApproximatePValue(float w)
+{
+    std::vector<approximatePosition> * approximatePositions = approximatePTable->at(testIndexes->size());
+    
+    approximatePosition beginningPos = approximatePositions->at(0);
+    for (unsigned int i = 1; i < testIndexes->size(); i++)
+    {
+        approximatePosition endPos = approximatePositions->at(i);
+        if (w >= beginningPos.x && w <= endPos.x){
+            return approximateP(w, beginningPos, endPos);
+        }
+        beginningPos = endPos;
+    }
+    return 0;
+}
+
+double WilcoxonTest::approximateP(float w, approximatePosition beginningPos, approximatePosition endPos)
+{
+    double relativeValue; 
+    if(w == beginningPos.x)
+    {
+        relativeValue = beginningPos.y;
+    }
+    else if (w == endPos.x)
+    {
+        relativeValue = endPos.y;
+    }
+    else
+    {
+        relativeValue = beginningPos.y + (endPos.y - beginningPos.y) * (w - beginningPos.x) / (endPos.x - beginningPos.x);
+    }
+    return relativeValue * gsl_cdf_gaussian_P(w, 1); 
 }
 
 float * WilcoxonTest::rankThePairs(int yIndex, float * absoluteValues)

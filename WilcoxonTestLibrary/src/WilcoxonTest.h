@@ -11,13 +11,18 @@
 
 using namespace std;
 
+struct approximatePosition {
+    int x;
+    double y;
+};
+
 class WilcoxonTest {
 public:
     WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, string _testIndexes, string _controlIndexes);
     WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, vector<int> * _testIndexes, vector<int> * _controlIndexes);
 	vector<double> * test();
-
 private:
+
     //Variables
     int dataYsize;
     int dataXsize;
@@ -26,12 +31,13 @@ private:
     string netCdfFileName;
     vector<int> * testIndexes;
     vector<int> * controlIndexes;
-    std::vector<std::vector<string> * > * pValueMatrix;
+    std::vector<std::vector<approximatePosition> * > * approximatePTable;
 
     //Set up
     void readNetCdfFile(string dataName, string xDimension, string yDimension);
+    std::vector<approximatePosition> * getPositions(string positionsLine);
     std::vector<string> * splitLine(string inputString, char lineSplit = ';');
-    void readPValueMatrix();
+    void readApproximatePtable();
     vector<int> * parseIntString(string input);
 
     //Wilcoxon Test main methods
@@ -40,10 +46,13 @@ private:
     float calculateZValue(float w, int Nr);
 
     //Wilcoxon Test helper methods
+    double getApproximatePValue(float w);
+    double approximateP(float w, approximatePosition beginningPos, approximatePosition endPos);
     float * rankThePairs(int yIndex, float * absoluteValues);
     int getSign(float value);
     int getNumberOfZeroes(int yIndex, float * absoluteValues);
-        //sorting
+    
+    //sorting
     void quicksort(int m, int n, float * absoluteValues, float * signs);
     void swap(float * x, float * y);
     int choose_pivot(int i, int j );
