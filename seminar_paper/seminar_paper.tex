@@ -91,15 +91,66 @@ The goal of this project is to create a C++ library that can be run from R stati
 \newpage
 
 \section{Introduction}
-For some tasks, the BIIT needs to do huge number of tests with Wilcoxon signed ranked test. However, current implementations of the tests dont run on native code, have performance problems by doing a lot of recomputations and can only be ran 1 at the time.They dont take into an account that the data might contain nulls and they dont support NetCDF file format, which is used by BIIT to hold complex gene data.
-This project fixes these problems by creating a library that is both accurate and fast even with large number of tests. It uses approximation and avoids unnecessary computation to increase its speed and reliability.
-The first chapter will cover the different definitions used in this paper. The second chapter will covers
+The BIIT research group has biologist who conduct a variety of experiments on a control group. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, proteine amount in the blood, RNA amount, purity of urine, brainwaves etc. These attributes can be repeadedly measured on the same subject and the results are never exactly the same. There is always a little noise and varience between the samples. Biologist often experiment on the control group and try to affect these observed attributes. The take samples before and after simulating the observable attribute with some stimulant. This is called the case-control study.
 
-\newpage
+However, since even without external stimulation the 2 results are never the same. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measuring before and after jogging could have a lot bigger changes then brainwave changes.  Therefore  the biologist need to use statistical tests to find out which case-control studies are actually significant and which are simply noise.
 
-\section{Definitions}
+There are many case-control tests available. For example paired Students t-test, t-test for matched pairs and Wilcoxon signed-rank test. The Wilcoxon signed-rank test is used when the measurement values are not normally distributed when the experimental conditions are fixed.  In practise, this means that the histogram of measurements is either asymmetrical or it does not resemble the bell shape.
 
-\subsection{Variables}
+It is common to assume that properly scaled gene expression measurements follow normal distribution, while quantities of proteins and metabolites are assumed to have non-normal distribution.
+
+\subsection{NetCDF file format}
+The BIIT group holds statistical data in NetCDF file format. NetCDF is an open source standard of a set of data formats, programming interfaces, and software libraries that help read and write scientific data files. \url{http://www.unidata.ucar.edu/software/netcdf/docs/what_is_netcdf.html}$^2$
+Data can be held in a structured manner in a NetCDF file. You can define dimensions, name them, put variables in the dimensions and later retrieve or change them. This is useful, for example, to hold matrix like data in a file and have fast lookups. In addition, you can define helper dimensions for the matrix for extra information.
+NetCDF file format is used by the BIIT researh group to hold gene data and will be given as an input file for the program.
+
+Currently the BIIT group holds the data in the NetCDF file in the following format:
+
+\textbf{Data matrix}
+\begin{itemize}
+  \item double data(m, n) - the data matrix of m genes (variables) and n samples (experiments, patients, ...)
+  \item string gene[m] - gene IDs
+  \item string array[n] - sample IDs
+\end{itemize}
+
+\textbf{Non-track metadata}
+\begin{itemize}
+  \item string __FileFormat - EVDF format identifier string. Current value: "ExpressView 1.1".
+  \item string __DatasetType - A string identifying the dataset type. This is used to extract data-specific parameters from a global configuration file. See datatypes.conf (ExpressViewConfigFiles) for allowed values.
+  \item string[n] Organism - Organism (per column)
+  \item string[n] MetadataOrder - Sometimes metadata (including column tracks) may be in a different order than columns in data. This variable is a permutation of the array variable, specifying the order of column variables. This field is deprecated and all column metadata is expected to be in array order in new datasets.
+  \item string InvestigationTitle - short title for the dataset
+  \item string ExperimentDescription - long description for the dataset
+  \item string DatasetID - Optional Source-specific dataset identifier, e.g. "E-TOXM-3"
+  \item string DatasetLink - Optional A URL associated with the dataset, e.g. " http://www.ebi.ac.uk/microarray-as/ae/browse.html?keywords=E-TOXM-3"
+  \item string __VariableLabel - Optional Custom variable type name for the dataset (e.g. "probe", "peptide", "sequence"). Overriden by variable_label in project configuration. (ExpressView)
+Names of any other (optional, non-track) metadata variables must be prepended by two underscores. Additional variables may be mandated by a data type specification, see ExpressViewConfigFiles. Known specific variables:
+  \item string __Organism - ArrayExpress chip organism (ArrayExpress; as opposed to the source of biological material stored in Organism)
+\end{itemize}
+
+\textbf{Tracks}
+
+Tracks are all other variables whose name begins with an uppercase character, that are arrays of either string or double, with the size of their first dimension either m or n. The former are referred to asrow tracks and the latter as column tracks. These variables encode some information about either the rows or columns of the data matrix; e.g. ExpressView displays column tracks above the heatmap.
+
+Examples:
+
+string Chemotherapy[n]
+string Local\ Relapse[n]
+double RelativeVariance[m]
+
+\subsection{Current BIIT procedures}
+Currently the BIIT group has 3 ways of analysing its data.
+\subsubsection{GNU R}
+They can use GNU R project to make custom and complext analyses. For that they need to manually read NetCDF file to the R and then call the R built in function wilcox.test to use Wilcoxon test. The problem with R wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after hours of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
+\subsubsection(Web interface)
+They can use a web interface which can take in certain arguments and command line script. It then will use whatever command line tools it has available and visualizes the output.
+
+\subsubsubsection(Command line)
+They can also use the command line directly which has a variety of tools installed. The wilcoxon test will ultimately call R wilcoxon function.
+
+So in the end - no matter how the biologist analyse their data, they will always use wilcoxon test in the GNU R project.
+
+\subsection{Definitions}
 
 \begin{enumerate}
 \item
@@ -120,29 +171,97 @@ $P_{approx}(N, k)$ - table that holds every Papprox value for each $N$ and $K$.
 $X$ - the high enough $N$ value where using Gaussian Distribution is accurate enough that we can use, instead of a accurate $P$ table.
 \end{enumerate}
 
-\subsection{NetCDF file format}
-NetCDF is an open source standard of a set of data formats, programming interfaces, and software libraries that help read and write scientific data files. \url{http://www.unidata.ucar.edu/software/netcdf/docs/what_is_netcdf.html}$^2$
-Data can be held in a structured manner in a NetCDF file. You can define dimensions, name them, put variables in the dimensions and later retrieve or change them. This is useful, for example, to hold matrix like data in a file and have fast lookups. In addition, you can define helper dimensions for the matrix for extra information.
-NetCDF file format is used by the BIIT researh group to hold gene data and will be given as an input file for the program.
+\newpage
 
-\subsection{Bonferroni correction}
+\section{Wilcoxon signed-rank test}
 
-If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when its actually true. The Bonferroni test helps to counteract this in a simple way - for each hypothesis you make on a test, you should use a significance level $N$ times lower than before. So for example, if you make $N$ hypothesis and want want a significance level $α$,  then you should run each test at a significance level of $α/N$.
-
-If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
-
-\subsection{Wilcoxon signed-rank test}
 The Wilcoxon signed-rank test is a non-parametric(data doesnt have to have characteristic parameters or structure) statistical hypothesis test used when comparing two related samples, matched samples, or repeated measurements on a single sample to assess whether their population mean ranks differ - i.e. it is a paired difference test.
 
 This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If we have made two or more experiments in different conditions on it(eg gene experiments and their confirmation results), we can compare them with the test to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
 
 It was popularized by Sidney Siegel in his book "Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, instead of $W$ in his book, because it was related, but not exactly the same as $W$. Because of this the test is sometimes referred to as the Wilcoxon T test and the test statistic is reported as a value of $T$.
 
-\subsubsection{Assumptions}
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{wilcoxon_test_intro}
+  \caption{Wilcoxon test hypothesis table}
+  \label{fig:wilcoxon_test_intro}
+\end{figure}
+
+\subsection(Statistical Tests)
+
+The statistical tests are usually done, because initial research has raised a hypothesis of which we want to know weather it is true or not.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
+  \caption{Graphical represenation of statistical test flow}
+  \label{fig:statisticalTestFlow}
+\end{figure}
+
+\subsubsection(Data and aggregation)
+Statistical tests are usually built by first gathering the necessary raw data. The data is then organized by some kind of aggregation algorithm which also might filter out tests that dont fall under the assumptions.
+
+\subsubsection(Test Statistic and hypothesis)
+Next a test statitic T and hypothesis are stated.
+
+The test statistic is a scalar function of all the observations, which summarizes the data by a single number. Commonly the T is either one-sample, two-sample or paired statistic, depending on the tests. Other statistics might also be used.
+
+The hypothesis raised are null hypothesis and alternative hypothesis. Null hypothesis in a simple terms means false. A more precise explanation would be default position, or that the measured samples have no relationship in between them. It is simple to think of it as a no statement, even though it might not be as accurate. The alternative hypothesis is the opposite - in simple terms, one could think of it as true or interesting result. It means that the two measured samples have a relationship between them, either in direct or indirect ways. A good example to explain these 2 is the court verdict - if null hypothesis is kept, then the suspect has not been found quilty. There was not enough evidence. On the contrary, if null hypothesis was rejected, the suspect was found quilty, because there was enough evidence to make that decision.
+
+When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of a measurable subset of samples. The alternative hypothesis sample outcomes are at the edges of a probability distributions, which makes them hard to predict.
+
+\subsubsection(P value estimation)
+After that a P value estimation is made with some algorithm. A variety of algorithms have been thought of, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The P value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
+
+\subsubsection(P value)
+Finally a P value is extracted and it can be compared to the critical P value to find out if we should reject or keep the null hypothesis. A certain threshold is taken for the p-value. If the p-value is within this threshold, then null hypothesis is rejected. If the p-value is not within this threshold, then null hypothesis is kept.
+
+Visually, when the probability distribution forms a gaussian distribution, the p-value ranges where the null hypothesis are rejected can be visualized as in ~\ref{fig:p_value_one_sided} and ~\ref{fig:p_value_two_sided}:
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{p_value_one_sided}
+  \caption{One sided p value representation}
+  \label{fig:p_value_one_sided}
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{p_value_two_sided}
+  \caption{Two sided p value representation}
+  \label{fig:p_value_two_sided}
+\end{figure}
+
+\subsection{Wilcoxon test}
+
+\subsubsection{Wilcoxon test Assumptions}
 1. Data is from the same population and paired.
-2. pairs are independent and random.
+2. Pairs are independent and random.
 3. The data is measured at least on an ordinal scale - i.e. it allows rank order by which data can be sorted.
 4. The median has symmetric distribution of differences.
+
+\subsubsection{Practical use}
+Wilcoxon test can be used to make sure that something has an effect on the measured samples. For example, biologist could measure 3 patients white blood cell levels, create some external stimulation on the pations and measure the white blood cell levels again. The wilcoxon signed-ranked test shows wether the external stimulation had any statistical effect on the white blood cell levels.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{patientExample}
+  \caption{Two sided p value representation}
+  \label{fig:patientExample}
+\end{figure}
+
+A Test statistic is created for the test that estimates symmetry, but neglets actual value. This means that without the estimation, the statistical analysis of the test would be very difficult, since there is no well-defined probability distribution. However, since the Wilcoxon test estimates symmetry, our probability distribution starts to take the shape of gaussian distribution.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{symmetriassymetry}
+  \caption{Two sided p value representation}
+  \label{fig:symmetriassymetry}
+\end{figure}
+
+\subsubsection{P-value assignement problem}
+
 
 \subsubsection{The formulae}
 
@@ -158,27 +277,25 @@ Let $N$ be the sample size, the number of pairs. Thus, there are a total of $2*N
 \item
 For $i=1, .., N$, calculate $|x_{2,i} - x_{1,i}|$ and $sgn(x_{2,1} - x_{1,i})$, where  is the sign function.
 \item
-Exclude pairs with $|x_{2,i} - x_{1,i}| = 0$. Let $N_r$ be the reduced sample size.
-\item
-Order the remaining $N_r$  pairs from smallest absolute difference to largest absolute difference, $|x_{2,i} - x_{1,i}|$.
+Order the $N$ pairs from smallest absolute difference to largest absolute difference, $|x_{2,i} - x_{1,i}|$.
 \item
 Rank the pairs, starting with the smallest as $1$. Ties receive a rank equal to the average of the ranks they span. Let $R_i$ denote the rank.
 \item
-Calculate the test statistic $W$, the absolute value of the sum of the signed ranks. $W=|\sum\limits_{i=1}^{N_r} [sgn(x_{2,i} - x_{1,i})*R_i]|$
+Calculate the test statistic $W$, the absolute value of the sum of the signed ranks. $W=|\sum\limits_{i=1}^{N} [sgn(x_{2,i} - x_{1,i})*R_i]|$
 \item
-As $N_r$ increases, the sampling distribution of $W$ converges to a normal distribution. Where $X$ depends on how accurate you want your results to be
+As $N$ increases, the sampling distribution of $W$ converges to a normal distribution. Where $X$ depends on how accurate you want your results to be
 \begin{enumerate}
 \item
-For $N_r >= X$, a $z-score$ can be calculated as
+For $N >= X$, a $z-score$ can be calculated as
 
-$z=\frac{W-0.5}{\sigma_w},\sigma_w = \sqrt{\frac{N_r(N_r + 1)(2N_r + 1)}{6}}$
+$z=\frac{W-0.5}{\sigma_w},\sigma_w = \sqrt{\frac{N(N + 1)(2N + 1)}{6}}$
 
 If $Z > Zcritical$ then reject $H_0$, where $Z_{critical}$ is calculated with Gaussian distribution
 
 \item
-For $N_r < X$, $W$  is compared to a $p-value$ that can be calculated from enumeration of all possible combinations of $W$ given $N_r$.
+For $N < X$, $W$  is compared to a $p-value$ that can be calculated from enumeration of all possible combinations of $W$ given $N$.
 
-If $W >= P_{critical}$, $N_r$ then reject $H_0$
+If $W >= P_{critical}$, $N$ then reject $H_0$
 \end{enumerate}
 \end{enumerate}
 
@@ -196,6 +313,12 @@ $W = 1*2.5 + (-1*1) + 1*4 + 1*2.5$ = 8
 5. Since $N_r$ is very small, we use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
 $P(5, 8) = 0.125$
 Since $0.125 > 0.05$, reject $H_0$
+
+\subsection{Bonferroni correction}
+
+If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when its actually true. The Bonferroni test helps to counteract this in a simple way - for each hypothesis you make on a test, you should use a significance level $N$ times lower than before. So for example, if you make $N$ hypothesis and want want a significance level $α$,  then you should run each test at a significance level of $α/N$.
+
+If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
 
 \subsection{Calculating Exact P table}
 \subsubsection{Theory}
