@@ -120,17 +120,17 @@ Currently the BIIT group holds the data in the NetCDF file in the following form
 
 \textbf{Non-track metadata}
 \begin{itemize}
-  \item string __FileFormat - EVDF format identifier string. Current value: "ExpressView 1.1".
-  \item string __DatasetType - A string identifying the dataset type. This is used to extract data-specific parameters from a global configuration file. See datatypes.conf (ExpressViewConfigFiles) for allowed values.
+  \item string \_\_FileFormat - EVDF format identifier string. Current value: "ExpressView 1.1".
+  \item string \_\_DatasetType - A string identifying the dataset type. This is used to extract data-specific parameters from a global configuration file. See datatypes.conf (ExpressViewConfigFiles) for allowed values.
   \item string[n] Organism - Organism (per column)
   \item string[n] MetadataOrder - Sometimes metadata (including column tracks) may be in a different order than columns in data. This variable is a permutation of the array variable, specifying the order of column variables. This field is deprecated and all column metadata is expected to be in array order in new datasets.
   \item string InvestigationTitle - short title for the dataset
   \item string ExperimentDescription - long description for the dataset
-  \item string DatasetID - Optional Source-specific dataset identifier, e.g. "E-TOXM-3"
-  \item string DatasetLink - Optional A URL associated with the dataset, e.g. " http://www.ebi.ac.uk/microarray-as/ae/browse.html?keywords=E-TOXM-3"
-  \item string __VariableLabel - Optional Custom variable type name for the dataset (e.g. "probe", "peptide", "sequence"). Overriden by variable_label in project configuration. (ExpressView)
+  \item string DatasetID - Optional Source-specific dataset identifier
+  \item string DatasetLink - Optional A URL associated with the dataset
+  \item string \_\_VariableLabel - Optional Custom variable type name for the dataset. Overriden by variable\_label in project configuration. (ExpressView)
 Names of any other (optional, non-track) metadata variables must be prepended by two underscores. Additional variables may be mandated by a data type specification, see ExpressViewConfigFiles. Known specific variables:
-  \item string __Organism - ArrayExpress chip organism (ArrayExpress; as opposed to the source of biological material stored in Organism)
+  \item string \_\_Organism - ArrayExpress chip organism (ArrayExpress; as opposed to the source of biological material stored in Organism)
 \end{itemize}
 
 \textbf{Tracks}
@@ -147,10 +147,10 @@ double RelativeVariance[m]
 Currently the BIIT group has 3 ways of analysing its data.
 \subsubsection{GNU R}
 They can use GNU R project to make custom and complext analyses. For that they need to manually read NetCDF file to the R and then call the R built in function wilcox.test to use Wilcoxon test. The problem with R wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after hours of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
-\subsubsection(Web interface)
+\subsubsection{Web interface}
 They can use a web interface which can take in certain arguments and command line script. It then will use whatever command line tools it has available and visualizes the output.
 
-\subsubsubsection(Command line)
+\subsubsection{Command line}
 They can also use the command line directly which has a variety of tools installed. The wilcoxon test will ultimately call R wilcoxon function.
 
 So in the end - no matter how the biologist analyse their data, they will always use wilcoxon test in the GNU R project.
@@ -172,7 +172,7 @@ It was popularized by Sidney Siegel in his book "Nonparametric statistics - for 
   \label{fig:wilcoxon_test_intro}
 \end{figure}
 
-\subsection(Statistical Tests)
+\subsection{Statistical Tests}
 
 The statistical tests are usually done, because initial research has raised a hypothesis. It is desireable to know if the hypothesis is true or not.
 
@@ -183,10 +183,10 @@ The statistical tests are usually done, because initial research has raised a hy
   \label{fig:statisticalTestFlow}
 \end{figure}
 
-\subsubsection(Data and aggregation)
+\subsubsection{Data and aggregation}
 Statistical tests are usually built by first gathering the necessary raw data. The data is then organized by some kind of aggregation algorithm which also might filter out tests that dont fall under the assumptions.
 
-\subsubsection(Test Statistic and hypothesis)
+\subsubsection{Test Statistic and hypothesis}
 Next a test statitic T is chosen and hypothesis are stated.
 
 The test statistic is a scalar function of all the observations, which summarizes the data by a single number. Commonly the T is either one-sample, two-sample or paired statistic, depending on the tests. Other statistics might also be used.
@@ -195,10 +195,10 @@ The hypothesis raised are null hypothesis and alternative hypothesis. Null hypot
 
 When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of a measurable subset of samples. The alternative hypothesis sample outcomes are at the edges of a probability distributions, which makes them hard to predict.
 
-\subsubsection(P value estimation)
+\subsubsection{P value estimation}
 After that a P value estimation is made with some algorithm. A variety of algorithms have been thought of, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The P value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
 
-\subsubsection(P value)
+\subsubsection{P value}
 Finally a P value is extracted and it can be compared to the critical P value to find out if it should reject or keep the null hypothesis. A certain threshold is taken for the p-value. If the p-value is within this threshold, then null hypothesis is rejected. If the p-value is not within this threshold, then null hypothesis is kept.
 
 Visually, when the probability distribution forms a gaussian distribution, the p-value ranges where the null hypothesis are rejected can be visualized as in ~\ref{fig:p_value_one_sided} and ~\ref{fig:p_value_two_sided}:
@@ -276,8 +276,7 @@ To create the p-value model for symmetric distributions the following steps need
 \item Since the distribution is symmetric, then sample pair values are not needed. I.e. sample pair value $x$ is probably an $x$ and the definite value is of no interest. It can be assumed they are fixed values.
 $P(sign(x) | |x| = x_0) = \frac{1}{2}$
 
-\item It important how probable it is to get a certain combinations of signs if the absolute values are fixed
-$P(sign(x_1), sign(x_2), ... sign(x_n) | |x_1| = x_1^0, |x_2| = x_2^0, ..., |x_n| = x_n^0) = 2^-n$
+\item It important how probable it is to get a certain combinations of signs if the absolute values are fixed $P(sign(x_1), sign(x_2), ... sign(x_n) | |x_1| = x_1^0, |x_2| = x_2^0, ..., |x_n| = x_n^0) = 2^{-n}$
 
 \item Based on the previous step it can be be made certain what is the probability of obtaining $W$ for a fixed $|x_1|, |x_2|, ... |x_n|$. This will lead to the random sign model.
 
@@ -376,7 +375,7 @@ If you make multiple hypothesis on a test, then you increase the risk in which y
 
 If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
 
-\subection{The wilcoxon test formulae}
+\subsection{The wilcoxon test formulae}
 
 The test first ranks the experiment values in an ascending list by subtracting the test experiment value from the original experiment value and then taking absolute value of it. Then it sorts them by size.(pairs $(3, 5), (6, 3), (5, 10)$ would come $-2, 3, -5$, their absolute values would be ranked $1, 2, 3$)
 
@@ -649,8 +648,14 @@ The linear approximation algorithm works by starting from data point in the data
 The to approximate the data points in python look like this
 
 \begin{verbatim}
-def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
-  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
+def linearInterpolate(approximatePoint,
+                      endPoint,
+                      startPoint,
+                      endValue,
+                      startValue):
+  return startValue +
+          ((endValue - startValue) * (approximatePoint - startPoint) /
+          (endPoint - startPoint))
 
 def canApproximate(actualPoints, currentPoint, nextPoint):
   startValue = actualPoints[currentPoint]
@@ -659,7 +664,11 @@ def canApproximate(actualPoints, currentPoint, nextPoint):
   for i in range(1, nextPoint - currentPoint):
     approximatePoint = currentPoint + i
     trueValue = actualPoints[approximatePoint]
-    approximateValue = linearInterpolate(approximatePoint, currentPoint, nextPoint, startValue, endValue)
+    approximateValue = linearInterpolate(approximatePoint,
+                                          currentPoint,
+                                          nextPoint,
+                                          startValue,
+                                          endValue)
     if approximateValue == 0:
       return True
 
@@ -699,8 +708,14 @@ $y = y_1 + \frac{(y_2 - y_1) * (x - x_1)}{(x_2 - x_1)}$
 In python the code looks like this:
 
 \begin{verbatim}
-def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
-  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
+def linearInterpolate(approximatePoint,
+                      endPoint,
+                      startPoint,
+                      endValue,
+                      startValue):
+  return startValue +
+          ((endValue - startValue) * (approximatePoint - startPoint) /
+          (endPoint - startPoint))
 \end{verbatim}
 
 \subsection{Optimization summary}
