@@ -85,7 +85,12 @@ Institute of Computer Science\\
 \pagebreak
 
 \begin{abstract}
-The goal of this project is to create a C++ library that can be run from R statistics program and terminal. The library should be able to run tens of thousands of Wilcoxon Signed Ranked Tests in parallel in mere seconds. It should also be able to run these tests accurately, regardless of the sample size(The number of pairs) and take into account that some test might be missing or flawed. The library is developed for BIIT(Bioinformatics, Algorithmics and Data mining group). BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter. Its main research topics and capabilities include the gene regulation, gene expression data analysis, biological data mining and others.
+Wilcoxon Signed-rank test is a paired statistical test that is used when measurement values are not normally distributed. The test is used by BIIT(Bioinformatics, Algorithmics and Data mining group) research group for gene regulation, gene expression data analysis, biological data mining and others. BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter.
+
+The current implementations of the Wilcoxon Signed-rank tests are slow and unoptimized. This project will look into the foundations of wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and guassian approximate will be observed. In order to make the implementation faster, some dynamic programming methods will be used to save computation time. The goal of optimizing is to make it more accurate and speed up the test running.
+
+The end goal of this project is to create an accurate and fast wilcoxon test implementation in C++ shared library. In the scope of this project, the library will be integrated with 2 tools -command line and Cron-R. It will also be easily extendable to be integrated with any other tools one might desire, since it is a shared library.
+
 \end{abstract}
 
 \newpage
@@ -150,34 +155,13 @@ They can also use the command line directly which has a variety of tools install
 
 So in the end - no matter how the biologist analyse their data, they will always use wilcoxon test in the GNU R project.
 
-\subsection{Definitions}
-
-\begin{enumerate}
-\item
-$N$ - The sample size in a wilcoxon signed-rank test.
-\item
-$V(N, k)$ - table. We need this table only, for calculating $P(N, k)$. It has no other use for us. It signifies the number of different possible signs in an $N$ sized rank array where $k = W$.  So for example, $V(3, 0)$ would tell us that if we have 3 variables, then how many different signs could those ranks have, if their sum is 0.
-\item
-$P$ - Value that has been calculated. We need it because we want to know how accurate approximated P value is in practical use, using the V table by using the following formula:
-\item
-$P = \sum\limits_{k=W}^{\infty} \frac{V(N, k)}{2^n}$
-\item
-$P(N, k)$ - table that has $P$ values in it for every $N$ and $K$. The table gets exponentially larger, the bigger $N$ is. Table with the size $N=80$ is around 2.5 MB in plaintext file, while $N=800$ is many gigabytes.
-\item
-$P_{approx}$ - value that has been calculated with the Gaussian Distribution formulae.
-\item
-$P_{approx}(N, k)$ - table that holds every Papprox value for each $N$ and $K$.
-\item
-$X$ - the high enough $N$ value where using Gaussian Distribution is accurate enough that we can use, instead of a accurate $P$ table.
-\end{enumerate}
-
 \newpage
 
 \section{Wilcoxon signed-rank test}
 
 The Wilcoxon signed-rank test is a non-parametric(data doesnt have to have characteristic parameters or structure) statistical hypothesis test used when comparing two related samples, matched samples, or repeated measurements on a single sample to assess whether their population mean ranks differ - i.e. it is a paired difference test.
 
-This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If we have made two or more experiments in different conditions on it(eg gene experiments and their confirmation results), we can compare them with the test to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
+This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If two or more experiments in different conditions have been made on it(eg gene experiments and their confirmation results), Wilcoxon test can be used to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
 
 It was popularized by Sidney Siegel in his book "Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, instead of $W$ in his book, because it was related, but not exactly the same as $W$. Because of this the test is sometimes referred to as the Wilcoxon T test and the test statistic is reported as a value of $T$.
 
@@ -190,7 +174,7 @@ It was popularized by Sidney Siegel in his book "Nonparametric statistics - for 
 
 \subsection(Statistical Tests)
 
-The statistical tests are usually done, because initial research has raised a hypothesis of which we want to know weather it is true or not.
+The statistical tests are usually done, because initial research has raised a hypothesis. It is desireable to know if the hypothesis is true or not.
 
 \begin{figure}[!h]
   \centering
@@ -203,7 +187,7 @@ The statistical tests are usually done, because initial research has raised a hy
 Statistical tests are usually built by first gathering the necessary raw data. The data is then organized by some kind of aggregation algorithm which also might filter out tests that dont fall under the assumptions.
 
 \subsubsection(Test Statistic and hypothesis)
-Next a test statitic T and hypothesis are stated.
+Next a test statitic T is chosen and hypothesis are stated.
 
 The test statistic is a scalar function of all the observations, which summarizes the data by a single number. Commonly the T is either one-sample, two-sample or paired statistic, depending on the tests. Other statistics might also be used.
 
@@ -215,7 +199,7 @@ When the null hypothesis is true, then the test statistic has a well-defined pro
 After that a P value estimation is made with some algorithm. A variety of algorithms have been thought of, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The P value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
 
 \subsubsection(P value)
-Finally a P value is extracted and it can be compared to the critical P value to find out if we should reject or keep the null hypothesis. A certain threshold is taken for the p-value. If the p-value is within this threshold, then null hypothesis is rejected. If the p-value is not within this threshold, then null hypothesis is kept.
+Finally a P value is extracted and it can be compared to the critical P value to find out if it should reject or keep the null hypothesis. A certain threshold is taken for the p-value. If the p-value is within this threshold, then null hypothesis is rejected. If the p-value is not within this threshold, then null hypothesis is kept.
 
 Visually, when the probability distribution forms a gaussian distribution, the p-value ranges where the null hypothesis are rejected can be visualized as in ~\ref{fig:p_value_one_sided} and ~\ref{fig:p_value_two_sided}:
 
@@ -242,7 +226,7 @@ Visually, when the probability distribution forms a gaussian distribution, the p
 4. The median has symmetric distribution of differences.
 
 \subsubsection{Practical use}
-Wilcoxon test can be used to make sure that something has an effect on the measured samples. For example, biologist could measure 3 patients white blood cell levels, create some external stimulation on the pations and measure the white blood cell levels again. The wilcoxon signed-ranked test shows wether the external stimulation had any statistical effect on the white blood cell levels.
+Wilcoxon test can be used to make sure that something has an effect on the measured samples. For example, biologist could measure 3 patients white blood cell levels, create some external stimulation on the patients and measure the white blood cell levels again. The wilcoxon signed-ranked test shows wether the external stimulation had any statistical effect on the white blood cell levels.
 
 \begin{figure}[!h]
   \centering
@@ -251,19 +235,148 @@ Wilcoxon test can be used to make sure that something has an effect on the measu
   \label{fig:patientExample}
 \end{figure}
 
-A Test statistic is created for the test that estimates symmetry, but neglets actual value. This means that without the estimation, the statistical analysis of the test would be very difficult, since there is no well-defined probability distribution. However, since the Wilcoxon test estimates symmetry, our probability distribution starts to take the shape of gaussian distribution.
+A Test statistic $W$ is created for the test that estimates symmetry, but neglets actual value. What this means in practice is that the statistic ranks the absolute values of the measured sample pairs. It then takes each and every rank looks at every possible combination you can create with the ranks by changing the signs of the ranks. In total you can have $2^n$ possible different combinations. Visually, it can be represented as shown in ~\ref{fig:rankSignsExample}
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.8\textwidth]{symmetriassymetry}
+  \includegraphics[width=0.8\textwidth]{rankSignsExample}
   \caption{Two sided p value representation}
-  \label{fig:symmetriassymetry}
+  \label{fig:rankSignsExample}
 \end{figure}
 
-\subsubsection{P-value assignement problem}
+If we calculate the value of $W$ statistic of each and every one of the 8 examples and then add the $W$ results togather, it turns out the result is exactly zero.
 
+$W = 1 + 2 + 3 = 6$
 
-\subsubsection{The formulae}
+$W = -1 + 2 + 3 = 4$
+
+$W = -1 - 2 + 3 = 0$
+
+$W = 1 - 2 + 3 = 2$
+
+$W = -1 - 2 - 3 = -6$
+
+$W = 1 - 2 - 3 = -4$
+
+$W = 1 + 2 - 3 = 0$
+
+$W = -1 + 2 - 3 = -2$
+
+$6 + 4 + 2 + 0 + 0 -2 - 4 - 6 = 0$
+
+So in the end, since symmetry is estemated but actual value negleted, then its not really needed to know anything other but number of tests. No matter the value of the tests, $W$ statistic will always create the same table.
+
+So in essence - estimate symmetry, but neglet actual value.
+
+\subsubsection{P-value assignment problem}
+
+To create the p-value model for symmetric distributions the following steps need to be taken:
+
+\begin{enumerate}
+\item Since the distribution is symmetric, then sample pair values are not needed. I.e. sample pair value $x$ is probably an $x$ and the definite value is of no interest. It can be assumed they are fixed values.
+$P(sign(x) | |x| = x_0) = \frac{1}{2}$
+
+\item It important how probable it is to get a certain combinations of signs if the absolute values are fixed
+$P(sign(x_1), sign(x_2), ... sign(x_n) | |x_1| = x_1^0, |x_2| = x_2^0, ..., |x_n| = x_n^0) = 2^-n$
+
+\item Based on the previous step it can be be made certain what is the probability of obtaining $W$ for a fixed $|x_1|, |x_2|, ... |x_n|$. This will lead to the random sign model.
+
+\item Since $P_n[W | |x_1|, |x_2|, ..., |x_n|] = const$ for any $|x_1|, |x_2|, ..., |x_n|$ then $P_n[w | Hypothesis 0] = Random sign model$
+
+\end{enumerate}
+
+\subsubsection{Exact computation of P-value}
+
+Given a $N$ ranks, it can be calculated what the sum of all ranks are assuming that their ranks are random. If it is recorded how many different combinations form a certain sum $k$ for every random sign combination and process is repeated until all the random combinations are exhausted, a $V-table$ is formed. It signifies all the possible random signed rank combinations sums in an $N$ sized ranked array, where $k$ shows how many times a certain sum was achived. The function to get the number of times a certain sums was achieved will be called $V(N, k)$ from now on.
+
+From this table, $P$ value can be calculated. The $P$ value will show how probable it is that the given $N$ ranks with random signs, how probable it is that a sum $k$ is the result. If this process of calculating $P$ value is done repeadedly for every possible $N$ and $k$, then a $P-table$ forms. The $P-table$ shows the probability of every possible sum $k$ appearing given $N$ ranks with random signs. The function to get the desired $P$ value from that table will be reffered as $P(N, k)$ from now on.
+
+If the $P-table$ gets large enough, it will start taking the shape of guassian distribution. Because of that, given enough ranks, a gaussian distribution can be used to approximate the $P$.
+
+\subsubsection{The V table formula}
+
+Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
+$V(N+1, k) = V(N, k-1) + V(N, k+N+1)$
+
+There are some additional conditions to the formula:
+
+$V(N, k) = 0$ if $k < -N * \frac{N+1}{2}$ or $k > N * \frac{N+1}{2}$
+
+$V(N, k) = 1$ if $k = -N * \frac{N+1}{2}$ or $k = N * \frac{N+1}{2}$
+
+\subsubsection{The P table formula}
+Given $V$ table, $N$ and $k$, we can calculate the $P$ by
+$W=|\sum\limits_{T = k}^{\infty}[\frac{V(N, T)}{2^n}]$
+
+To get the P table, we go through all $N$ and $K$ values that we are interested in.
+
+\subsubsection{The Gaussian approximation of P table}
+As mentioned above, if the number of ranks $N$ gets large enough, then Gaussian distribution can be used. A simple gaussian function function $F(x, 1)$, where $x$ is the statistic $z-value$, eg standard score and $1$ is the sigma,will give approximately the same results as the accurate $P$ table.
+
+\subsubsection{V and P example}
+
+Given $N$ is $2$, then ranks are ${0, 1, 2}$, one can combine them into $0 + 1 + 2$ or $0 + 1 - 2$ or $0 - 1 + 2$ or $0 - 1 - 2$. This gives us one way to get $3$, one way to get $1$, one way to get $-1$ and one way to get $-3$
+
+It can now be calculated that the probability that our there is a $0.25\%$ that our value is $3$ or lower and $0.5\%$ that our value is $1$ or lower.
+
+This distribution is the most accurate table you can compare your wilcoxon test results on - it shows the exact probability that your tests falls into a certain normal distribution range. However, the table is expensive to calculate with $O(n^2)$ complexity.
+
+\subsubsection{Code sample}
+A python code to calculate the V table is as follows:
+\begin{verbatim}
+def V(n, k, vTable):
+    if((n == 1 and (k == 1 or k == -1)) or (n == 0 and k == 0)):
+        return 1
+    if((k < -(n * (n + 1) / 2)) or (k > (n * (n + 1) / 2))):
+        return 0
+    n = n - 1
+
+    kIndex =  k + kSize
+
+    leftValue = 0 if kIndex - n - 1 < 0 or kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex - n - 1]
+    rightValue = 0 if kIndex + n + 1 < 0 or kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex + n + 1]
+
+    return leftValue + rightValue
+
+def calculateVValues():
+    vTable = []
+    for n in range (nSize):
+        tableRow = []
+        for T0 in range (kSize * 2 + 1):
+            tableRow.append(V(n, T0 - kSize, vTable))
+        vTable.append(tableRow)
+    return vTable
+
+\end{verbatim}
+
+The python code to calculate the P table is as follows:
+
+\begin{verbatim}
+def calculatePValues(vTable):
+    pTable = []
+    for n in range(nSize):
+        tableRow = []
+        sumValue = 0
+        powerValue = 2**n
+        for T0 in range (kSize * 2, kSize-1, -1):
+            sumValue += vTable[n][T0]
+            p = sumValue / powerValue
+            tableRow.insert(0, p)
+        pTable.append(tableRow)
+    return pTable
+
+\end{verbatim}
+
+You can find a python implementation of a code sample in
+\url{https://github.com/stenver/wilcoxon-test/blob/master/WilcoxonVTable/pAccurateTable.py}
+
+\subsubsection{Bonferroni correction}
+
+If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when its actually true. The Bonferroni test helps to counteract this in a simple way - for each hypothesis you make on a test, you should use a significance level $N$ times lower than before. So for example, if you make $N$ hypothesis and want want a significance level $α$,  then you should run each test at a significance level of $α/N$.
+
+If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
+
+\subection{The wilcoxon test formulae}
 
 The test first ranks the experiment values in an ascending list by subtracting the test experiment value from the original experiment value and then taking absolute value of it. Then it sorts them by size.(pairs $(3, 5), (6, 3), (5, 10)$ would come $-2, 3, -5$, their absolute values would be ranked $1, 2, 3$)
 
@@ -310,68 +423,57 @@ Signs $[1, 0, -1, 1, 1]$
 $[{2 => 2.5}, {-5 => 1}, {6 => 4}, {2 => 2.5}]$
 4. Calculate the test statistic W
 $W = 1*2.5 + (-1*1) + 1*4 + 1*2.5$ = 8
-5. Since $N_r$ is very small, we use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
+5. Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
 $P(5, 8) = 0.125$
 Since $0.125 > 0.05$, reject $H_0$
 
-\subsection{Bonferroni correction}
+\subsection{Definitions}
 
-If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when its actually true. The Bonferroni test helps to counteract this in a simple way - for each hypothesis you make on a test, you should use a significance level $N$ times lower than before. So for example, if you make $N$ hypothesis and want want a significance level $α$,  then you should run each test at a significance level of $α/N$.
-
-If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
-
-\subsection{Calculating Exact P table}
-\subsubsection{Theory}
-The P exact table is calculated by counting the number of different ways one can add or substract ranks with each other so he gets a certain sum.
-
-For example, when $N$ is $3$, given ${0, 1, 2}$, one can combine them into $0 + 1 + 2$ or $0 + 1 - 2$ or $0 - 1 + 2$ or $0 - 1 - 2$. This gives us one way to get $3$, one way to get $1$, one way to get $-1$ and one way to get $-3$
-
-This counting of possibilities can be continued until infinity and it forms a normal distribution that widens very fast. The edge of the distribution on a certain $N$ is equal to the sum of every value until $N$
-
-Once the distribution with large enough $N$ is calculated, you can calculate the probability $P$ that a combination of ranks falls into that sum. In other words given distribution table $V$ which shows how many different possibilities there is to combine ranks to get a certain sum given a certain number of ranks, we can calculate the probability that our ranks form that certain sum.
-
-For example, when $N$ is $3$, given $0, 1, 2$, we can calculate that the probability that our there is a $0.25\%$ that our value is $3$ or lower and $0.5\%$ that our value is $1$ or lower.
-
-This distribution is the most accurate table you can compare your wilcoxon test results on - it shows the exact probability that your tests falls into a certain normal distribution range. However, the table is expensive to calculate with $O(n^2)$ complexity.
-
-\subsubsection{The V table formula}
-Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
-$V(N+1, k) = V(N, k-1) + V(N, k+N+1)$
-
-There are some additional conditions to the formula:
-
-$V(N, k) = 0$ if $k < -N * \frac{N+1}{2}$ or $k > N * \frac{N+1}{2}$
-
-$V(N, k) = 1$ if $k = -N * \frac{N+1}{2}$ or $k = N * \frac{N+1}{2}$
-
-\subsubsection{The P table formula}
-Given $V$ table, $N$ and $k$, we can calculate the $P$ by
-$W=|\sum\limits_{T = k}^{\infty}[\frac{V(N, T)}{2^n}]$
-
-To get the P table, we go through all $N$ and $K$ values that we are interested in.
-
-\subsubsection{Code sample}
-You can find a python implementation of a code sample in
-\url{https://bitbucket.org/stenver/wilxoni-astaku-test/src/870cc6112d0de4483cd99c71e651c2d06feaaee9/WilcoxonVTable/WilcoxonVTable.py?at=default}
-
-The $V$ table calculation is showcased in the methods $V$ and $calculateVvalues$
-
-The $P$ table calculation is showcased in the method $calculatePValues$
+\begin{enumerate}
+\item
+$N$ - The sample size in a wilcoxon signed-rank test.
+\item
+$V(N, k)$ - table. This table is only needed, for calculating $P(N, k)$. It has no other use for us. It signifies the number of different possible signs in an $N$ sized rank array where $k = W$.  So for example, $V(3, 0)$ would tell that there are 3 variables, then how many different signs could those ranks have, if their sum is 0.
+\item
+$P$ - Value that has been calculated. This is needed to know how accurate approximated P value is in practical use, using the V table by using the following formula:
+\item
+$P = \sum\limits_{k=W}^{\infty} \frac{V(N, k)}{2^n}$
+\item
+$P(N, k)$ - table that has $P$ values in it for every $N$ and $K$. The table gets larger, the bigger $N$ is. Table with the size $N=80$ is around 2.5 MB in plaintext file, while $N=800$ is many gigabytes.
+\item
+$P_{approx}$ - value that has been calculated with the Gaussian Distribution formulae.
+\item
+$P_{approx}(N, k)$ - table that holds every Papprox value for each $N$ and $K$.
+\item
+$X$ - the high enough $N$ value where Gaussian Distribution can be used, instead of a accurate $P$ table, because its accurate enough.
+\end{enumerate}
 
 \newpage
 
 \section{Approximating the P value}
 
-\subsection{Theory}
-The biggest problem when calculating $P$ values in the other Wilcoxon signed-rank tests is that when they have the samples $Z$ value, then they need to compare it to a $Z_{critical}$ value. If the number of samples $N$ is sufficiently large, the solution is simple - use the Gaussian Distribution formulas to find the $Z_{critical}$. In the BIIT research group, however, the $N$ is usually not sufficiently large.
-However, once the $N$ gets too small, you cant use the Gaussian Distribution anymore. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The currently suggested $N$ is 10.$^4$
-In the case the $N$ gets too small, you cant use $Z$. You must instead use $W$ and you can calculate the $W_{critical}$ by
-Calculating the $V(N, k)$ table
-Calculate the $W_{critical}$ where $W_{critical} = P(N, k)$:
+\subsection{Goal}
+The current implementations of Wilcoxon signed-rank test usually assume that $Z$ can be used to calculate the $P$ value, because mostly, the $N$ is sufficiently large to use $Z$.
+This allows them to use Gaussian Distributions to approximate the $P$ value and the accurate $P$ table calculation is often left unoptimized.
 
-The bottlenecks here are the two steps . Other implementations of the test calculate the tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue.
+In the BIIT research group, however, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The currently suggested $N$ is 10.
+
+Also, since BIIT uses multiple hypothesis testing, the approximation must be good even for small $P-values$. As mentioned above, the Bonferroni correction will lower the $P$ significantly.
+
+Because of this, one focus of the paper is finding out how good the approximation of Gaussian Distribution is. The reason to find it out is, as mention, because approximation is computationally cheap and the preffered method to be used over accurate $P$ table, which is computationally expensive.
+
+\subsection{Approximation traits}
+When $N = 1$, then approximation is quite unaccurate. As $N$ increases, then the approximation becomes more and more accurate.
+
+When the $N->\infty$, then the approximate region will almost equal the accurate $P$ region. This means that when $N->\infty$, then there is no reason not to use Gaussian Distribution, as it will be completely accurate.
+
+\subsection{Optimizing}
+
+The bottleneck of the other implementations of the Wilcoxon test, when $N$ is low, is that they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue.
+
 To speed this up - this project will calculate the entire $P(N, k)$ for every value that is possible where $N < X$. Then the $P(N, k)$ will be hardcoded inside the program for quick lookup of the value.
-This paper will focus on finding the $X$ value
+
+One of the focuses of this paper is finding the $X$ value
 
 \newpage
 
@@ -452,10 +554,10 @@ To further investigate the relation between $P(N, k)$ and $P_{approx}(N, k)$, we
 	\label{fig:PvsP25}
 \end{figure}
 
-As we can see from ~\ref{fig:PvsP50} or ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P(N, k)$ and $P_{approx}(N, k)$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
+As can be seen from ~\ref{fig:PvsP50} or ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P(N, k)$ and $P_{approx}(N, k)$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
 
 \subsection{Determining the X value}
-Judging by all the data we have gathered, we can clearly see that as $N$ grows,  $P(N, k)$ and $P_{approx}(N, k)$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $X$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $X$ value is figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $X$ value depends on the number of measurements and the required accuracy where $X = N$:
+Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, $P(N, k)$ and $P_{approx}(N, k)$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $X$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $X$ value is figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $X$ value depends on the number of measurements and the required accuracy where $X = N$:
 
 \begin{table}[!h]
 	\begin{center}
@@ -494,13 +596,128 @@ Judging by all the data we have gathered, we can clearly see that as $N$ grows, 
 \end{table}
 Table \ref{table:requiredN} showing the required N for measurements size while maintaining a relative error
 
-As pointed out in the beginning, when the $N$ grows, the $P(N, k)$ table size grows exponentially. As such, we needed to find a balance between accuaracy and precalculated table thats still within acceptable size.
+As pointed out in the beginning, when the $N$ grows, the $P(N, k)$ table size grows exponentially.
 
-We chose the size to be $N=80$, since the plaintext file of the precalculated table with that $N$ is around 2.5 MB.
+Since even when $N = 80$, the plain text file was already 2.5mb, the need to optimize further arised.
 
-This will allow us to run tests on 10 experiments while maintaining a 10\% accuracy.
+\section{Further optimizations}
 
-Future research could look into approximating the accurate $P(N, k)$ table and potentially decrease the size of the file, increase the precalculated table size while keeping the accuracy relatevly the same.
+To further optimize the library, it was needed to approximate the accurate $P$ table. 2 algorithms were chosen for that matter dose-response curve and linear approximation.
+
+\subsubsection{dose-response curve}
+When using the dose-reponse curve algorithm, the data range as shown in figure~\ref{fig:PdivPapproxDrcWhenN500} changes sharply toward the edge of the range. Further tests also showed that the algorithm was completly inaccurate at the end of the far edge, so unfortunately this algorithm could not be used.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{PvsP50}
+  \caption{P range with DRC algorithm when N=500}
+  \label{fig:PdivPapproxDrcWhenN500}
+\end{figure}
+
+\subsection{Linear approximation}
+
+A more straight forward algorithm to use was linear approximation. The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, then using straight forward accurate $P$ table.
+
+\subsubsection{Relative values between P tables}
+
+The algorithm to get a relative value for every position between the P tables was pretty straight forward. In Python it looked like this:
+
+\begin{verbatim}
+def getRelativeValuesInRow(n, pTable, gaussianPTable):
+    pRelativeValues = []
+    for j in range(len(pTable[n])):
+      relativeValue = pTable[n][j] / gaussianPTable[n][j]
+      pRelativeValues.append(relativeValue)
+      if(pTable[n][j] == 0):
+          break
+    return pRelativeValues
+
+def calculateRelativeTable(pTable, gaussianPTable):
+  relativeTable = []
+  for n in range(len(pTable)):
+    relativeTable = getRelativeValuesInRow(n, pTable, gaussianPTable)
+  return relativeTable
+
+\end{verbatim}
+
+This returned a new table which had the same number of elements as the accurate P table or guassian P rable, but for every position there was a relative P value.
+
+\subsubsection{Linear approximation algorithm}
+
+The linear approximation algorithm works by starting from data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until end of range has been reached. This guarantees approximated data range within error margin.
+
+The to approximate the data points in python look like this
+
+\begin{verbatim}
+def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
+  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
+
+def canApproximate(actualPoints, currentPoint, nextPoint):
+  startValue = actualPoints[currentPoint]
+  endValue = actualPoints[nextPoint]
+
+  for i in range(1, nextPoint - currentPoint):
+    approximatePoint = currentPoint + i
+    trueValue = actualPoints[approximatePoint]
+    approximateValue = linearInterpolate(approximatePoint, currentPoint, nextPoint, startValue, endValue)
+    if approximateValue == 0:
+      return True
+
+    relativeAccuaracy = trueValue / approximateValue
+
+    if relativeAccuaracy < 0.9 or relativeAccuaracy > 1.1:
+      return False
+  return True
+
+def getNextApproximatedPoint(actualPoints, currentPoint):
+  nextPoint = currentPoint + 1
+
+  while(canApproximate(actualPoints, currentPoint, nextPoint)):
+    if(nextPoint == len(actualPoints) - 1):
+      break
+    nextPoint += 1
+  return nextPoint
+
+def calculateApproximateRow(actualPoints):
+  approximatedPoints = []
+  currentPoint = 0
+  approximatedPoints.append([currentPoint, actualPoints[currentPoint]])
+
+  while(currentPoint != len(actualPoints) - 1):
+    nextPoint = getNextApproximatedPoint(actualPoints, currentPoint)
+    approximatedPoints.append([nextPoint, actualPoints[nextPoint]])
+    currentPoint = nextPoint
+  return approximatedPoints
+
+\end{verbatim}
+
+\subsubsection{Linear interpolation}
+To reverse the algorithm, a very simple formula - linear interpolation is used. Given the approximate $x$, start point $x_1$, end point $x_2$, start point $y_1$, end point $y_2$, you can easily approximate the $y$ of that point.
+
+$y = y_1 + \frac{(y_2 - y_1) * (x - x_1)}{(x_2 - x_1)}$
+
+In python the code looks like this:
+
+\begin{verbatim}
+def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
+  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
+\end{verbatim}
+
+\subsection{Optimization summary}
+In the end, thanks to linear approximation, the approximated table, when $N=500$ could be created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. Its still a lot more accurate then gaussian P table at the edges of the table.
+
+The approximated table is only 1.6mb large. Smaller then when $N=80$ the accurate P table was.
+
+As for the library itself - it could run over 20000 wilcoxon tests with 120 samples in under 0.7 seconds. Compared to the vanilla R implementation which took many seconds to run 20 tests, this is a significant improvement.
+
+\subsection{Further optimizations}
+A lot of further optimizations could be done on this subject, for example
+
+\begin{enumerate}
+\item The algorithm to approximate accurate P table could be improved.
+\item The plain text file could be compressed.
+\item The shared library algorithm implementations could be improved and expanded.
+\end{enumerate}
 
 \newpage
 
@@ -533,8 +750,7 @@ You can now load our library in R by calling the
 and you invoke the function by calling
 
 \begin{lstlisting}
->RcppWilcoxonTest::WilxTest(dataMatrix,
-dataXsize, dataYsize, testIndexes, controlIndexes)
+>RcppWilcoxonTest::WilxTest(dataMatrix, testIndexes, controlIndexes)
 \end{lstlisting}
 
 \subsection{TerminalWilcoxonTest}
@@ -549,14 +765,14 @@ WilcoxonTest --help
 Currently only supports NetCDF file as input data.
 
 \subsection{WilcoxonTestLibrary}
-Our implementation for the optimized wilcoxon test. You library can be installed by going to the folder and running
+Implementation for the optimized wilcoxon test. The library can be installed by going to the folder and running
 
 \begin{lstlisting}
 make install
 \end{lstlisting}
 
 \subsection{WilcoxonVTable}
-Python program that can calculate $V$ and $P$ tables, print them, create files of the tables and create a number of graphs on the tables.
+Python program that can calculate $V$, $P$ and approximated $P$ tables, print them, create files of the tables and create a number of graphs on the tables.
 
 \subsection{Seminar\_paper}
 The folder that contains this paper and all images attached to it. It also contains R programs to create those images.
@@ -564,22 +780,35 @@ The folder that contains this paper and all images attached to it. It also conta
 \newpage
 
 \section{Conclusion}
-We found out that Gaussian distribution tail edge grows larger apart from the $P(N, K)$ as $N$ increases while the overall distribution grows more similar. In addition, we confirmed that if we want to run thousands of parallel tests, then using approximation is not reliable and instead an accurate table of P values must be used. Calculating that table is very expensive and thus it is advised to precalculate the table for the program. However, our research shows that if we want to have 10 000 measurements run under 5\% relative error, then the hardcoded $N$ should be over 1000. Table of that size would take many gigabytes of space and is impractical to use. For the time being, we will keep the precalculated table $N=80$. This will allow us to make 10 parallel measurements with 10\% error. In the future, we will look into optimizing the precalculated table to use larger data $N$ sizes.
+It was found out that Gaussian distribution tail edge grows larger apart from the $P(N, K)$ as $N$ increases while the overall distribution grows more similar. In addition, it was confirmed that if thousands of parallel tests are ran, then using approximation is not reliable and instead an accurate table of P values must be used. Calculating that table is very expensive and thus it is advised to precalculate the table for the program. However, the research shows that if 10 000 measurements are run under 5\% relative error, then the hardcoded $N$ should be over 1000. Table of that size would take many gigabytes of space and is impractical to use.
 
-Overall the research included some surprising results and can be considered a success. The library is at its final stages of development and already shows positive results.
+To get around that, approximation of the accurate $P$ table was used. This allowed to significantly reduce the size of the file and thus increase the hardcoded $N$ that was implemented inside the library.
+
+For the time being, the chosen $N$ was 500, with $20\%$ error margin on the approximation. This is still significantly more accurate then Gaussian approximated table at the edges of the distribution. It will allow to make 1000 parallel measurement with 5\% error margin.
+
+The library itself could run over 20000 parallel tests with 100 samples in under a second. It is a shared C++ library with currently implemented interfaces in Cron R and Terminal.
+
+Overall the research included some surprising results and can be considered a success.
 
 \newpage
 
 \section{References}
 \begin{enumerate}
 \item
-[1] Wikipedia Foundation Inc, Wilcoxon Signed-rank test (\url{http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test}),  14 August 2013
+[1] Wikipedia Foundation Inc, Wilcoxon Signed-rank test (\url{http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test}),  21 March 2014
 \item
 [2] The Unidata Program Center, NetCdf (\url{http://www.unidata.ucar.edu/software/netcdf/docs/what_is_netcdf.html}), 25 September 2013
 \item
 [3] Wikipedia Foundation Inc, Bonferroni correction (\url{http://en.wikipedia.org/wiki/Bonferroni_correction}), 18 September 2013
 \item
 [4]  Lowry, Richard. "Concepts \& Applications of Inferential Statistics". (\url{http://vassarstats.net/textbook/ch12a.html}), 24 March 2011.
+\item Wikipedia Foundation Inc, Statistical hypothesis testing (\url{http://en.wikipedia.org/wiki/Statistical_hypothesis_testing}), 6 April 2014
+\item Wikipedia Foundation Inc, z-score (\url{http://en.wikipedia.org/wiki/Standard_score}), 16 January 2014
+\item Wikipedia Foundation Inc, linear interpolation (\url{http://en.wikipedia.org/wiki/Linear_interpolation}), 10 January 2014
+\item Wikipedia Foundation Inc, Gaussian function (\url{http://en.wikipedia.org/wiki/Gaussian_function}), 8 January 2014
+\item Christian Ritz, Jens Strebig, Dose-reponse curve (\url{http://cran.r-project.org/web/packages/drc/index.html}), 6 April 2014
+\item Saikat DebRoy, Adrian Trapletti, Writing R extensions (\url{http://cran.r-project.org/doc/manuals/R-exts.html}), 11-Apr-2014
+\item Dirk Eddelbuettel, Romain Francois, Seamless R and C++ integration (\url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}),
 \end{enumerate}
 
 \end{document}
