@@ -2,9 +2,6 @@ EXTERNALLIBS = -lwilcoxontest -lnetcdf_c++ -lgsl -lgslcblas -lboost_program_opti
 WILXAPP = src/WilcoxonTestLoader.cpp
 CXX = g++
 CXXFLAGS = -Wall -ggdb
-#LIBCPP = src/WilcoxonTest.cpp
-#LIBOBJS = obj/WilcoxonTest.o
-#LIBRARY = lib/WilcoxonTest.a
 EXECUTABLE = WilcoxonTest
 
 all: $(EXECUTABLE)

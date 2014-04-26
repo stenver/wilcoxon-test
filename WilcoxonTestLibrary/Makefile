@@ -9,6 +9,9 @@ HEADER = src/$(HEADER_NAME)
 INSTALL_LIB = /usr/lib/
 INSTALL_HEADER = /usr/include/
 
+TESTCPP = test/test.cpp
+TESTEXECUTABLE = rumDemTests
+
 PKG_LIBS = -lgsl
 
 all: $(LIBRARY)
@@ -29,9 +32,15 @@ uninstall:
 				sudo rm -rf /usr/lib/wilcoxonTest
 				sudo ldconfig
 
+test: $(TESTEXECUTABLE)
+
+$(TESTEXECUTABLE): $(TESTCPP) $(LIBRARY)
+	@mkdir -p $(@D)
+	 g++ -Wall -ggdb -o $@ $^ -Itest -Isrc
+
 $(LIBRARY): $(LIBOBJS)
 	@mkdir -p $(@D)
-	g++ -shared -Wl,-soname,$(LIBRARY_NAME).1 $(EXTERNALLIBS) \
+	g++ -shared -Wl,-install_name,$(LIBRARY_NAME).1 $(EXTERNALLIBS) \
 	-o $@ $^
 
 $(LIBOBJS): $(LIBCPP)
