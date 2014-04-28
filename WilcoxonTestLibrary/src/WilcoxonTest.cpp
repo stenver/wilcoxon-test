@@ -33,14 +33,15 @@ WilcoxonTest::WilcoxonTest(float * _data, int _dataXsize, int _dataYsize, vector
 vector<double> * WilcoxonTest::test()
 {
     pValues = new vector<double>();
-    int numberOfSamples = testIndexes->size();
-    for(int y = 0; y < dataYsize; y++)
+    int numberOfTests = testIndexes->size();
+    for(int y = 0; y < numberOfTests; y++)
     {
-        int yIndex = y * dataXsize;
-        float * absoluteValues = new float[numberOfSamples]();
-        float * signs = new float[numberOfSamples]();
-        float w = calculateWValue(yIndex, absoluteValues, signs);
-        int numberOfZeroes = getNumberOfZeroes(yIndex, absoluteValues);
+        float * absoluteValues = new float[dataXsize];
+        cout << dataXsize << endl;
+        cout << absoluteValues[0] << " miks "<< endl;
+        float * signs = new float[dataYsize];
+        float w = calculateWValue(y, absoluteValues, signs);
+        int numberOfZeroes = getNumberOfZeroes(absoluteValues);
         pValues->push_back(calculatePValue(w, numberOfZeroes));
         delete absoluteValues;
         delete signs;
@@ -60,7 +61,7 @@ vector<int> * WilcoxonTest::parseIntString(string input)
 
 void WilcoxonTest::readApproximatePtable()
 {
-    string fileLocation = "/usr/lib/wilcoxonTest/pTable80.txt";
+    string fileLocation = "/usr/lib/wilcoxonTest/approximateTable500.txt";
     ifstream listFile(fileLocation.c_str());
     if (!listFile.is_open())
     {
@@ -68,7 +69,7 @@ void WilcoxonTest::readApproximatePtable()
         throw;
     }
     approximatePTable = new std::vector<std::vector<approximatePosition> * >;
-
+    
     string sLine = "";
     while (!listFile.eof())
     {
@@ -81,24 +82,40 @@ void WilcoxonTest::readApproximatePtable()
     listFile.close();
 }
 
+void WilcoxonTest::trim(string& str)
+{
+  string::size_type pos = str.find_last_not_of(' ');
+  if(pos != string::npos) {
+    str.erase(pos + 1);
+    pos = str.find_first_not_of(' ');
+    if(pos != string::npos) str.erase(0, pos);
+  }
+  else str.erase(str.begin(), str.end());
+}  
+
 std::vector<approximatePosition> * WilcoxonTest::getPositions(string positionsLine)
 {
     std::vector<approximatePosition> * positions = new std::vector<approximatePosition>;
     string trimmed_input = positionsLine.substr(1, positionsLine.length() - 1);
-
-    std::vector<string> * positionsStrings = splitLine(positionsLine, ']');
+    std::vector<string> * positionsStrings = splitLine(trimmed_input, ']');
     for(unsigned int i = 0; i < positionsStrings->size(); i++){
         string rawPosistionString = positionsStrings->at(i);
-        unsigned beginning = rawPosistionString.find('[');
-        unsigned middle = rawPosistionString.substr(beginning).find(',');
-        string x_str = rawPosistionString.substr(beginning, middle);
-        string y_str = rawPosistionString.substr(middle, rawPosistionString.length());
+        if(rawPosistionString.compare("") == 0) 
+        {
+          break;
+        }
+        int beginning = rawPosistionString.find('[');
+        string warPositionStringFromBeginning = rawPosistionString.substr(beginning);
+        int middle = warPositionStringFromBeginning.find(',');
+        string x_str = warPositionStringFromBeginning.substr(1, middle - 1);
+        string y_str = warPositionStringFromBeginning.substr(middle + 1, warPositionStringFromBeginning.length() - 1);
+        trim(y_str);
+        trim(x_str);
         approximatePosition pos;
         pos.x = atoi(x_str.c_str());
         pos.y = atof(y_str.c_str());
         positions->push_back(pos);
     }
-
     return positions;
 }
 
@@ -117,33 +134,41 @@ std::vector<string> * WilcoxonTest::splitLine(string inputString, char lineSplit
 
 float WilcoxonTest::calculateWValue(int yIndex, float * absoluteValues, float * signs)
 {
-    for (unsigned int i = 0; i < testIndexes->size(); i++)
-    {
-        int testIndex = testIndexes->at(i);
-        int controlIntex = controlIndexes->at(i);
-        float x1 = data[yIndex + testIndex];
-        float x2 = data[yIndex + controlIntex];
+    for (int i = 0; i < dataXsize; i++)
+    {   
+        cout << "wet" << endl;
+        int testIndex = testIndexes->at(yIndex);
+        int controlIntex = controlIndexes->at(yIndex);
+        
+        float x1 = data[(i * dataYsize) + testIndex];
+        float x2 = data[(i * dataYsize) + controlIntex];
 
         float value = x1-x2;
+        cout << "Sign and abs: " << value<< endl;
+        cout << abs(value) << endl;
+        cout << getSign(value) << endl;
+        cout << absoluteValues[0] << endl;
+        cout << "wut" << i << endl;
         absoluteValues[i] = abs(value);
+        cout << "wat" << endl;
         signs[i] = getSign(value);
+        cout << "wit"<<endl;
     }
 
     //Sort the list
-    quicksort(0, testIndexes->size(), absoluteValues, signs);
+    quicksort(0, dataXsize, absoluteValues, signs);
 
     float * ranks = rankThePairs(yIndex, absoluteValues);
     //calculate W value
     float w = 0;
-    for (unsigned int i = 0; i < testIndexes->size(); i++)
+    for (int i = 0; i < dataXsize; i++)
     {
-        int x = testIndexes->at(i);
         if(absoluteValues[i] != 0)
-        {
-            w += ranks[x] * signs[i];
+        {  
+            w += ranks[i] * signs[i];
         }
     }
-
+    cout << "before abs: " << w << endl;
     delete ranks;
     return abs(w);
 }
@@ -151,10 +176,11 @@ float WilcoxonTest::calculateWValue(int yIndex, float * absoluteValues, float * 
 double WilcoxonTest::calculatePValue(float w, int numberOfZeroes)
 {
     int Nr = 0;
-    for (unsigned int x = numberOfZeroes; x < testIndexes->size(); x++)
+    for (int x = numberOfZeroes; x < dataXsize; x++)
     {
         Nr++;
     }
+    cout << "calculating p value. w: " << w << endl;
     if(Nr > 500){
         float z = calculateZValue(w, Nr);
         if(z < 0)
@@ -211,16 +237,13 @@ double WilcoxonTest::approximateP(float w, approximatePosition beginningPos, app
 
 float * WilcoxonTest::rankThePairs(int yIndex, float * absoluteValues)
 {
-    int testIndexesSize = testIndexes->size();
-
-    float * ranks = new float[testIndexesSize]();
+    float * ranks = new float[dataXsize]();
 
     int i = 0;
-    while (i < testIndexesSize)
+    while (i < dataXsize)
     {
-        cout << 'h' << endl;
         int j = i + 1;
-        while (j < testIndexesSize)
+        while (j < dataXsize)
         {
             if(absoluteValues[i] != absoluteValues[j])
             {
@@ -252,10 +275,10 @@ int WilcoxonTest::getSign(float value)
     return 0;
 }
 
-int WilcoxonTest::getNumberOfZeroes(int yIndex, float * absoluteValues)
+int WilcoxonTest::getNumberOfZeroes(float * absoluteValues)
 {
     int numberOfZeroes = 0;
-    for (unsigned int i = 0; i < testIndexes->size(); i++)
+    for (int i = 0; i < dataXsize; i++)
     {
         if(absoluteValues[i] == 0)
         {

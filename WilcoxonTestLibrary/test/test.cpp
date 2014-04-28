@@ -35,9 +35,9 @@ float readTestFile(string fileLocation, std::vector<std::vector<string> * > * te
   string testResult = "";
 
   string sLine = "";
+  bool endOfDataReached = false;
   while (!listFile.eof())
   {
-    bool endOfDataReached = false;
     getline(listFile, sLine);
     if(sLine.compare("") != 0)
     {
@@ -59,9 +59,8 @@ void fillDataMatrix(float * data, std::vector<std::vector<string> *> * testData)
 {
   for(unsigned int i = 0; i < testData->size(); i++)
   {
-    for(unsigned int j = 0; j < testData->at(i)->size(); i++)
+    for(unsigned int j = 0; j < testData->at(i)->size(); j++)
     {
-      cout << testData->at(i)->at(j) << endl;;
       data[i + (j * i)] = atof(testData->at(i)->at(j).c_str());
     }
   }
@@ -69,7 +68,6 @@ void fillDataMatrix(float * data, std::vector<std::vector<string> *> * testData)
 
 int main(int argc, char* argv[])
 {
-  cout << "ol" << endl;
   std::vector<int> * testIndexes = new std::vector<int>();
   std::vector<int> * controlIndexes = new std::vector<int>();
   testIndexes->push_back(1);
@@ -85,6 +83,6 @@ int main(int argc, char* argv[])
   fillDataMatrix(data, testData);
 
   WilcoxonTest wilx(data, dataXsize, dataYsize, testIndexes, controlIndexes);
-  wilx.test();
+  cout << "Test result: " << wilx.test()->at(0) << endl;
 }
 

@@ -36,11 +36,11 @@ test: $(TESTEXECUTABLE)
 
 $(TESTEXECUTABLE): $(TESTCPP) $(LIBRARY)
 	@mkdir -p $(@D)
-	 g++ -Wall -ggdb -o $@ $^ -Itest -Isrc
+	 g++ -Wall -ggdb -o $@ $^ -Itest -Isrc $(EXTERNALLIBS)
 
 $(LIBRARY): $(LIBOBJS)
 	@mkdir -p $(@D)
-	g++ -shared -Wl,-install_name,$(LIBRARY_NAME).1 $(EXTERNALLIBS) \
+	g++ -shared -Wl,-soname,$(LIBRARY_NAME).1 $(EXTERNALLIBS) \
 	-o $@ $^
 
 $(LIBOBJS): $(LIBCPP)

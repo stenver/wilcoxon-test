@@ -50,7 +50,8 @@ private:
     double approximateP(float w, approximatePosition beginningPos, approximatePosition endPos);
     float * rankThePairs(int yIndex, float * absoluteValues);
     int getSign(float value);
-    int getNumberOfZeroes(int yIndex, float * absoluteValues);
+    int getNumberOfZeroes(float * absoluteValues);
+    void trim(string& str);
     
     //sorting
     void quicksort(int m, int n, float * absoluteValues, float * signs);
