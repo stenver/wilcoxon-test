@@ -89,7 +89,7 @@ Wilcoxon Signed-rank test is a paired statistical test that is used when measure
 
 The current implementations of the Wilcoxon Signed-rank tests are slow and unoptimized. This project will look into the foundations of wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and guassian approximate will be observed. In order to make the implementation faster, some dynamic programming methods will be used to save computation time. The goal of optimizing is to make it more accurate and speed up the test running.
 
-The end goal of this project is to create an accurate and fast wilcoxon test implementation in C++ shared library. In the scope of this project, the library will be integrated with 2 tools -command line and Cron-R. It will also be easily extendable to be integrated with any other tools one might desire, since it is a shared library.
+The end goal of this project is to create an accurate and fast wilcoxon test implementation in C++ shared library. In the scope of this project, the library will be integrated with two tools -command line and Cron-R. It will also be easily extendable to be integrated with any other tools one might desire, since it is a shared library.
 
 \end{abstract}
 
@@ -98,7 +98,7 @@ The end goal of this project is to create an accurate and fast wilcoxon test imp
 \section{Introduction}
 The BIIT research group has biologist who conduct a variety of experiments on a control group. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, proteine amount in the blood, RNA amount, purity of urine, brainwaves etc. These attributes can be repeadedly measured on the same subject and the results are never exactly the same. There is always a little noise and varience between the samples. Biologist often experiment on the control group and try to affect these observed attributes. The take samples before and after simulating the observable attribute with some stimulant. This is called the case-control study.
 
-However, since even without external stimulation the 2 results are never the same. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measuring before and after jogging could have a lot bigger changes then brainwave changes.  Therefore  the biologist need to use statistical tests to find out which case-control studies are actually significant and which are simply noise.
+However, since even without external stimulation the two results are never the same. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measuring before and after jogging could have a lot bigger changes then brainwave changes.  Therefore  the biologist need to use statistical tests to find out which case-control studies are actually significant and which are simply noise.
 
 There are many case-control tests available. For example paired Students t-test, t-test for matched pairs and Wilcoxon signed-rank test. The Wilcoxon signed-rank test is used when the measurement values are not normally distributed when the experimental conditions are fixed.  In practise, this means that the histogram of measurements is either asymmetrical or it does not resemble the bell shape.
 
@@ -159,9 +159,63 @@ So in the end - no matter how the biologist analyse their data, they will always
 
 \section{Wilcoxon signed-rank test}
 
-The Wilcoxon signed-rank test is a non-parametric(data doesnt have to have characteristic parameters or structure) statistical hypothesis test used when comparing two related samples, matched samples, or repeated measurements on a single sample to assess whether their population mean ranks differ - i.e. it is a paired difference test.
+In this section, we discuss a particular statistical test called Wilcoxon signed-ran test. Wilcoxon test can be used to make sure that something has an effect on the measured samples. For example, biologist could measure 3 patients white blood cell levels, create some external stimulation on the patients and measure the white blood cell levels again. The wilcoxon signed-ranked test shows wether the external stimulation had any statistical effect on the white blood cell levels.
+A test statistic is created for the test that estimates symmetry, but neglets actual value. What this means in practice is that the statistic ranks the absolute values of the measured sample pairs.
 
-This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If two or more experiments in different conditions have been made on it(eg gene experiments and their confirmation results), Wilcoxon test can be used to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
+\subsection{Statistical Tests}
+
+The statistical tests are usually done, because initial research has raised a hypothesis about the data. It is desireable to know if the hypothesis is true or not.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
+  \caption{Graphical represenation of statistical test flow}
+  \label{fig:statisticalTestFlow}
+\end{figure}
+
+Statistical tests are usually built by first gathering the necessary raw data(For example, make 80 persons run for 30 minutes and measure blood pressure before and after running). The data is then organized by some kind of aggregation algorithm which also might filter out tests that do not fall under the assumptions (For example, sorting and grouping the blood pressure results by gender, weigth and in ascending order, filter out any group that had too few samples). Then a test statistic is chosen and calculated. After that a p-value can be estimated which tells if the observable feature is interesting or not (For example, if running plays a role in raising a persons blood pressure).
+
+\subsubsection{Test Statistic}
+
+The test statistic is a scalar function of all the observations, which summarizes the data by a single number. It is a function of the data sample, which summarizes all the data values into a single value. This value can be to estimate a p-value and accept or reject a null hypothesis. Commonly the test statistic is either one-sample, two-sample or paired statistic, depending on the tests.
+
+\subsection{Hypothesis}
+
+\subsubsection{Null hypothesis}
+
+In statistics, a null and alternative hypothesis are raised to find out if the test bears any interesting results. A null hypothesis in general terms mean that the test results are boring or that there is no effect, or in more formal terms, general position. It means there is no relationship between the two observed features(For example, when measuring blood pressure before and after running, the null hypothesis would state that blood pressure will not change when running).
+
+The null hypothesis also defines the data distribution(For example, it might define that data forms into a Gaussian distribution). Since null hypothesis is the general position, then generally the data will be distributed according to the null hypothesis. Since the null hypothesis defines the data distribution, it will also define the test statistic distribution. Finally, since the null hypothesis defines the data distribution and test statistic distribution, then it will also play a role in estimating the p-value for the test statistic. The differences between measured observable feature experiment and control pairs comes from the same distribution. The distribution of differences are also symmetrical. A positive difference $x$ is equally likely as a negative difference $-x$.
+
+\subsubsection{Alternative hypothesis}
+The alternative hypothesis is the opposite - in simple terms, one could think of it as true or interesting result. It means that the two measured samples have a relationship between them, either in direct or indirect ways. A good example to explain these two is the court verdict - if null hypothesis is kept, then the suspect has not been found quilty. There was not enough evidence. On the contrary, if null hypothesis was rejected, the suspect was found quilty, because there was enough evidence to make that decision.
+
+When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of a measurable subset of samples. The alternative hypothesis sample outcomes are at the edges of a probability distributions, which makes them hard to predict.
+
+\subsubsection{P-value}
+P-value is estemated from the test statistic. It is used to find out if the test data is interesting. P-value is estimated from the test statistic. A certain threshold, called significance level(usually 0.05) is taken for the p-value. If the p-value is within significance level, then null hypothesis is rejected. If the p-value is not within significance level, then null hypothesis is kept and the data falls into distribution as defined by null hypothesis. A variety of algorithms have been thought of for p-value, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The p-value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
+
+The p-value can be either one sided or two sided. One-sided p-value is the probability that you get a certain value T that is larger or equal to the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in figure ~\ref{fig:p_value_one_sided}.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{p_value_one_sided}
+  \caption{One sided p-value representation}
+  \label{fig:p_value_one_sided(Author Repapetilto, Wikipedia Foundation Inc)}
+\end{figure}
+
+Two-sided p-value shows the probability that you get a certain value T that is either larger or smaller than the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in the ~\ref{fig:p_value_two_sided}:
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{p_value_two_sided}
+  \caption{Two sided p-value representation}
+  \label{fig:p_value_two_sided(Modified by author, source from Wikipedia Foundation inc, Repapetilto)}
+\end{figure}
+
+\subsection{Wilcoxon test}
+
+The Wilcoxon signed-rank test is a statistical hypothesis test that is used when comparing two related samples, matched samples, or repeated measurements on a single sample. This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If two or more experiments in different conditions have been made on it(eg gene experiments and their confirmation results), Wilcoxon test can be used to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
 
 It was popularized by Sidney Siegel in his book "Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, instead of $W$ in his book, because it was related, but not exactly the same as $W$. Because of this the test is sometimes referred to as the Wilcoxon T test and the test statistic is reported as a value of $T$.
 
@@ -172,77 +226,80 @@ It was popularized by Sidney Siegel in his book "Nonparametric statistics - for 
   \label{fig:wilcoxon_test_intro}
 \end{figure}
 
-\subsection{Statistical Tests}
+\subsection{Wilcoxon test Assumptions}
 
-The statistical tests are usually done, because initial research has raised a hypothesis. It is desireable to know if the hypothesis is true or not.
+\begin{enumerate}
+  \item Measurements can always be ordered. Example: Measurement is a real value, a hist of ordered categorical values, etc
+  \item Measurements can be naturally paired into case-control or before-after experiments. Example: Measure patients before and after treatment.
+  \item All measurement pairs are independent from other pairs. Example: Measurement of one individual does not influence the other. In medicine patients in the study are sampled randomly. There is no evident procedure in selecting patients or no planned action to organize a study so one could get the "desired" result.
+\end{enumerate}
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
-  \caption{Graphical represenation of statistical test flow}
-  \label{fig:statisticalTestFlow}
-\end{figure}
+\subsection{The wilcoxon test formulae}
+\begin{enumerate}
+\item Let $N$ be the sample size, the number of pairs. Thus, there are a total of $2*N$ data points. For $i=1,...,N$, let $x_{1, i}$ and $x_{2, i}$ denote the measurements.
+\item Let $W$ be the wilcoxon test statistic.
+\item Let $z-score$ be the wilcoxon test standard score.
+\item Let $X$ be the sample size from which onward you can approximate the p-value.
+\end{enumerate}
 
-\subsubsection{Data and aggregation}
-Statistical tests are usually built by first gathering the necessary raw data. The data is then organized by some kind of aggregation algorithm which also might filter out tests that dont fall under the assumptions.
+\begin{enumerate}
+\item
+For $i=1, .., N$, calculate $|x_{2,i} - x_{1,i}|$ and $sgn(x_{2,1} - x_{1,i})$, where $sgn(x)$ is the sign function.
+\item
+Order the $N$ pairs from smallest absolute difference to largest absolute difference, $|x_{2,i} - x_{1,i}|$.
+\item
+Rank the pairs, starting with the smallest as $1$. Ties receive a rank equal to the average of the ranks they span. Let $R_i$ denote the rank.
+\item
+Calculate the test statistic $W$, the absolute value of the sum of the signed ranks. $W=|\sum\limits_{i=1}^{N} [sgn(x_{2,i} - x_{1,i})*R_i]|$
+\item
+As $N$ increases, the sampling distribution of $W$ converges to a normal distribution. Where $X$ depends on how accurate you want your results to be
+\begin{enumerate}
+\item
+For $N >= X$, a $z-score$ can be calculated as
 
-\subsubsection{Test Statistic and hypothesis}
-Next a test statitic T is chosen and hypothesis are stated.
+$z=\frac{W-0.5}{\sigma_w},\sigma_w = \sqrt{\frac{N(N + 1)(2N + 1)}{6}}$
 
-The test statistic is a scalar function of all the observations, which summarizes the data by a single number. Commonly the T is either one-sample, two-sample or paired statistic, depending on the tests. Other statistics might also be used.
+If $Z > Zcritical$ then reject $H_0$, where $Z_{critical}$ is calculated with Gaussian distribution
 
-The hypothesis raised are null hypothesis and alternative hypothesis. Null hypothesis in a simple terms means false. A more precise explanation would be default position, or that the measured samples have no relationship in between them. It is simple to think of it as a no statement, even though it might not be as accurate. The alternative hypothesis is the opposite - in simple terms, one could think of it as true or interesting result. It means that the two measured samples have a relationship between them, either in direct or indirect ways. A good example to explain these 2 is the court verdict - if null hypothesis is kept, then the suspect has not been found quilty. There was not enough evidence. On the contrary, if null hypothesis was rejected, the suspect was found quilty, because there was enough evidence to make that decision.
+\item
+For $N < X$, $W$  is compared to a $p-value$ that can be calculated from enumeration of all possible combinations of $W$ given $N$.
 
-When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of a measurable subset of samples. The alternative hypothesis sample outcomes are at the edges of a probability distributions, which makes them hard to predict.
+If $W >= P_{critical}$, $N$ then reject $H_0$
+\end{enumerate}
+\end{enumerate}
 
-\subsubsection{P value estimation}
-After that a P value estimation is made with some algorithm. A variety of algorithms have been thought of, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The P value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
+\subsubsection{Example}
+Given pairs $[{6, 8}, {3, 3}, {2, -3}, {-3, 3}, {1, 3}]$.
 
-\subsubsection{P value}
-Finally a P value is extracted and it can be compared to the critical P value to find out if it should reject or keep the null hypothesis. A certain threshold is taken for the p-value. If the p-value is within this threshold, then null hypothesis is rejected. If the p-value is not within this threshold, then null hypothesis is kept.
+1. Calculate absolute values and signs:
+Absolute values $[2, 0, -5, 6, 2]$
+Signs $[1, 0, -1, 1, 1]$
+2. Exclude pairs absolute value is $0$
+3. Order the remaining pairs. Ties receive therank equal to average of the ranks they span
+$[{2 => 2.5}, {-5 => 1}, {6 => 4}, {2 => 2.5}]$
+4. Calculate the test statistic W
+$W = 1*2.5 + (-1*1) + 1*4 + 1*2.5$ = 8
+5. Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
+$P(5, 8) = 0.125$
+Since $0.125 > 0.05$, reject $H_0$
 
-Visually, when the probability distribution forms a gaussian distribution, the p-value ranges where the null hypothesis are rejected can be visualized as in ~\ref{fig:p_value_one_sided} and ~\ref{fig:p_value_two_sided}:
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{p_value_one_sided}
-  \caption{One sided p value representation}
-  \label{fig:p_value_one_sided}
-\end{figure}
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{p_value_two_sided}
-  \caption{Two sided p value representation}
-  \label{fig:p_value_two_sided}
-\end{figure}
-
-\subsection{Wilcoxon test}
-
-\subsubsection{Wilcoxon test Assumptions}
-1. Data is from the same population and paired.
-2. Pairs are independent and random.
-3. The data is measured at least on an ordinal scale - i.e. it allows rank order by which data can be sorted.
-4. The median has symmetric distribution of differences.
-
-\subsubsection{Practical use}
-Wilcoxon test can be used to make sure that something has an effect on the measured samples. For example, biologist could measure 3 patients white blood cell levels, create some external stimulation on the patients and measure the white blood cell levels again. The wilcoxon signed-ranked test shows wether the external stimulation had any statistical effect on the white blood cell levels.
-
+\subsection{P-value assignment}
+Let us consider wilcoxon test if we have 6 measurements. Then there are three differences as shown in in ~\ref{fig:patientExample}. As the test considers only the sign and order of the measurements, then only 8 configurations are possible as shown in figure ~\ref{fig:rankSignsExample}. The formula to calculate that result was $2^n$. As the values are grouped into two columns, W-values should also be in the same formation under the null hypothesis. All 8 configurations can be proven equally probable.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.8\textwidth]{patientExample}
-  \caption{Two sided p value representation}
+  \caption{Two sided p-value representation}
   \label{fig:patientExample}
 \end{figure}
-
-A Test statistic $W$ is created for the test that estimates symmetry, but neglets actual value. What this means in practice is that the statistic ranks the absolute values of the measured sample pairs. It then takes each and every rank looks at every possible combination you can create with the ranks by changing the signs of the ranks. In total you can have $2^n$ possible different combinations. Visually, it can be represented as shown in ~\ref{fig:rankSignsExample}
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.8\textwidth]{rankSignsExample}
-  \caption{Two sided p value representation}
+  \caption{Two sided p-value representation}
   \label{fig:rankSignsExample}
 \end{figure}
+
+Now if the W value in our data is +2, then there are X configurations that have larger or equal W value the. Then the one-sided p-value is $\frac{x}{8}$. The two-sided p-value is $\frac{x}{4}$
 
 If we calculate the value of $W$ statistic of each and every one of the 8 examples and then add the $W$ results togather, it turns out the result is exactly zero.
 
@@ -268,57 +325,53 @@ So in the end, since symmetry is estemated but actual value negleted, then its n
 
 So in essence - estimate symmetry, but neglet actual value.
 
-\subsubsection{P-value assignment problem}
-
-To create the p-value model for symmetric distributions the following steps need to be taken:
-
-\begin{enumerate}
-\item Since the distribution is symmetric, then sample pair values are not needed. I.e. sample pair value $x$ is probably an $x$ and the definite value is of no interest. It can be assumed they are fixed values.
-$P(sign(x) | |x| = x_0) = \frac{1}{2}$
-
-\item It important how probable it is to get a certain combinations of signs if the absolute values are fixed $P(sign(x_1), sign(x_2), ... sign(x_n) | |x_1| = x_1^0, |x_2| = x_2^0, ..., |x_n| = x_n^0) = 2^{-n}$
-
-\item Based on the previous step it can be be made certain what is the probability of obtaining $W$ for a fixed $|x_1|, |x_2|, ... |x_n|$. This will lead to the random sign model.
-
-\item Since $P_n[W | |x_1|, |x_2|, ..., |x_n|] = const$ for any $|x_1|, |x_2|, ..., |x_n|$ then $P_n[w | Hypothesis 0] = Random sign model$
-
-\end{enumerate}
-
-\subsubsection{Exact computation of P-value}
-
-Given a $N$ ranks, it can be calculated what the sum of all ranks are assuming that their ranks are random. If it is recorded how many different combinations form a certain sum $k$ for every random sign combination and process is repeated until all the random combinations are exhausted, a $V-table$ is formed. It signifies all the possible random signed rank combinations sums in an $N$ sized ranked array, where $k$ shows how many times a certain sum was achived. The function to get the number of times a certain sums was achieved will be called $V(N, k)$ from now on.
-
-From this table, $P$ value can be calculated. The $P$ value will show how probable it is that the given $N$ ranks with random signs, how probable it is that a sum $k$ is the result. If this process of calculating $P$ value is done repeadedly for every possible $N$ and $k$, then a $P-table$ forms. The $P-table$ shows the probability of every possible sum $k$ appearing given $N$ ranks with random signs. The function to get the desired $P$ value from that table will be reffered as $P(N, k)$ from now on.
-
-If the $P-table$ gets large enough, it will start taking the shape of guassian distribution. Because of that, given enough ranks, a gaussian distribution can be used to approximate the $P$.
-
-\subsubsection{The V table formula}
-
-Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
-$V(N+1, k) = V(N, k-1) + V(N, k+N+1)$
-
-There are some additional conditions to the formula:
-
-$V(N, k) = 0$ if $k < -N * \frac{N+1}{2}$ or $k > N * \frac{N+1}{2}$
-
-$V(N, k) = 1$ if $k = -N * \frac{N+1}{2}$ or $k = N * \frac{N+1}{2}$
-
-\subsubsection{The P table formula}
-Given $V$ table, $N$ and $k$, we can calculate the $P$ by
-$W=|\sum\limits_{T = k}^{\infty}[\frac{V(N, T)}{2^n}]$
-
-To get the P table, we go through all $N$ and $K$ values that we are interested in.
-
-\subsubsection{The Gaussian approximation of P table}
-As mentioned above, if the number of ranks $N$ gets large enough, then Gaussian distribution can be used. A simple gaussian function function $F(x, 1)$, where $x$ is the statistic $z-value$, eg standard score and $1$ is the sigma,will give approximately the same results as the accurate $P$ table.
-
 \subsubsection{V and P example}
 
 Given $N$ is $2$, then ranks are ${0, 1, 2}$, one can combine them into $0 + 1 + 2$ or $0 + 1 - 2$ or $0 - 1 + 2$ or $0 - 1 - 2$. This gives us one way to get $3$, one way to get $1$, one way to get $-1$ and one way to get $-3$
 
 It can now be calculated that the probability that our there is a $0.25\%$ that our value is $3$ or lower and $0.5\%$ that our value is $1$ or lower.
 
-This distribution is the most accurate table you can compare your wilcoxon test results on - it shows the exact probability that your tests falls into a certain normal distribution range. However, the table is expensive to calculate with $O(n^2)$ complexity.
+This distribution is the most accurate table you can compare wilcoxon test results on - it shows the exact probability that your tests falls into a certain normal distribution range. However, the table is expensive to calculate with $O(n^2)$ complexity.
+
+\subsubsection{Exact computation of P-value}
+
+Given a $N$ ranks, you assign + or - sign to each rank randomly. Since the sign distribution is random, then either sign has equal probability to be assigned. For fixed number of ranks N, we can consider all $2^n$ possible sign assignements and formulate the number of combinations that lead to the $W\geq k$. A $V-table$ is formed. It signifies all the possible random signed rank combinations sums in an $N$ sized ranked array, where $k$ shows how many times a certain sum was achived. Let $V_{N, k}$ be the number of times a certain sums was achieved.
+
+From this table, the probabaility that $W\geq k$ can be calculated. This value will show how probable it is that the given $N$ ranks with random signs, how probable it is that a sum $k$ is the result. If this process of calculating values is done repeadedly for every possible $N$ and $k$, then a $P-table$ forms. The $P-table$ shows the probability of every possible sum $k$ appearing given $N$ ranks with random signs. Let $P_{N, k}$ be the function to get the desired $P$ value from that table.
+
+If the $P-table$ gets large enough, it will start taking the shape of guassian distribution. Because of that, given enough ranks, a gaussian distribution can be used to approximate the $P$.
+
+\subsubsection{The V table formula}
+
+Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
+
+\begin{equation}
+  V_{N+1, k} = V_{N, k-1} + V_{N, k+N+1}
+\end{equation}
+
+There are some additional conditions to the formula:
+
+\begin{equation}
+V_{N, k} = 0 if k < -N * \frac{N+1}{2} or k > N * \frac{N+1}{2}
+\end{equation}
+
+\begin{equation}
+V_{N, k} = 1 if k = -N * \frac{N+1}{2} or k = N * \frac{N+1}{2}
+\end{equation}
+
+With these formulas, the probability that $W$ is a certain value can be calculated.
+
+\subsubsection{The P table formula}
+Given $V$ table, $N$ and $k$, we can calculate the $P$ by
+
+\begin{equation}
+W=|\sum\limits_{T = k}^{\infty}[\frac{V_{N, T}}{2^n}]
+\end{equation}
+
+To get the P table, we go through all $N$ and $K$ values that we are interested in.
+
+\subsubsection{The Gaussian approximation of P table}
+As mentioned above, if the number of ranks $N$ gets large enough, then Gaussian distribution can be used. To use that, the cumulative deinsity function $F(x)$ is usually used. A simple gaussian function function $F(x, 1)$, where $x$ is the statistic $z-value$, eg standard score and $1$ is the sigma, will give approximately the same results as the accurate $P$ table.
 
 \subsubsection{Code sample}
 A python code to calculate the V table is as follows:
@@ -332,8 +385,10 @@ def V(n, k, vTable):
 
     kIndex =  k + kSize
 
-    leftValue = 0 if kIndex - n - 1 < 0 or kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex - n - 1]
-    rightValue = 0 if kIndex + n + 1 < 0 or kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex + n + 1]
+    leftValue = 0 if kIndex - n - 1 < 0 or \
+      kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex - n - 1]
+    rightValue = 0 if kIndex + n + 1 < 0 or \
+      kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex + n + 1]
 
     return leftValue + rightValue
 
@@ -375,81 +430,9 @@ If you make multiple hypothesis on a test, then you increase the risk in which y
 
 If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the bonferron test divides it by the amount of features tested. This means higher the $X$ value, the more features you add in the test. \url{http://en.wikipedia.org/wiki/Bonferroni_correction}$^3$
 
-\subsection{The wilcoxon test formulae}
-
-The test first ranks the experiment values in an ascending list by subtracting the test experiment value from the original experiment value and then taking absolute value of it. Then it sorts them by size.(pairs $(3, 5), (6, 3), (5, 10)$ would come $-2, 3, -5$, their absolute values would be ranked $1, 2, 3$)
-
-Then it finds out the sign of each experiment pairs(pairs $(3, 5), (6, 3), (5, 10)$ would come $-2, 3, -5$, which signs would be $-, +, -$, in another words, $-1, 1, -1$)
-
-Then it calculates the statistic $W$, which is the absolute value of the sum of the signed ranks, and finds out whether the $N$ is large enough to approximate $P$ value or it needs to use $P$ value table to get the $P$ value. If it can approximate $P$ value, the test calculates $Z$ value and compares it to approximated $Z$ value. If the $Z$ value is bigger than Zcritical, reject $H_0$ . If it cant, then it will just get the $P$ value from built in table and if the $P$ is smaller than $0.05$, then reject $H_0$. The formula for wilcoxon test:
-
-Let $N$ be the sample size, the number of pairs. Thus, there are a total of $2*N$ data points. For $i=1,...,N$, let $x_{1, i}$ and $x_{2, i}$ denote the measurements.
-
-\begin{enumerate}
-\item
-For $i=1, .., N$, calculate $|x_{2,i} - x_{1,i}|$ and $sgn(x_{2,1} - x_{1,i})$, where  is the sign function.
-\item
-Order the $N$ pairs from smallest absolute difference to largest absolute difference, $|x_{2,i} - x_{1,i}|$.
-\item
-Rank the pairs, starting with the smallest as $1$. Ties receive a rank equal to the average of the ranks they span. Let $R_i$ denote the rank.
-\item
-Calculate the test statistic $W$, the absolute value of the sum of the signed ranks. $W=|\sum\limits_{i=1}^{N} [sgn(x_{2,i} - x_{1,i})*R_i]|$
-\item
-As $N$ increases, the sampling distribution of $W$ converges to a normal distribution. Where $X$ depends on how accurate you want your results to be
-\begin{enumerate}
-\item
-For $N >= X$, a $z-score$ can be calculated as
-
-$z=\frac{W-0.5}{\sigma_w},\sigma_w = \sqrt{\frac{N(N + 1)(2N + 1)}{6}}$
-
-If $Z > Zcritical$ then reject $H_0$, where $Z_{critical}$ is calculated with Gaussian distribution
-
-\item
-For $N < X$, $W$  is compared to a $p-value$ that can be calculated from enumeration of all possible combinations of $W$ given $N$.
-
-If $W >= P_{critical}$, $N$ then reject $H_0$
-\end{enumerate}
-\end{enumerate}
-
-\subsubsection{Example}
-Given pairs $[{6, 8}, {3, 3}, {2, -3}, {-3, 3}, {1, 3}]$.
-
-1. Calculate absolute values and signs:
-Absolute values $[2, 0, -5, 6, 2]$
-Signs $[1, 0, -1, 1, 1]$
-2. Exclude pairs absolute value is $0$
-3. Order the remaining pairs. Ties receive therank equal to average of the ranks they span
-$[{2 => 2.5}, {-5 => 1}, {6 => 4}, {2 => 2.5}]$
-4. Calculate the test statistic W
-$W = 1*2.5 + (-1*1) + 1*4 + 1*2.5$ = 8
-5. Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
-$P(5, 8) = 0.125$
-Since $0.125 > 0.05$, reject $H_0$
-
-\subsection{Definitions}
-
-\begin{enumerate}
-\item
-$N$ - The sample size in a wilcoxon signed-rank test.
-\item
-$V(N, k)$ - table. This table is only needed, for calculating $P(N, k)$. It has no other use for us. It signifies the number of different possible signs in an $N$ sized rank array where $k = W$.  So for example, $V(3, 0)$ would tell that there are 3 variables, then how many different signs could those ranks have, if their sum is 0.
-\item
-$P$ - Value that has been calculated. This is needed to know how accurate approximated P value is in practical use, using the V table by using the following formula:
-\item
-$P = \sum\limits_{k=W}^{\infty} \frac{V(N, k)}{2^n}$
-\item
-$P(N, k)$ - table that has $P$ values in it for every $N$ and $K$. The table gets larger, the bigger $N$ is. Table with the size $N=80$ is around 2.5 MB in plaintext file, while $N=800$ is many gigabytes.
-\item
-$P_{approx}$ - value that has been calculated with the Gaussian Distribution formulae.
-\item
-$P_{approx}(N, k)$ - table that holds every Papprox value for each $N$ and $K$.
-\item
-$X$ - the high enough $N$ value where Gaussian Distribution can be used, instead of a accurate $P$ table, because its accurate enough.
-\end{enumerate}
-
 \newpage
 
-\section{Approximating the P value}
+\section{Approximating the p-value}
 
 \subsection{Goal}
 The current implementations of Wilcoxon signed-rank test usually assume that $Z$ can be used to calculate the $P$ value, because mostly, the $N$ is sufficiently large to use $Z$.
@@ -470,7 +453,7 @@ When the $N->\infty$, then the approximate region will almost equal the accurate
 
 The bottleneck of the other implementations of the Wilcoxon test, when $N$ is low, is that they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue.
 
-To speed this up - this project will calculate the entire $P(N, k)$ for every value that is possible where $N < X$. Then the $P(N, k)$ will be hardcoded inside the program for quick lookup of the value.
+To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < X$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
 
 One of the focuses of this paper is finding the $X$ value
 
@@ -478,9 +461,9 @@ One of the focuses of this paper is finding the $X$ value
 
 \section{Finding the $X$ value}
 \subsection{Proving that $P$ and $P_{approx}$ get more similar as $N$ increases}
-First we wanted to confirm that as $N$ grows, $P$ and $P_{approx}$ value will get more and more similar. To do this, we took $P(N, k)$ value for each $N$ where
-$N < 50$ and $P(N, k)  = 0$ and $P(N, k - 1) != 0$.
-We then compared the $P(N, k)$ and $P_{approx} (N, k)$ for each $N$ where:
+First we wanted to confirm that as $N$ grows, $P$ and $P_{approx}$ value will get more and more similar. To do this, we took $P_{N, k}$ value for each $N$ where
+$N < 50$ and $P_{N, k}  = 0$ and $P_{N, k - 1} != 0$.
+We then compared the $P_{N, k}$ and $P_{approx} (N, k)$ for each $N$ where:
 The results are on Figure ~\ref{fig:T0vsN}.
 
 
@@ -519,9 +502,9 @@ To further investigate this finding, we decided to find out the minimum $P$ valu
 
 From figure ~\ref{fig:PvsN} we can see that as the $N$ grows, the graph becomes stable, meaning that the distribution becomes a normal distribution at around $N > 10$ and $N < 25$. We can see that the minimum $P$ value under error threshold does get smaller, as $N$ increases, so this further proves that Gaussian distribution does get more accurate as $N$ grows. This is because as $N$ increases, you can take a $P$ value closer to the tail of the distribution and still get an accurate value.
 
-The figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are 2 noteworthy things here, however. First, around $P = 0.05$, the relative error actually get a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx}(N, k)$  the $K$ is even or odd number. This is a computational artefact caused by the recurrence of the $V(N, K)$ values and we will not make any conclusions of that.
+The figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually get a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artefact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that.
 
-\subsection{Investigating the $P(N, k)$ and $P_{approx}(N, k)$ similarities}
+\subsection{Investigating the $P_{N, k}$ and $P_{approx N, K}$ similarities}
 To further prove that we can start using Gaussian Distribution at a certain $N$, we needed to prove that Papprox will get more accurate as the N increases toward the tail of the distribution aswell.
 
 To achive this, we found out the largest relative error between $P$ and $P_{approx}$ for each $N$ and for each $P$ where $P = (0.5:0.1), P = (0.1, 0.01), P = (0.001, 0.0001), ... , P = (10-14 , 10-15)$
@@ -537,7 +520,7 @@ As can be seen from figure ~\ref{fig:LargestApproxPRelativeError}, the relative 
 
 This means that even though the error of the distribution tail edge does increase as N grows, overall, both distributions get more and more similar to the gaussian distribution
 
-To further investigate the relation between $P(N, k)$ and $P_{approx}(N, k)$, we wanted to see the difference between all $P$ values when $P = 50$ and when $P = 25$
+To further investigate the relation between $P_{N, k}$ and $P_{approx N, K}$, we wanted to see the difference between all $P$ values when $P = 50$ and when $P = 25$
 
 \begin{figure}[!h]
 	\centering
@@ -553,10 +536,10 @@ To further investigate the relation between $P(N, k)$ and $P_{approx}(N, k)$, we
 	\label{fig:PvsP25}
 \end{figure}
 
-As can be seen from ~\ref{fig:PvsP50} or ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P(N, k)$ and $P_{approx}(N, k)$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
+As can be seen from ~\ref{fig:PvsP50} or ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P_{N, k}$ and $P_{approx N, K}$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
 
 \subsection{Determining the X value}
-Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, $P(N, k)$ and $P_{approx}(N, k)$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $X$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $X$ value is figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $X$ value depends on the number of measurements and the required accuracy where $X = N$:
+Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, $P_{N, k}$ and $P_{approx N, K}$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $X$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $X$ value is figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $X$ value depends on the number of measurements and the required accuracy where $X = N$:
 
 \begin{table}[!h]
 	\begin{center}
@@ -595,13 +578,13 @@ Judging by all the data that has been gathered, it be can clearly see that as $N
 \end{table}
 Table \ref{table:requiredN} showing the required N for measurements size while maintaining a relative error
 
-As pointed out in the beginning, when the $N$ grows, the $P(N, k)$ table size grows exponentially.
+As pointed out in the beginning, when the $N$ grows, the $P_{N, k}$ table size grows exponentially.
 
 Since even when $N = 80$, the plain text file was already 2.5mb, the need to optimize further arised.
 
 \section{Further optimizations}
 
-To further optimize the library, it was needed to approximate the accurate $P$ table. 2 algorithms were chosen for that matter dose-response curve and linear approximation.
+To further optimize the library, it was needed to approximate the accurate $P$ table. Two algorithms were chosen for that matter dose-response curve and linear approximation.
 
 \subsubsection{dose-response curve}
 When using the dose-reponse curve algorithm, the data range as shown in figure~\ref{fig:PdivPapproxDrcWhenN500} changes sharply toward the edge of the range. Further tests also showed that the algorithm was completly inaccurate at the end of the far edge, so unfortunately this algorithm could not be used.
@@ -639,7 +622,7 @@ def calculateRelativeTable(pTable, gaussianPTable):
 
 \end{verbatim}
 
-This returned a new table which had the same number of elements as the accurate P table or guassian P rable, but for every position there was a relative P value.
+This returned a new table which had the same number of elements as the accurate P table or guassian P rable, but for every position there was a relative p-value.
 
 \subsubsection{Linear approximation algorithm}
 
@@ -795,7 +778,7 @@ The folder that contains this paper and all images attached to it. It also conta
 \newpage
 
 \section{Conclusion}
-It was found out that Gaussian distribution tail edge grows larger apart from the $P(N, K)$ as $N$ increases while the overall distribution grows more similar. In addition, it was confirmed that if thousands of parallel tests are ran, then using approximation is not reliable and instead an accurate table of P values must be used. Calculating that table is very expensive and thus it is advised to precalculate the table for the program. However, the research shows that if 10 000 measurements are run under 5\% relative error, then the hardcoded $N$ should be over 1000. Table of that size would take many gigabytes of space and is impractical to use.
+It was found out that Gaussian distribution tail edge grows larger apart from the $P_{N, k}$ as $N$ increases while the overall distribution grows more similar. In addition, it was confirmed that if thousands of parallel tests are ran, then using approximation is not reliable and instead an accurate table of p-values must be used. Calculating that table is very expensive and thus it is advised to precalculate the table for the program. However, the research shows that if 10 000 measurements are run under 5\% relative error, then the hardcoded $N$ should be over 1000. Table of that size would take many gigabytes of space and is impractical to use.
 
 To get around that, approximation of the accurate $P$ table was used. This allowed to significantly reduce the size of the file and thus increase the hardcoded $N$ that was implemented inside the library.
 
@@ -821,6 +804,7 @@ Overall the research included some surprising results and can be considered a su
 \item Wikipedia Foundation Inc, z-score (\url{http://en.wikipedia.org/wiki/Standard_score}), 16 January 2014
 \item Wikipedia Foundation Inc, linear interpolation (\url{http://en.wikipedia.org/wiki/Linear_interpolation}), 10 January 2014
 \item Wikipedia Foundation Inc, Gaussian function (\url{http://en.wikipedia.org/wiki/Gaussian_function}), 8 January 2014
+\item Wikipedia Foundation Inc, Test Statistic (\url{http://en.wikipedia.org/wiki/Test_statistic}), 10 January 2014
 \item Christian Ritz, Jens Strebig, Dose-reponse curve (\url{http://cran.r-project.org/web/packages/drc/index.html}), 6 April 2014
 \item Saikat DebRoy, Adrian Trapletti, Writing R extensions (\url{http://cran.r-project.org/doc/manuals/R-exts.html}), 11-Apr-2014
 \item Dirk Eddelbuettel, Romain Francois, Seamless R and C++ integration (\url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}),
