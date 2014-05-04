@@ -2,6 +2,7 @@
 \usepackage[a4paper]{geometry}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
+\usepackage{amsmath}
 
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -166,18 +167,18 @@ A test statistic is created for the test that estimates symmetry, but neglets ac
 
 The statistical tests are usually done, because initial research has raised a hypothesis about the data. It is desireable to know if the hypothesis is true or not.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
   \caption{Graphical represenation of statistical test flow}
   \label{fig:statisticalTestFlow}
 \end{figure}
 
-Statistical tests are usually built by first gathering the necessary raw data(For example, make 80 persons run for 30 minutes and measure blood pressure before and after running). The data is then organized by some kind of aggregation algorithm which also might filter out tests that do not fall under the assumptions (For example, sorting and grouping the blood pressure results by gender, weigth and in ascending order, filter out any group that had too few samples). Then a test statistic is chosen and calculated. After that a p-value can be estimated which tells if the observable feature is interesting or not (For example, if running plays a role in raising a persons blood pressure).
+Statistical tests are usually built by first gathering the necessary raw data(For example, make 80 persons run for 30 minutes and measure blood pressure before and after running). The data is then organized by some kind of aggregation algorithm which also might filter out tests that do not fall under the assumptions (For example, sorting and grouping the blood pressure results by gender, weight and in ascending order and then filter out any group that had too few samples). Then a test statistic is chosen and calculated. After that a p-value can be estimated which tells if the observable feature is interesting or not (For example, if running plays a role in raising a persons blood pressure).
 
 \subsubsection{Test Statistic}
 
-The test statistic is a scalar function of all the observations, which summarizes the data by a single number. It is a function of the data sample, which summarizes all the data values into a single value. This value can be to estimate a p-value and accept or reject a null hypothesis. Commonly the test statistic is either one-sample, two-sample or paired statistic, depending on the tests.
+The test statistic is a scalar function of all the observations, which summarizes the data by a single number. This value can be to estimate a p-value and accept or reject a null hypothesis. Commonly the test statistic is either one-sample, two-sample or paired statistic, depending on the tests.
 
 \subsection{Hypothesis}
 
@@ -185,7 +186,7 @@ The test statistic is a scalar function of all the observations, which summarize
 
 In statistics, a null and alternative hypothesis are raised to find out if the test bears any interesting results. A null hypothesis in general terms mean that the test results are boring or that there is no effect, or in more formal terms, general position. It means there is no relationship between the two observed features(For example, when measuring blood pressure before and after running, the null hypothesis would state that blood pressure will not change when running).
 
-The null hypothesis also defines the data distribution(For example, it might define that data forms into a Gaussian distribution). Since null hypothesis is the general position, then generally the data will be distributed according to the null hypothesis. Since the null hypothesis defines the data distribution, it will also define the test statistic distribution. Finally, since the null hypothesis defines the data distribution and test statistic distribution, then it will also play a role in estimating the p-value for the test statistic. The differences between measured observable feature experiment and control pairs comes from the same distribution. The distribution of differences are also symmetrical. A positive difference $x$ is equally likely as a negative difference $-x$.
+The null hypothesis also defines the data distribution(For example, it might define that data forms into a Gaussian distribution). Since null hypothesis is the general position, then generally the data will be distributed according to the null hypothesis. Since the null hypothesis defines the data distribution, it will also define the test statistic distribution. Finally, since the null hypothesis defines the data distribution and test statistic distribution, then it will also play a role in estimating the p-value for the test statistic. The differences between measured observable case and control experiment pairs comes from the same distribution. The distribution of differences are also symmetrical. A positive difference $x$ is equally likely as a negative difference $-x$.
 
 \subsubsection{Alternative hypothesis}
 The alternative hypothesis is the opposite - in simple terms, one could think of it as true or interesting result. It means that the two measured samples have a relationship between them, either in direct or indirect ways. A good example to explain these two is the court verdict - if null hypothesis is kept, then the suspect has not been found quilty. There was not enough evidence. On the contrary, if null hypothesis was rejected, the suspect was found quilty, because there was enough evidence to make that decision.
@@ -193,38 +194,91 @@ The alternative hypothesis is the opposite - in simple terms, one could think of
 When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of a measurable subset of samples. The alternative hypothesis sample outcomes are at the edges of a probability distributions, which makes them hard to predict.
 
 \subsubsection{P-value}
-P-value is estemated from the test statistic. It is used to find out if the test data is interesting. P-value is estimated from the test statistic. A certain threshold, called significance level(usually 0.05) is taken for the p-value. If the p-value is within significance level, then null hypothesis is rejected. If the p-value is not within significance level, then null hypothesis is kept and the data falls into distribution as defined by null hypothesis. A variety of algorithms have been thought of for p-value, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The p-value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
+P-value is estimated from the test statistic. It is used to find out if the test data is interesting. A certain threshold, called significance level(usually 0.05) is taken for the p-value. If the p-value is within significance level, then null hypothesis is rejected. If the p-value is not within significance level, then null hypothesis is kept and the data falls into distribution as defined by null hypothesis. A variety of algorithms have been thought of for p-value, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the alorithms by taking all these assumptions into an account. The p-value shows the probability that the measured sample belongs in the well-defined probability distribution and where does it most likely belong inside that distribution.
 
 The p-value can be either one sided or two sided. One-sided p-value is the probability that you get a certain value T that is larger or equal to the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in figure ~\ref{fig:p_value_one_sided}.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{p_value_one_sided}
-  \caption{One sided p-value representation}
-  \label{fig:p_value_one_sided(Author Repapetilto, Wikipedia Foundation Inc)}
+  \caption{One sided p-value representation (Author Repapetilto, Wikipedia Foundation Inc)}
+  \label{fig:p_value_one_sided}
 \end{figure}
 
-Two-sided p-value shows the probability that you get a certain value T that is either larger or smaller than the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in the ~\ref{fig:p_value_two_sided}:
+Two-sided p-value shows the probability that you get a certain value T that is either larger or smaller than the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in the figure ~\ref{fig:p_value_two_sided}:
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{p_value_two_sided}
-  \caption{Two sided p-value representation}
-  \label{fig:p_value_two_sided(Modified by author, source from Wikipedia Foundation inc, Repapetilto)}
+  \caption{Two sided p-value representation (Modified by author, source from Wikipedia Foundation inc, Repapetilto)}
+  \label{fig:p_value_two_sided}
 \end{figure}
 
+\newpage
 \subsection{Wilcoxon test}
 
 The Wilcoxon signed-rank test is a statistical hypothesis test that is used when comparing two related samples, matched samples, or repeated measurements on a single sample. This means that with Wilcoxon test you can look at some measurable feature(eg. gene). If two or more experiments in different conditions have been made on it(eg gene experiments and their confirmation results), Wilcoxon test can be used to see if they are relevant. $H_0$ means that the difference between pairs is zero. $H_1$ means it is not.
 
 It was popularized by Sidney Siegel in his book "Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, instead of $W$ in his book, because it was related, but not exactly the same as $W$. Because of this the test is sometimes referred to as the Wilcoxon T test and the test statistic is reported as a value of $T$.
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{wilcoxon_test_intro}
-  \caption{Wilcoxon test hypothesis table}
-  \label{fig:wilcoxon_test_intro}
-\end{figure}
+\begin{table}
+  \begin{center}
+  \begin{minipage}{.5\linewidth}
+  \caption{Initial data}
+  \begin{tabular}{ccccc}
+    \hline
+    i & $x_{2, 1}$ & $x_{1, i}$ & sgn & abs \\
+    \hline
+    1 & 125 & 110 & 1 & 15 \\
+    \hline
+    2 & 115 & 122 & -1 & 7 \\
+    \hline
+    3 & 130 & 125 & 1 & 5 \\
+    \hline
+    4 & 140 & 120 & 1 & 20 \\
+    \hline
+    5 & 115 & 124 & -1 & 9 \\
+    \hline
+    6 & 140 & 123 & 1 & 17 \\
+    \hline
+    7 & 125 & 137 & -1 & 12 \\
+    \hline
+    8 & 140 & 135 & 1 & 5 \\
+    \hline
+    9 & 135 & 145 & -1 & 10 \\
+    \hline
+  \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+  \caption{After ordering by absolute difference}
+  \begin{tabular}{ccccccc}
+    \hline
+    i & $x_{2, 1}$ & $x_{1, i}$ & sgn & abs & $R_i$ & $sgn * R_i$ \\
+    \hline
+    3 & 130 & 125 & 1 & 5 & 1.5 & 1.5 \\
+    \hline
+    8 & 140 & 135 & 1 & 5 & 1.5 & 1.5 \\
+    \hline
+    2 & 115 & 122 & -1 & 7 & 3 & -3 \\
+    \hline
+    5 & 115 & 124 & -1 & 9 & 4 & -4 \\
+    \hline
+    9 & 135 & 145 & -1 & 10 & 5 & -5 \\
+    \hline
+    7 & 125 & 137 & -1 & 12 & 6 & -6 \\
+    \hline
+    1 & 125 & 110 & 1 & 15 & 7 & 7 \\
+    \hline
+    6 & 140 & 123 & 1 & 17 & 8 & 8 \\
+    \hline
+    4 & 140 & 120 & 1 & 20 & 9 & 9 \\
+    \hline
+  \end{tabular}
+  \end{minipage}%
+  \end{center}
+\end{table}
+
+\newpage
 
 \subsection{Wilcoxon test Assumptions}
 
@@ -271,28 +325,30 @@ If $W >= P_{critical}$, $N$ then reject $H_0$
 \subsubsection{Example}
 Given pairs $[{6, 8}, {3, 3}, {2, -3}, {-3, 3}, {1, 3}]$.
 
-1. Calculate absolute values and signs:
-Absolute values $[2, 0, -5, 6, 2]$
+\begin{enumerate}
+\item Calculate absolute values and signs: \\
+Absolute values $[2, 0, -5, 6, 2]$ \\
 Signs $[1, 0, -1, 1, 1]$
-2. Exclude pairs absolute value is $0$
-3. Order the remaining pairs. Ties receive therank equal to average of the ranks they span
+\item Exclude pairs absolute value is $0$
+\item Order the remaining pairs. Ties receive therank equal to average of the ranks they span \\
 $[{2 => 2.5}, {-5 => 1}, {6 => 4}, {2 => 2.5}]$
-4. Calculate the test statistic W
+\item Calculate the test statistic W \\
 $W = 1*2.5 + (-1*1) + 1*4 + 1*2.5$ = 8
-5. Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter.
-$P(5, 8) = 0.125$
+\item Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is in a later chapter. \\
+$P(5, 8) = 0.125$ \\
 Since $0.125 > 0.05$, reject $H_0$
+\end{enumerate}
 
 \subsection{P-value assignment}
-Let us consider wilcoxon test if we have 6 measurements. Then there are three differences as shown in in ~\ref{fig:patientExample}. As the test considers only the sign and order of the measurements, then only 8 configurations are possible as shown in figure ~\ref{fig:rankSignsExample}. The formula to calculate that result was $2^n$. As the values are grouped into two columns, W-values should also be in the same formation under the null hypothesis. All 8 configurations can be proven equally probable.
-\begin{figure}[!h]
+Let us consider wilcoxon test if we have 6 measurements. Then there are three differences as shown in in figure ~\ref{fig:patientExample}. As the test considers only the sign and order of the measurements, then only 8 configurations are possible as shown in figure ~\ref{fig:rankSignsExample}. The formula to calculate that result was $2^n$. As the values are grouped into two columns, W-values should also be in the same formation under the null hypothesis. All 8 configurations can be proven equally probable.
+\begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{patientExample}
-  \caption{Two sided p-value representation}
+  \caption{Patient example}
   \label{fig:patientExample}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{rankSignsExample}
   \caption{Two sided p-value representation}
@@ -301,27 +357,37 @@ Let us consider wilcoxon test if we have 6 measurements. Then there are three di
 
 Now if the W value in our data is +2, then there are X configurations that have larger or equal W value the. Then the one-sided p-value is $\frac{x}{8}$. The two-sided p-value is $\frac{x}{4}$
 
-If we calculate the value of $W$ statistic of each and every one of the 8 examples and then add the $W$ results togather, it turns out the result is exactly zero.
+If we calculate the value of $W$ statistic of each and every one of the 8 examples and then add the $W$ results togather, it turns out the result is exactly zero as shown in table ~\ref{table:adding_w_results}.
 
-$W = 1 + 2 + 3 = 6$
+\begin{table}[!ht]
+  \begin{center}
+    \caption{Adding W results togather}
+      \begin{tabular}{c}
+      \hline
+      $W = 1 + 2 + 3 = 6$ \\
+      \hline
+      $W = -1 + 2 + 3 = 4$\\
+      \hline
+      $W = -1 - 2 + 3 = 0$\\
+      \hline
+      $W = 1 - 2 + 3 = 2$\\
+      \hline
+      $W = -1 - 2 - 3 = -6$\\
+      \hline
+      $W = 1 - 2 - 3 = -4$\\
+      \hline
+      $W = 1 + 2 - 3 = 0$\\
+      \hline
+      $W = -1 + 2 - 3 = -2$\\
+      \hline
+      $6 + 4 + 2 + 0 + 0 -2 - 4 - 6 = 0$\\
+      \hline
+      \end{tabular}
+    \label{table:adding_w_results}
+  \end{center}
+\end{table}
 
-$W = -1 + 2 + 3 = 4$
-
-$W = -1 - 2 + 3 = 0$
-
-$W = 1 - 2 + 3 = 2$
-
-$W = -1 - 2 - 3 = -6$
-
-$W = 1 - 2 - 3 = -4$
-
-$W = 1 + 2 - 3 = 0$
-
-$W = -1 + 2 - 3 = -2$
-
-$6 + 4 + 2 + 0 + 0 -2 - 4 - 6 = 0$
-
-So in the end, since symmetry is estemated but actual value negleted, then its not really needed to know anything other but number of tests. No matter the value of the tests, $W$ statistic will always create the same table.
+So in the end, since symmetry is estimated but actual value negleted, then its not really needed to know anything other but number of tests. No matter the value of the tests, $W$ statistic will always create the same table.
 
 So in essence - estimate symmetry, but neglet actual value.
 
@@ -464,17 +530,17 @@ One of the focuses of this paper is finding the $X$ value
 First we wanted to confirm that as $N$ grows, $P$ and $P_{approx}$ value will get more and more similar. To do this, we took $P_{N, k}$ value for each $N$ where
 $N < 50$ and $P_{N, k}  = 0$ and $P_{N, k - 1} != 0$.
 We then compared the $P_{N, k}$ and $P_{approx} (N, k)$ for each $N$ where:
-The results are on Figure ~\ref{fig:T0vsN}.
+The results are on figure ~\ref{fig:T0vsN}.
 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
   \includegraphics[width=0.8\textwidth]{T0vsN}
 	\caption{Approximate and accurate comparisson}
 	\label{fig:T0vsN}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
   \includegraphics[width=0.8\textwidth]{log10PtailsN40}
 	\caption{Relative error increasing toward edge of tail}
@@ -486,14 +552,14 @@ From Figure ~\ref{fig:log10PtailsN40} we can see that Gaussian distribution is a
 
 To further investigate this finding, we decided to find out the minimum $P$ value that you can get for each $N$ while maintaining a certain error threshold. The thresholds chosen were $5\%, 10\%, 20\%, 50\%$. The formula used was the same as before, except the thresholds were replaced as needed.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
   \includegraphics[width=0.8\textwidth]{RelativeErrorDecreasingPgrowsN20}
 	\caption{Comparing approximate probability relative error as sample size increses}
 	\label{fig:PvsN}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
   \includegraphics[width=0.8\textwidth]{RelativeErrorDecreasingPgrowsN20}
 	\caption{Showing the relative error as probabilty increases when sample size is 20}
@@ -522,26 +588,26 @@ This means that even though the error of the distribution tail edge does increas
 
 To further investigate the relation between $P_{N, k}$ and $P_{approx N, K}$, we wanted to see the difference between all $P$ values when $P = 50$ and when $P = 25$
 
-\begin{figure}[!h]
+\begin{figure}
 	\centering
   \includegraphics[width=0.8\textwidth]{PvsP50}
 	\caption{Relative value of all actual probabilities and approximated probabilities when sample size is 50}
 	\label{fig:PvsP50}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 	\centering
   \includegraphics[width=0.8\textwidth]{PvsP25}
 	\caption{Relative value of all actual probabilities and approximated probabilities when sample size is 25}
 	\label{fig:PvsP25}
 \end{figure}
 
-As can be seen from ~\ref{fig:PvsP50} or ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P_{N, k}$ and $P_{approx N, K}$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
+As can be seen from figure ~\ref{fig:PvsP50} or figure ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P_{N, k}$ and $P_{approx N, K}$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
 
 \subsection{Determining the X value}
 Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, $P_{N, k}$ and $P_{approx N, K}$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $X$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $X$ value is figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $X$ value depends on the number of measurements and the required accuracy where $X = N$:
-
-\begin{table}[!h]
+
+\begin{table}[!ht]
 	\begin{center}
 		\caption{Showing the minimal required sample size for a certain relative error and number of measurements}
 	    \begin{tabular}{| l | l | l |}
@@ -576,7 +642,6 @@ Judging by all the data that has been gathered, it be can clearly see that as $N
 		\label{table:requiredN}
 	\end{center}
 \end{table}
-Table \ref{table:requiredN} showing the required N for measurements size while maintaining a relative error
 
 As pointed out in the beginning, when the $N$ grows, the $P_{N, k}$ table size grows exponentially.
 
@@ -589,7 +654,7 @@ To further optimize the library, it was needed to approximate the accurate $P$ t
 \subsubsection{dose-response curve}
 When using the dose-reponse curve algorithm, the data range as shown in figure~\ref{fig:PdivPapproxDrcWhenN500} changes sharply toward the edge of the range. Further tests also showed that the algorithm was completly inaccurate at the end of the far edge, so unfortunately this algorithm could not be used.
 
-\begin{figure}[!h]
+\begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{PvsP50}
   \caption{P range with DRC algorithm when N=500}
@@ -629,7 +694,7 @@ This returned a new table which had the same number of elements as the accurate 
 The linear approximation algorithm works by starting from data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until end of range has been reached. This guarantees approximated data range within error margin.
 
 The to approximate the data points in python look like this
-
+\newpage
 \begin{verbatim}
 def linearInterpolate(approximatePoint,
                       endPoint,
@@ -792,22 +857,19 @@ Overall the research included some surprising results and can be considered a su
 
 \section{References}
 \begin{enumerate}
-\item
-[1] Wikipedia Foundation Inc, Wilcoxon Signed-rank test (\url{http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test}),  21 March 2014
-\item
-[2] The Unidata Program Center, NetCdf (\url{http://www.unidata.ucar.edu/software/netcdf/docs/what_is_netcdf.html}), 25 September 2013
-\item
-[3] Wikipedia Foundation Inc, Bonferroni correction (\url{http://en.wikipedia.org/wiki/Bonferroni_correction}), 18 September 2013
-\item
-[4]  Lowry, Richard. "Concepts \& Applications of Inferential Statistics". (\url{http://vassarstats.net/textbook/ch12a.html}), 24 March 2011.
-\item Wikipedia Foundation Inc, Statistical hypothesis testing (\url{http://en.wikipedia.org/wiki/Statistical_hypothesis_testing}), 6 April 2014
+\item Wilcoxon, F. (1945) "Individual Comparisons by Ranking Methods.", \textit{Biometrics Bulletin, Vol. 1}, p. 80-83.
+\item Siegel, S. (1956) "Nonparametric statistics for the behavioral sciences", p. 75-83.
+\item Rew, R., (2011) Davis, G., Emmerson, S. and Daview, H. "The NetCDF Users Guide", p. 5-7, p. 17-23.
+\item Abdi, H. (2008) "The Bonferonni and ŠidákCorrections for Multiple Comparisons" \textit{Encyclopedia of Measurement and Statistics}, p. 1-7
+\item Lowry, R. (2011) "Concepts \& Applications of Inferential Statistics" \textit{\url{http://vassarstats.net/textbook/ch12a.html}}, ch.12a.
+\item Triola, M (2001). "Elementary statistics (8 ed.)", p. 388.
+\item Ritz, C. and Strebig, J. (2013) "Dose-reponse curve" (\url{http://cran.r-project.org/web/packages/drc/index.html}), p. 111.
+\item DebRoy, S. and Trapletti, A. (2014) "Writing R extensions" (\url{http://cran.r-project.org/doc/manuals/R-exts.html}), ch 5-6.
+\item Eddelbuettel, D. and Francois, R. (2014) "Seamless R and C++ integration" (\url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}), 3-15.
 \item Wikipedia Foundation Inc, z-score (\url{http://en.wikipedia.org/wiki/Standard_score}), 16 January 2014
 \item Wikipedia Foundation Inc, linear interpolation (\url{http://en.wikipedia.org/wiki/Linear_interpolation}), 10 January 2014
 \item Wikipedia Foundation Inc, Gaussian function (\url{http://en.wikipedia.org/wiki/Gaussian_function}), 8 January 2014
 \item Wikipedia Foundation Inc, Test Statistic (\url{http://en.wikipedia.org/wiki/Test_statistic}), 10 January 2014
-\item Christian Ritz, Jens Strebig, Dose-reponse curve (\url{http://cran.r-project.org/web/packages/drc/index.html}), 6 April 2014
-\item Saikat DebRoy, Adrian Trapletti, Writing R extensions (\url{http://cran.r-project.org/doc/manuals/R-exts.html}), 11-Apr-2014
-\item Dirk Eddelbuettel, Romain Francois, Seamless R and C++ integration (\url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}),
 \end{enumerate}
 
 \end{document}
