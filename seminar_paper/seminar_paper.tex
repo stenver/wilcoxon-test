@@ -1,8 +1,10 @@
 \documentclass[12pt]{article}
 \usepackage[a4paper]{geometry}
-\usepackage[english]{babel}
+\usepackage[estonian, english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
 
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -21,6 +23,62 @@
 \usepackage{commath}
 \DeclareMathOperator{\sign}{sign}
 
+% Packages for defining colourful text together with some colours
+\usepackage{color}
+\usepackage{xcolor}
+%\definecolor{dkgreen}{rgb}{0,0.6,0}
+%\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+
+% Standard package for drawing algorithms
+% Since the thesis in article format we must define \chapter for
+% the package algorithm2e (otherwise obscure errors occur)
+\let\chapter\section
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+
+% Fix a  set of keywords which you use inside algorithms
+\SetKw{True}{true}
+\SetKw{False}{false}
+\SetKwData{typeInt}{Int}
+\SetKwData{typeRat}{Rat}
+\SetKwData{Defined}{Defined}
+\SetKwFunction{parseStatement}{parseStatement}
+
+
+% Proper way to create coloured code listings
+\usepackage{listings}
+\lstset{
+  %language=python,                % the language of the code
+  language=C++,
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  %numbers=left,                   % where to put the line-numbers
+  %numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line
+                                   % will be numbered
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  backgroundcolor=\color{white},   % choose the background color. You must add \usepackage{color}
+  showspaces=false,                % show spaces adding particular underscores
+  showstringspaces=false,          % underline spaces within strings
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  frame = lines,
+  %frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},       % if not set, the frame-color may be changed on line-breaks within
+                                   % not-black text (e.g. commens (green here))
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  captionpos=b,                    % sets the caption-position to bottom
+  breaklines=true,                 % sets automatic line breaking
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  %title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                   % also try caption instead of title
+                                   % also try caption instead of title
+  keywordstyle=\color{blue},       % keyword style
+  commentstyle=\color{dkgreen},    % comment style
+  stringstyle=\color{mauve},       % string literal style
+  escapeinside={\%*}{*)},          % if you want to add a comment within your code
+  morekeywords={*,game, fun}       % if you want to add more keywords to the set
+}
 
 
 
@@ -67,25 +125,23 @@ Institute of Computer Science\\
 %\vspace*{\stretch{3}}
 \vspace{10mm}
 
-{\noindent Author: .................................................................................... ``.....'' ..........\hskip16pt 2012}
+%{\noindent Author: .................................................................................... ``.....'' ..........\hskip16pt 2048}
 \vspace{2mm}
 
-{\noindent Supervisor: ............................................................................... ``.....'' ..........\hskip16pt 2012}
+
+%{\noindent Supervisor: ............................................................................... ``.....'' ..........\hskip16pt 2048}
+
+\vspace{2mm}
+
+%{\noindent Supervisor: ............................................................................... ``.....'' ..........\hskip16pt 2048}
 
 \vspace{8mm}
-
-{\noindent Allowed to defence}
-
-{\noindent Professor: ................................................................................. ``.....'' ..........\hskip16pt 2012}
 
 \vfill
 \centerline{Tartu 2012}
 
 \newpage
 
-\tableofcontents
-
-\pagebreak
 
 \begin{abstract}
 Wilcoxon Signed-rank test is a paired statistical test that is used when measurement values are not normally distributed. The test is used by BIIT(Bioinformatics, Algorithmics and Data mining group) research group for gene regulation, gene expression data analysis, biological data mining and others. BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter.
@@ -95,6 +151,10 @@ The current implementations of the Wilcoxon Signed-rank tests are slow and unopt
 The end goal of this project is to create an accurate and fast wilcoxon test implementation in C++ shared library. In the scope of this project, the library will be integrated with two tools -command line and Cron-R. Due to the nature of shared library, it will be easy integrate the library with any other tools one might desire.
 
 \end{abstract}
+
+\newpage
+
+\tableofcontents
 
 \newpage
 
@@ -498,11 +558,10 @@ If you want to use Bonferron correction with Wilcoxon signed-rank test, then you
 
 \section{Approximating the p-value}
 
-\subsection{Goal}
-The current implementations of Wilcoxon signed-rank test usually assume that $Z$ can be used to calculate the $P$ value, because mostly, the $N$ is sufficiently large to use $Z$.
-This allows them to use Gaussian Distributions to approximate the $P$ value and the accurate $P$ table calculation is often left unoptimized.
+\subsection{Motivation}
+The current implementations of Wilcoxon signed-rank test usually assume that $p$-value distribution is sufficiently close to Gaussian distribution, so that we can use $Z$ to calculate the $P$ value. They draw this conclusion from the assumption that $N$ is sufficiently large to use $Z$. This allows them to use Gaussian Distributions to approximate the $P$ value and the accurate $P$ table calculation is often left unoptimized. In this work we studied the question whether this assumption is justified in detail.
 
-In the BIIT research group, however, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The currently suggested $N$ is 10.
+In the BIIT research group, however, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10.
 
 Also, since BIIT uses multiple hypothesis testing, the approximation must be good even for small P-values. As mentioned above, the Bonferroni correction will lower the $P$ significantly.
 
@@ -853,21 +912,54 @@ Overall the research included some surprising results and can be considered a su
 
 \newpage
 
-\section{References}
-\begin{enumerate}
-\item Wilcoxon, F. (1945) "Individual Comparisons by Ranking Methods.", \textit{Biometrics Bulletin, Vol. 1}, p. 80-83.
-\item Siegel, S. (1956) "Nonparametric statistics for the behavioral sciences", p. 75-83.
-\item Rew, R., (2011) Davis, G., Emmerson, S. and Daview, H. "The NetCDF Users Guide", p. 5-7, p. 17-23.
-\item Abdi, H. (2008) "The Bonferonni and ŠidákCorrections for Multiple Comparisons" \textit{Encyclopedia of Measurement and Statistics}, p. 1-7
-\item Lowry, R. (2011) "Concepts \& Applications of Inferential Statistics" \textit{\url{http://vassarstats.net/textbook/ch12a.html}}, ch.12a.
-\item Triola, M (2001). "Elementary statistics (8 ed.)", p. 388.
-\item Ritz, C. and Strebig, J. (2013) "Dose-reponse curve" (\url{http://cran.r-project.org/web/packages/drc/index.html}), p. 111.
-\item DebRoy, S. and Trapletti, A. (2014) "Writing R extensions" (\url{http://cran.r-project.org/doc/manuals/R-exts.html}), ch 5-6.
-\item Eddelbuettel, D. and Francois, R. (2014) "Seamless R and C++ integration" (\url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}), 3-15.
-\item Wikipedia Foundation Inc, z-score (\url{http://en.wikipedia.org/wiki/Standard_score}), 16 January 2014
-\item Wikipedia Foundation Inc, linear interpolation (\url{http://en.wikipedia.org/wiki/Linear_interpolation}), 10 January 2014
-\item Wikipedia Foundation Inc, Gaussian function (\url{http://en.wikipedia.org/wiki/Gaussian_function}), 8 January 2014
-\item Wikipedia Foundation Inc, Test Statistic (\url{http://en.wikipedia.org/wiki/Test_statistic}), 10 January 2014
-\end{enumerate}
+\selectlanguage{estonian}
+
+\section{Eestikeelne pealkiri}
+Bakalaureusetöö(6 EAP) \\
+Eesnimi Perekonnanimi \\
+Resümee \\
+
+
+\selectlanguage{english}
+
+\newpage
+
+\bibliographystyle{alpha}
+\bibliography{bachelor-thesis}
+
+\appendix
+\pagebreak
+
+\section*{\small Non-exclusive licence to reproduce thesis and make thesis public}
+
+I, Stenver Jerkku (date of birth: 10th of October 1990),
+
+\begin{tabbing}
+\= Xiii\=\kill
+\>1. \> herewith grant the University of Tartu a free permit (non-exclusive licence) to:\\\\
+
+\>1.1\>
+\begin{minipage}[t]{14.2cm}
+reproduce, for the purpose of preservation and making available to the public, including for addition to the DSpace digital archives until expiry of the term of validity of the copyright, and
+\end{minipage}
+\\\\
+\>1.2
+\begin{minipage}[t]{14.2cm}
+make available to the public via the web environment of the University of Tartu, including via the DSpace digital archives until expiry of the term of validity of the copyright,\\
+
+Paralell Wilcoxon Signed-rank tests\\
+
+supervised by Sven Laur
+
+\end{minipage}\\\\
+\>2. \>I am aware of the fact that the author retains these rights.\\\\
+\>3. \>
+\begin{minipage}[t]{14.2cm}
+I certify that granting the non-exclusive licence does not infringe the intellectual property rights or rights arising from the Personal Data Protection Act.
+\end{minipage}\\
+\end{tabbing}
+
+\noindent
+Tartu, 14.05.2014
 
 \end{document}
