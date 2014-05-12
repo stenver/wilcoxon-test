@@ -8,7 +8,7 @@ __author__ = 'stenver'
 
 pTable = []
 gaussianPTable = []
-nSize = 500
+nSize = 50
 kSize = 0
 for n in range (nSize):
     kSize += n
@@ -51,13 +51,13 @@ pTable = pAccurateTable.calculatePValues(vTable)
 '''
 
 #Read the already calculated files in
-gaussianPtable = readFile(gaussianPValuesFileName)
+gaussianPTable = readFile(gaussianPValuesFileName)
 pTable = readFile(pValuesFileName)
 
 #Do various calculations or graphs on the tables
 '''
-(table1, table2) = findWhenGaussianIsEffective(pTable, gaussianPtable)
-table = findHighestApproximationError(pTable, gaussianPtable)
+(table1, table2) = findWhenGaussianIsEffective(pTable, gaussianPTable)
+table = findHighestApproximationError(pTable, gaussianPTable)
 printHighestApproxPTable(table)
 
 printPvsPdata(pTable, gaussianPTable, 50)
@@ -67,7 +67,9 @@ readFile(vValuesFileName, vTable)
 calculateVtableStandardDeviations(vTable)
 '''
 
-#printKRelativeValues(499, pTable, gaussianPTable)
+#calculateGraphs.printDifference(pTable, gaussianPTable, 49)
+calculateGraphs.printPandPapprox(pTable, gaussianPTable, 30)
 
-approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPtable)
-calculateApproximateTable.writeApproximateTableFile(approximateTable, nSize)
+#printKRelativeValues(499, pTable, gaussianPTable)
+#approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPTable)
+#calculateApproximateTable.writeApproximateTableFile(approximateTable, nSize)

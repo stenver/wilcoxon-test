@@ -227,7 +227,7 @@ In this section, we discuss a particular statistical test called Wilcoxon signed
 
 The statistical tests are usually done, because initial research has raised a hypothesis about the data. It is desireable to know if the hypothesis is true or not.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
   \caption{Graphical represenation of statistical test flow}
@@ -266,7 +266,7 @@ P-value is estimated from the test statistic. It is used to find out if the test
 
 The p-value can be either one sided or two sided. One-sided p-value is the probability that you get a certain value T that is larger or equal to the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in Figure ~\ref{fig:p_value_one_sided}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{p_value_one_sided}
   \caption{One sided p-value representation (Author Repapetilto, Wikipedia Foundation Inc)}
@@ -275,21 +275,18 @@ The p-value can be either one sided or two sided. One-sided p-value is the proba
 
 Two-sided p-value shows the probability that you get a certain value T that is either larger or smaller than the computed test statistic from the observed data in the distribution that the null-hypothesis defines. This can be seen visually in the Figure ~\ref{fig:p_value_two_sided}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{p_value_two_sided}
   \caption{Two sided p-value representation (Modified by author, source from Wikipedia Foundation inc, Repapetilto)}
   \label{fig:p_value_two_sided}
 \end{figure}
 
-\newpage
 \subsection{Wilcoxon test}
 
 The Wilcoxon signed-rank test is a statistical hypothesis test that is used when comparing two related samples, matched samples, or repeated measurements on a single sample. This means that with Wilcoxon test you can look at some measurable feature, e.g. blood pressure. If two or more experiments in different conditions have been made on it,e.g. gene experiments and their confirmation results, Wilcoxon test can be used to see if the changes of the measurement levels are relevant. The null hypothesis $H_0$ means that the difference between pairs is zero. The alternative $H_1$ means it is not.
 
 It was popularized by Sidney Siegel in his book "Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, to denote test statistic. Because of this, the test is sometimes referred to as the Wilcoxon T test and the test statistic is reported as a value of $T$.
-
-\newpage
 
 \subsection{Wilcoxon test Assumptions}
 
@@ -303,7 +300,7 @@ It was popularized by Sidney Siegel in his book "Nonparametric statistics - for 
 Let $N$ be the sample size, the number of pairs. Then we can use the following variable to compute the W test. For $i=1,...,N$, let $x_{1, i}$ and $x_{2, i}$ denote the measurements.
 Let $W$ be the wilcoxon test statistic.
 Let $z-score$ be the wilcoxon test standard score.
-Let $N_0$ be the number of pairs from which onward one can approximate the p-value. This value is currently undefined and is the focus of this paper. It will be discussed in the future chapters.
+Let $N_0$ be the number of pairs from which onward we can approximate the p-value. This value is currently undefined and is the focus of this paper. It will be discussed in the future chapters.
 
 The computation of the statistic W is organised into five steps. The last step diverges into two possible paths and the choice of the path that is chosen depends wether $N  >= N_0$.
 
@@ -332,7 +329,7 @@ For $N >= N_0$, a $z-score$ can be calculated as
 If $Z > Zcritical$ then reject $H_0$, where $Z_{critical}$ is calculated with Gaussian distribution.
 
 \item
-For $N < N_0$, $W$  is compared to a $p-value$ that can be calculated from enumeration of all possible combinations of $W$ given $N$.
+For $N < N_0$, $W$  is compared to a p-value that can be calculated from enumeration of all possible combinations of $W$ given $N$.
 
 If $W >= P_{critical}$, $N$ then reject $H_0$
 \end{enumerate}
@@ -420,7 +417,7 @@ The formula to calculate that result was $2^n$. Due to the symmetry of of the po
 
 Now if the W value in our data is +2, then there are 3 configurations that have larger or equal W value. This can be seen from the Table ~\ref{table:adding_w_results}. Then the one-sided p-value is $\frac{3}{8}$. The two-sided p-value is $\frac{3}{4}$. The same procedure is needed to assign p-value.
 
-\begin{table}[!ht]
+\begin{table}[H]
   \begin{center}
       \begin{tabular}{c}
       \hline
@@ -467,6 +464,7 @@ From this table, the probabaility that $W\geq k$ can be calculated. This value w
 If the $P$-table gets large enough, it will start taking the shape of Guassian distribution. Because of that, given enough ranks, a gaussian distribution can be used to approximate the $P$-table.
 
 \subsubsection{The V and P table formulas}
+\label{sec:v_p_table_formulas}
 
 Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
 
@@ -559,112 +557,149 @@ If you want to use Bonferron correction with Wilcoxon signed-rank test, then you
 \section{Approximating the p-value}
 
 \subsection{Motivation}
-The current implementations of Wilcoxon signed-rank test usually assume that $p$-value distribution is sufficiently close to Gaussian distribution, so that we can use $Z$ to calculate the $P$ value. They draw this conclusion from the assumption that $N$ is sufficiently large to use $Z$. This allows them to use Gaussian Distributions to approximate the $P$ value and the accurate $P$ table calculation is often left unoptimized. In this work we studied the question whether this assumption is justified in detail.
 
-In the BIIT research group, however, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10.
+The current implementations of Wilcoxon signed-rank test usually assume that $p$-value distribution is sufficiently close to Gaussian distribution, so that we can use $Z$ to calculate the $P$ value. They draw this conclusion from the assumption that the number of samples $N$ is sufficiently large to use $Z$. When $N = 1$, then approximation is quite unaccurate. As number of samples increases, then the approximation becomes more and more accurate on absolute scale. When the $N->\infty$, then the $P_{approx}$ approximate region will almost equal the $P$ accurate region, which also means that the region will be almost perfect Gaussian Distribution. This means that when $N->\infty$, then there is no reason not to use Gaussian Distribution, as it will be almost completely accurate, except at the very edges. This allows them to use Gaussian Distributions to approximate the $P$ value and the accurate $P$ table calculation is often left unoptimized.
 
-Also, since BIIT uses multiple hypothesis testing, the approximation must be good even for small P-values. As mentioned above, the Bonferroni correction will lower the $P$ significantly.
+In the BIIT research group, and many others, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Also, since BIIT uses multiple hypothesis testing, the approximation must be good even at the very edges of distribution. As mentioned above, the Bonferroni correction will lower the significance level significantly as $N$ rises. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10. In this work we studied the question whether this assumption is justified in detail.
 
-Because of this, one focus of the paper is finding out how good the approximation of Gaussian Distribution is. The reason to find it out is, as mention, because approximation is computationally cheap and the preffered method to be used over accurate $P$ table, which is computationally expensive.
+The approximation is computationally cheap and the prefered method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian Distribution is and and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintining a high enough accuaracy. Let $N_0$ be high enough $N$, which allows us to use approximation accuarately.
 
-\subsection{Approximation traits}
-When $N = 1$, then approximation is quite unaccurate. As $N$ increases, then the approximation becomes more and more accurate.
-
-When the $N->\infty$, then the approximate region will almost equal the accurate $P$ region. This means that when $N->\infty$, then there is no reason not to use Gaussian Distribution, as it will be completely accurate.
-
-\subsection{Optimizing}
-
-The bottleneck of the other implementations of the Wilcoxon test, when $N$ is low, is that they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue.
-
-To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
-
-One of the focuses of this paper is finding the $N_0$ value
-
-\newpage
-
-\section{Finding the $N_0$ value}
-\subsection{Proving that $P$ and $P_{approx}$ get more similar as $N$ increases}
-First we wanted to confirm that as $N$ grows, $P$ and $P_{approx}$ value will get more and more similar. To do this, we took $P_{N, k}$ value for each $N$ where
-$N < 50$ and $P_{N, k}  = 0$ and $P_{N, k - 1} != 0$.
-We then compared the $P_{N, k}$ and $P_{approx} (N, k)$ for each $N$ where:
-The results are on Figure ~\ref{fig:T0vsN}.
+The bottlenecks of the other implementations of the Wilcoxon test is, when $N$ is low, but the number of tests is high. In this case they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue. To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
 
 
-\begin{figure}[!ht]
+\subsection{When can we approximate}
+The relative and absolute error behave very differently. The absolute error between accurate table values $P$ and approximate table values $P_{approx}$ first falls and then rises until at the centre of the distribution, but gets stable and almost constant from the middle to the edge of the distribution. It can be seen on the Figure ~\ref{fig:absolute_difference}. The Relative error gets smaller, the higher the number of samples $N$ is. However, the relative error looks like a slide. It is stable at the centre of the distribution, but starts rising sharply at the middle. At the edge of the distribution, the relative error is nearly 100\%. It can be seen at the Figure ~\ref{fig:epsilon_difference}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{approximate_accurate_difference}
+  \caption{Absolute error between accurate $P$ and approximate $P_{approx}$ values.}
+  \label{fig:absolute_difference}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{approximate_accurate_epsilon}
+  \caption{Relative error between accurate $P$ and approximate $P_{approx}$ values.}
+  \label{fig:epsilon_difference}
+\end{figure}
+
+The absolute error is calculated simply as follows:
+\begin{equation}
+  \Delta = P - P_{approx}
+\end{equation}
+
+The relative error is calculated as follows:
+\begin{equation}
+  \epsilon = \frac{\Delta}{P_{approx}} * 100\%
+\end{equation}
+
+It is important to have low relative error on the region - i.e. good region, because this ensures that the test results stay accurate. If the relative error is high, then this will also increase the possibility of a false positive, that is, rejecting $H_0$ when we actually should not.
+
+First we wanted to confirm that as the number of samples grows, accurate table values $P$ and approximate table values $P_{approx}$ will get become more similar. To do this, we used the following equation for each $N$:
+
+\begin{equation}
+  k_1 = max_k \{ k: p(k) > 0 \}
+\end{equation}
+
+And compared them to the results of:
+\begin{equation}
+  k_0 = max_k \{ k: \epsilon_k \leq 5\% \}
+\end{equation}
+
+The results of the table can be seen on Figure ~\ref{fig:T0vsN}.
+
+\begin{figure}[H]
 	\centering
   \includegraphics[width=0.8\textwidth]{T0vsN}
-	\caption{Approximate and accurate comparisson}
+	\caption{Region between low relative error and actual distribution edge increasing as sample size increases.}
 	\label{fig:T0vsN}
 \end{figure}
 
-\begin{figure}[!ht]
-	\centering
-  \includegraphics[width=0.8\textwidth]{log10PtailsN40}
-	\caption{Relative error increasing toward edge of tail}
-	\label{fig:log10PtailsN40}
+Much to our surprise, as $N$ grew, the gap between approximate and accurate values grew bigger. This meant that as $N$ grows, the relative approximate error of Gaussian distribution will get more inaccurate toward the tails of the distribution. Previously we thought that with the growth of $N$, Gaussian would surely get more and more accurate.
+From Figure ~\ref{fig:PandPapproxAsKincreases} we cant really make a difference between accurate $P$ and approximate $P_{approx}$ values, but if we put the values to logarithmic scale, the difference is easier to spot. From Figure ~\ref{fig:logPlogPapproxAsKincreases} we can see that approximated $P_{approx}$ values are a little bit bigger toward the edge of distribution - as can be seen when $K$ grows.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{PandPapproxAsKincreases}
+  \caption{Accurate $P$ and apporximate $P_{approx}$ values as $k$ increases.}
+  \label{fig:PandPapproxAsKincreases}
 \end{figure}
 
-Much to our surprise, as $N$ grew, the gap between approximate and accurate $P$ values grew bigger. This meant that as $N$ grows, the Gaussian distribution will get more inaccurate toward the tails of the distribution. Previously we thought that with the growth of $N$, Gaussian would surely get more and more accurate.
-From Figure ~\ref{fig:log10PtailsN40} we can see that Gaussian distribution is a little bit bigger and gets bigger as $K$ grows. Figure 2 illustrates the difference in position of between last accurate $P_{appox}$ and $P = 0$. Accurate means that the relvative error is under $5\%$
-
-To further investigate this finding, we decided to find out the minimum $P$ value that you can get for each $N$ while maintaining a certain error threshold. The thresholds chosen were $5\%, 10\%, 20\%, 50\%$. The formula used was the same as before, except the thresholds were replaced as needed.
-
-\begin{figure}[!ht]
-	\centering
-  \includegraphics[width=0.8\textwidth]{RelativeErrorDecreasingPgrowsN20}
-	\caption{Comparing approximate probability relative error as sample size increses}
-	\label{fig:PvsN}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{logPlogPapproxAsKincreases}
+  \caption{Logarithmic accurate $P$ and apporximate $P_{approx}$ values as logarithmic $K$ increases.}
+  \label{fig:logPlogPapproxAsKincreases}
 \end{figure}
 
-\begin{figure}[!ht]
+To further investigate this finding, we decided to find out the minimum $P$ value that you can get for each $N$ while maintaining a certain relative error $\epsilon$ threshold. The thresholds chosen were $\epsilon=5\%, \epsilon=10\%, \epsilon=20\%, \epsilon=50\%$. From Figure ~\ref{fig:PvsN} we can see that as the $N$ grows, the graph becomes stable, meaning that the distribution becomes a Gaussian distribution at around $N > 10$ and $N < 25$. When $N < 10$, then the approximation is so random that it cannot be used reliably. We can see that the minimum $P$ value under error threshold does get smaller, as $N$ increases, so this further proves that Gaussian distribution does get more accurate as $N$ grows. This is because as $N$ increases, you can take a $P$ value closer to the tail of the distribution and still get an accurate value.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{PvsN}
+  \caption{Relative error $\epsilon$ as sample size $N$ increses}
+  \label{fig:PvsN}
+\end{figure}
+
+The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually get a little small tip toward accuracy. This is evidently true, since the the accurate $P$ and approximate $P_{approx}$ values area is equal.
+\begin{equation}
+  \abs{\sum\limits_{k=1}^{\infty}{P(k)}} = \abs{\sum\limits_{k=1}^{\infty}{P_{approx}(k)}}
+\end{equation}
+Since the approximation $P_{approx}$ value is higher at the edge of the distribution, then obviously it is smaller at the centre of distribution. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artefact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that. To understand this better, once must familiarize himself with the algorithm defined in the Chapter ~\ref{sec:v_p_table_formulas}.
+
+
+\begin{figure}[H]
 	\centering
   \includegraphics[width=0.8\textwidth]{RelativeErrorDecreasingPgrowsN20}
-	\caption{Showing the relative error as probabilty increases when sample size is 20}
+	\caption{Relative error $\epsilon$ decreasing as p-value grows, when $N=20$}
 	\label{fig:RelativeErrorDecresingPgrows}
 \end{figure}
 
-From Figure ~\ref{fig:PvsN} we can see that as the $N$ grows, the graph becomes stable, meaning that the distribution becomes a Gaussian distribution at around $N > 10$ and $N < 25$. We can see that the minimum $P$ value under error threshold does get smaller, as $N$ increases, so this further proves that Gaussian distribution does get more accurate as $N$ grows. This is because as $N$ increases, you can take a $P$ value closer to the tail of the distribution and still get an accurate value.
-
-The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually get a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artefact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that.
-
 \subsection{Investigating the $P_{N, k}$ and $P_{approx N, K}$ similarities}
-To further prove that we can start using Gaussian Distribution at a certain $N$, we needed to prove that Papprox will get more accurate as the N increases toward the tail of the distribution aswell.
+To further prove that we can start using Gaussian Distribution at a certain $N$, we needed to prove that $P_{approx}$ will get more accurate as the $N$ increases toward the tail of the distribution aswell. To achive this, we found out the largest relative error $\epsilon$ between $P$ and $P_{approx}$ for each $N$ and for each p-value where:
+\begin{equation}
+  p-value=\{(\frac{1}{10^0};\frac{1}{10^1}), (\frac{1}{10^1};\frac{1}{10^2}), ..., (\frac{1}{10^{6}};\frac{1}{10^{7}}) \}
+\end{equation}
+As can be seen from Figure ~\ref{fig:LargestApproxPRelativeError0_100} and Figure ~\ref{fig:LargestApproxPRelativeError100_500}, the relative error increases fast. When p-value $= (10^{-5}, 10^{-6})$ the relative error is massive. When $N=200$, then the error is still around $40\%$. The bigger the $N$ gets, the bigger the error at the tail. However, it can also be seen that the relative error decreases steadily as $N$ grows for each of the p-value ranges chosen. This means that even though the error of the distribution tail edge does increase as $N$ grows, the approximate $P_{approx}$ and accurate $P$ values do get more similar as the $N$ grows, i.e. the theory under question does not lie.
 
-To achive this, we found out the largest relative error between $P$ and $P_{approx}$ for each $N$ and for each $P$ where $P = (0.5:0.1), P = (0.1, 0.01), P = (0.001, 0.0001), ... , P = (10-14 , 10-15)$
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{LargestApproxPRelativeError0_100}
+  \caption{Showing the maximum relative error $\epsilon$ decreasing in probability ranges, as sample size $N$ increases}
+  \label{fig:LargestApproxPRelativeError0_100}
+\end{figure}
 
-\begin{figure*}
-	\centering
-  \includegraphics[width=0.8\textwidth]{LargestApproxPRelativeError3}
-	\caption{Showing the maximum approximate relative error in probability ranges, as sample size increases}
-	\label{fig:LargestApproxPRelativeError}
-\end{figure*}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{LargestApproxPRelativeError100_500}
+  \caption{Showing the maximum relative error $\epsilon$ decreasing in probability ranges, as sample size $N$ increases}
+  \label{fig:LargestApproxPRelativeError100_500}
+\end{figure}
 
-As can be seen from Figure ~\ref{fig:LargestApproxPRelativeError}, the relative error increases exponentially. When $P = (10-5 , 10-6)$ the relative error is massive. When $N=200$, then the error is still around $40\%$. The bigger the $N$ gets, the bigger the error at the tail. However, it can also be seen that the error decreases steadily as $N$ grows for each of the $P$ range chosen.
+\newpage
 
-This means that even though the error of the distribution tail edge does increase as N grows, overall, both distributions get more and more similar to the Gaussian distribution
+To investigate the relation between accurate $P$ and approximate $P_{approx}$ values, we wanted to see the difference between all p-values values when $N = 50$ and when $N = 25$. As can be seen from Figure ~\ref{fig:PvsP50} or Figure ~\ref{fig:PvsP25}, the $P_{approx}$
+is constantly a little bit larger. When $N = 25$, the graph is a little less smooth than when $N=50$. This follows the same story as before - the bigger the $N$, the more similar the p-values.
 
-To further investigate the relation between $P_{N, k}$ and $P_{approx N, K}$, we wanted to see the difference between all $P$ values when $P = 50$ and when $P = 25$
-
-\begin{figure}
-	\centering
+\begin{figure}[H]
+  \centering
   \includegraphics[width=0.8\textwidth]{PvsP50}
-	\caption{Relative value of all actual probabilities and approximated probabilities when sample size is 50}
-	\label{fig:PvsP50}
+  \caption{Relative value of all accurate $P$ and approximated $P_{approx}$ values when sample size $N$ is 50}
+  \label{fig:PvsP50}
 \end{figure}
 
-\begin{figure}
-	\centering
+\begin{figure}[H]
+  \centering
   \includegraphics[width=0.8\textwidth]{PvsP25}
-	\caption{Relative value of all actual probabilities and approximated probabilities when sample size is 25}
-	\label{fig:PvsP25}
+  \caption{Relative value of all accurate $P$ and approximated $P_{approx}$ values when sample size $N$ is 25}
+  \label{fig:PvsP25}
 \end{figure}
 
-As can be seen from Figure ~\ref{fig:PvsP50} or Figure ~\ref{fig:PvsP25}, when the $N = 50$ or $N = 25$, then the $P_{N, k}$ and $P_{approx N, K}$ values are almost the same with slight differences - the $P_{approximate}$ is a little bit larger. When $N = 25$, the graph is a little less smooth, which tells us that the differences are not as similar as they are when $N = 50$.
+\subsection{Finding out when can we approximate p-value}
+Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, accurate $P$ and approximate $P_{approx}$ values grow apart at the edges of distribution. Nevertheless, overall the distribution gets more and more similar. The most helpful graphs to help us determine the necessary number of samples $N_0$ we need to approximate p-value is Figure ~\ref{fig:LargestApproxPRelativeError100_500}. Table ~\ref{table:requiredN} illustrates the number of samples $N$ needed for a certain relative accuracy. So the number of samples $N_0$ we need to approximate depends on the number of measurements and the required accuracy.
 
-\subsection{Determining the $N_0$ value}
-Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, $P_{N, k}$ and $P_{approx N, K}$ tail edges grow apart but overall the distribution gets more and more similar. Determining the $N_0$ value depends on the amount of data we have and the accuracy of the result we want. The most helpful graphs to help us determine the necessary $N_0$ value is Figure ~\ref{fig:LargestApproxPRelativeError}. Table ~\ref{table:requiredN} illustrates the number of samples($N$) needed for a certain relative accuaracy. So the $N_0$ value depends on the number of measurements and the required accuracy where $N_0 = N$:
-
-\begin{table}[!ht]
+\begin{table}[H]
 	\begin{center}
 		\caption{Showing the minimal required sample size for a certain relative error and number of measurements}
 	    \begin{tabular}{| l | l | l |}
@@ -672,37 +707,54 @@ Judging by all the data that has been gathered, it be can clearly see that as $N
 		Measurements & Error & Required N \\
 		\hline
 		10 & 5\% & 25 \\
-		100 & & 250 \\
-		1000 & & 500 \\
-		10000 & & $>500$ \\
-		100000 & & $> 500$ \\
+    \hline
+		100 & 5\% & 250 \\
+    \hline
+		1000 & 5\% & 500 \\
+    \hline
+		10000 & 5\% & $>500$ \\
+    \hline
+		100000 & 5\% & $> 500$ \\
+    \hline
 		\hline
 		10  & 10\% & 80 \\
-		100 & & 200 \\
-		1000 & & $>500$ \\
-		10000 & & $>500$ \\
-		100000  & & $>500$ \\
+    \hline
+		100 & 10\% & 200 \\
+    \hline
+		1000 & 10\% & $>500$ \\
+    \hline
+		10000 & 10\% & $>500$ \\
+    \hline
+		100000  & 10\% & $>500$ \\
 		\hline
+    \hline
 		10  & 20\% & 50 \\
-		100 & & 100 \\
-		1000  & & 280 \\
-		10000  & & 500 \\
-		100000  & & $>500$ \\
-		\hline
+    \hline
+		100 & 20\% & 100 \\
+    \hline
+		1000  & 20\% & 280 \\
+    \hline
+		10000  & 20\% & 500 \\
+    \hline
+		100000  & 20\% & $>500$ \\
+    \hline
+    \hline
 		10  & 50\% &  25 \\
-		100 & & 50 \\
-		1000 & & 100 \\
-		10000 & & 150 \\
-		100000 & & 200 \\
+    \hline
+		100 & 50\% & 50 \\
+    \hline
+		1000 & 50\% & 100 \\
+    \hline
+		10000 & 50\% & 150 \\
+    \hline
+		100000 & 50\% & 200 \\
 		\hline
 		\end{tabular}
 		\label{table:requiredN}
 	\end{center}
 \end{table}
 
-As pointed out in the beginning, when the $N$ grows, the $P_{N, k}$ table size grows exponentially.
-
-Since even when $N = 80$, the plain text file was already 2.5mb, the need to optimize further arised.
+At the beginning of this chapter, we raised the goal of optimizing our implementation on Wilcoxon test by hardcoding the accurate accurate $P$ value table $P_{N, K}$, so the program would not need to recompute it all the time. When given $N = 80$, then the table $P_{N, K}$ size was 2.5 MB. As pointed out in the beginning, when the $N$ grows, the table $P_{N, k}$ size grows with it with the speed $O(n^2)$. At $N = 500$, the file size was over 10 GB. This raised the need to optimize the table $P_{N, k}$ further.
 
 \section{Further optimizations}
 
@@ -711,7 +763,7 @@ To further optimize the library, it was needed to approximate the accurate $P$ t
 \subsubsection{dose-response curve}
 When using the dose-reponse curve algorithm, the data range as shown in Figure~\ref{fig:PdivPapproxDrcWhenN500} changes sharply toward the edge of the range. Further tests also showed that the algorithm was completly inaccurate at the end of the far edge, so unfortunately this algorithm could not be used.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{PvsP50}
   \caption{P range with DRC algorithm when N=500}

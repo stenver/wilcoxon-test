@@ -5,12 +5,11 @@ protsent50 <- c(0, 0, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390
 
 X11.options(type="nbcairo")
 
-plot(protsent5, type="o", col="blue", xlim=c(10, 50), ylim=c(0, 0.02), xlab="N", ylab="P")
+plot(protsent5, type="o", col="blue", xlim=c(10, 50), ylim=c(0, 0.02), xlab="N", ylab="p-value")
 lines(protsent10, type="o", pch=22, lty=2, col="red")
 lines(protsent20, type="o", pch=22, lty=2, col="yellow")
 lines(protsent50, type="o", pch=22, lty=2, col="green")
-title(main="P approximate value when under certain error threshold")
 
-leg <- c("P approx error < 5%", "P approx error < 10%", "P approx error < 20%", "P approx error < 50%")
+leg <- c(expression(epsilon * " < 5%"), expression(epsilon * " < 10%"), expression(epsilon * " < 20%"), expression(epsilon *" < 50%"))
 cols <- c("blue", "red", "yellow", "green")
 legend(30, 0.02, leg, cex = 1, cols, pch=22, lty=1:2)

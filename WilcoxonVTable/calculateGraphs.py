@@ -1,4 +1,47 @@
 #TODO fix those methods - probably broke after moving stuff to separate files
+def printDifference(pTable, gaussianPTable, n):
+    print("difference <- c(", end="")
+    first = True
+    for i in range(0, len(pTable[n])):
+        if first == False:
+            print(", ", end="")
+        print(-(pTable[n][i]-gaussianPTable[n][i]), end="")
+
+        first = False
+    print(")", end="")
+
+def printEpsilon(pTable, gaussianPTable, n):
+    print("epsilon <- c(", end="")
+    first = True
+    for i in range(0, len(pTable[n])):
+        if first == False:
+            print(", ", end="")
+        difference = pTable[n][i]-gaussianPTable[n][i]
+        print(abs(difference/gaussianPTable[n][i]*100), end="")
+
+        first = False
+    print(")", end="")
+
+def printPandPapprox(pTable, gaussianPTable, n):
+    print("p <- c(", end="")
+    first = True
+    for i in range(0, len(pTable[n])):
+        if first == False:
+            print(", ", end="")
+        print(pTable[n][i], end="")
+
+        first = False
+    print(")")
+
+    print("pApprox <- c(", end="")
+    first = True
+    for i in range(0, len(gaussianPTable[n])):
+        if first == False:
+            print(", ", end="")
+        print(gaussianPTable[n][i], end="")
+
+        first = False
+    print(")")
 
 def calculateVtableStandardDeviations(vTable):
     halfOfArraySize = int(math.floor(len(vTable[0])/2))
