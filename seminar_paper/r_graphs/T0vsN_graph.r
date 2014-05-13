@@ -5,6 +5,6 @@ pihta <- c(0, 0, 2, 3, 9, 12, 21, 26, 30, 35, 41, 46, 54, 59, 67, 74, 82, 89, 97
 plot(kasitsiTabel, type="o", col="blue", ylim=c(0, 1300), xlab = "N", ylab="K")
 lines(pihta, type="o", pch=22, lty=2, col="red")
 
-leg <- c(expression("k"[1]), expression("k"[0]))
+leg <- c(expression("k"[0]), expression("k"[1]))
 cols <- c("blue", "red")
 legend(0, 1300, leg, cex = 1, cols, pch=22, lty=1:2)

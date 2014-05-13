@@ -16,10 +16,10 @@ kuni1e09 <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 
 X11.options(type="nbcairo")
 
-plot(kuni0.1, type="o", col="blue", xlim=c(0, 100), ylim=c(0, 50), xlab = "N", ylab = expression("Largest relative Error "*epsilon))
-lines(kuni0.01, type="o", pch=22, lty=2, col="green")
-lines(kuni0.001, type="o", pch=22, lty=2, col="yellow")
-lines(kuni0.0001, type="o", pch=22, lty=2, col="brown")
+plot(kuni0.1, type="l", col="blue", xlim=c(0, 100), ylim=c(0, 50), xlab = "N", ylab = expression("Largest relative Error "*epsilon))
+lines(kuni0.01, type="l", pch=22, lty=2, col="green")
+lines(kuni0.001, type="l", pch=22, lty=2, col="yellow")
+lines(kuni0.0001, type="l", pch=22, lty=2, col="brown")
 #lines(kuni1e09, type="o", pch=22, lty=2, col="blue")
 #lines(kuni1e10, type="o", pch=22, lty=2, col="black")
 #lines(kuni1e11, type="o", pch=22, lty=2, col="gray")
