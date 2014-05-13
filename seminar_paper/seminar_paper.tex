@@ -186,7 +186,7 @@ The end purpose of this project is to create an accurate and fast Wilcoxon test 
 \newpage
 
 \section{Introduction}
-The biologists of BIIT research group are conducting a variety of experiments. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, proteine amount in blood, amount of RNA, purity of urine, brainwaves etc. These attributes can be repeatedly measured on the same subject and the results are never exactly the same. There is always a little noise and variance between the samples. Biologists often experiment on the control group and try to manipulate with these observed attributes. They take samples before and after stimulating the observable attribute with some stimulant. This is called the case-control study.
+The biologists of BIIT research group are conducting a variety of experiments. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, protein amount in blood, amount of RNA, purity of urine, brainwaves etc. These attributes can be repeatedly measured on the same subject and the results are never exactly the same. There is always a little noise and variance between the samples. Biologists often experiment on the control group and try to manipulate with these observed attributes. They take samples before and after stimulating the observable attribute with some stimulant. This is called the case-control study.
 
 However, even without external stimulation the two results are never the same - human body constantly has minor fluctuations on its observable features. For example, if you measure white blood cell count 2 times in a row, you almost never get the exact same result. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measurements before and after jogging can have a lot bigger changes when in brainwave measurements. Therefore the biologists need to use statistical tests to find out which case-control studies are actually significant and which are simply random fluctuations.
 
@@ -202,7 +202,7 @@ Data can be held in structured manner in a NetCDF file. You can define dimension
 \subsection{Current BIIT procedures}
 Currently the BIIT group has 3 ways of analyzing its data. However, all of these solutions ultimately use GNU-R implementation of Wilcoxon test.
 \paragraph{GNU-R}
-They can use GNU-R project to make custom and complex analyses. To achive this purpose, they manually read the NetCDF file to the R and then call the built in R function wilcox.test to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after a few minutes of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
+They can use GNU-R project to make custom and complex analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function wilcox.test to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after a few minutes of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
 \paragraph{Web interface}
 They can use a web interface, which can take in certain arguments and command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problem in servers are even more important, since inefficient solutions waste precious server time.
 
@@ -219,7 +219,7 @@ I would like to thank Sven Laur who was a tremendous help in helping out with th
 
 \paragraph{Optimizing the Wilcoxon test} started with the idea of hardcoding the accurate p-value table. After analyzing the results of Chapter ~\ref{sec:approximating_p_value}, further optimization was done, which involved experiments on multiple algorithms for the most efficient solution and approximating the accurate p-value table itself through more accurate algorithms than Gaussian distribution.
 
-\paragraph{Implementation} of the Wilcoxon test algorithm involved all the optimization tricks learned during the research pahase of this paper. The implementation itself is an open sources C++ shared library, which is easily extendable to other open source projects.
+\paragraph{Implementation} of the Wilcoxon test algorithm involved all the optimization tricks learned during the research phase of this paper. The implementation itself is an open sources C++ shared library, which is easily extendable to other open source projects.
 
 \paragraph{Integration} with GNU-R and command line was done as part of this thesis. The integrations are split into separate sub-projects in the thesis repository to enforce decoupling and good extendibility of the original shared library.
 
@@ -235,7 +235,7 @@ If the initial research has raised a hypothesis about the data then it is desira
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{statisticalTestFlow}
-  \caption{Graphical represenation of statistical test flow}
+  \caption{Graphical representation of statistical test flow}
   \label{fig:statisticalTestFlow}
 \end{figure}
 
@@ -259,7 +259,7 @@ In statistics, a null and alternative hypothesis are raised to find out if the t
 
 The null hypothesis also defines the data distribution. For example, it might define that data is generated by a Gaussian distribution. Since null hypothesis is the boring result, i.e., that`s what the data set usually looks like, then generally the data will be distributed according to the null hypothesis. Since the null hypothesis defines the data distribution, it will also define the test statistic distribution. Finally, since the null hypothesis defines the data distribution and test statistic distribution, it will also play a role in estimating the p-value for the test statistic.
 
-For example, if the observations $x_1, x_2, ..., x_n$ are generated by coin flip, then the test statistic $T=x_1 + x_2 + .. + x_n$ has a binominal distribution. With $n$ number of trials, one side of the coin always has a probability of $\frac{1}{2}$ to occur with every flip. If test statistic is defined as $T=x_1(1-x_1) + x_2(1-x_2) + ... + x_n(1-x_n)$, then it is constantly zero and thus does not hold any relevance. The exact form of the test statistic determines the properties of the test.
+For example, if the observations $x_1, x_2, ..., x_n$ are generated by coin flip, then the test statistic $T=x_1 + x_2 + .. + x_n$ has a binomial distribution. With $n$ number of trials, one side of the coin always has a probability of $\frac{1}{2}$ to occur with every flip. If test statistic is defined as $T=x_1(1-x_1) + x_2(1-x_2) + ... + x_n(1-x_n)$, then it is constantly zero and thus does not hold any relevance. The exact form of the test statistic determines the properties of the test.
 
 \subsubsection{Alternative hypothesis}
 The alternative hypothesis is the opposite of to the null hypothesis. In simple terms, one could think of it as true or interesting result. It means that the two measured samples have a relationship between them, either in direct or indirect ways. A good example to explain these two is the court verdict. If null hypothesis is kept, then the suspect has not been found guilty. There was not enough evidence. On the contrary, if null hypothesis was rejected, the suspect was found guilty, because there was enough evidence to make that decision. Although the alternative hypothesis could be anything that is not a null hypothesis, some alternatives to the null hypothesis are easier to distinguish from the null hypothesis.
@@ -348,7 +348,7 @@ Given pairs of measurements $(6, 8), (2, -3), (-3, 3), (1, 3)$.
 
 \begin{enumerate}
 \item Calculate absolute values and signs of the pairs. For example, $(6, 8)$ value becomes $2$ and sign $-1$.
-\item Order the pairs. Ties receive therank equal to average of the ranks they span. Let $R_i$ be the rank value.
+\item Order the pairs. Ties receive the rank equal to average of the ranks they span. Let $R_i$ be the rank value.
 \item Calculate the test statistic W.
 \item Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is shown in Section ~\ref{sec:v_p_table_formulas}. \\
 $P(5, 4) = 0.3125$ \\
@@ -508,7 +508,7 @@ You can find a python implementation of a code sample in repository ~\cite{stenv
 
 If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when its actually true. The Bonferroni test helps to counteract this in a simple and naive way. For each hypothesis you make on a test, you should use a significance level $M$ times lower than before. This ensures that the increased risk in which we can reject null hypothesis will not raise, no matter the number of hypothesis on a test. So for example, if you make $M$ hypothesis and want a significance level $\alpha$,  then you should run each test at a significance level of $\frac{\alpha}{M}$.
 
-If you want to use Bonferron correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the Bonferron test divides it by the amount of features tested. This means higher the $N_0$ value, the more features you add in the test.
+If you want to use Bonferroni correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the Bonferroni test divides it by the amount of features tested. This means higher the $N_0$ value, the more features you add in the test.
 
 \newpage
 
@@ -521,7 +521,7 @@ The current implementations of Wilcoxon signed-rank test usually assume that $p$
 
 In the BIIT research group, and many others, the $N$ is usually not sufficiently large. This means that Gaussian distribution cannot be used. Also, since BIIT uses multiple hypothesis testing, the approximation must be good even at the very edges of distribution. As mentioned above, the Bonferroni correction will lower the significance level significantly as $N$ rises. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10. In this work we studied the question whether this assumption is justified in detail.
 
-The approximation is computationally cheap and the preferred method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian Distribution is and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintaining a high enough accuaracy. Let $N_0$ be high enough $N$, which allows us to use approximation accurately.
+The approximation is computationally cheap and the preferred method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian Distribution is and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintaining a high enough accuracy. Let $N_0$ be high enough $N$, which allows us to use approximation accurately.
 
 The bottlenecks of the other implementations of the Wilcoxon test is, when $N$ is low, but the number of tests is high. In this case they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue. To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
 
@@ -535,7 +535,7 @@ The relative error is calculated as follows.
 \begin{equation}\label{eq:relative_error}
   \epsilon = \frac{\Delta}{P_{approx, k, N}} \cdot 100\%
 \end{equation}
-Note that the errors are signed, because this lets us know if the p-value estemation is over- or underestimated.
+Note that the errors are signed, because this lets us know if the p-value estimation is over- or underestimated.
 The absolute error between accurate table values $P$ and approximate table $P_{approx}$ values first falls and then rises until at the center of the distribution, but gets stable and almost constant from the middle to the edge of the distribution. It can be seen on the Figure ~\ref{fig:absolute_difference}. Note that the error fluctuates. This is artifact of the V-table quickly fluctuating values that the smooth approximation cannot follow. The Relative error gets smaller, the higher the number of samples $N$ is. However, the relative error looks like a slide. It is stable at the center of the distribution, but starts rising sharply at the middle. At the edge of the distribution, the relative error is nearly 100\%. It can be seen at the Figure ~\ref{fig:epsilon_difference}.
 
 \begin{figure}[H]
@@ -609,7 +609,7 @@ The thresholds chosen were $\epsilon=5\%, \epsilon=10\%, \epsilon=20\%, \epsilon
   \label{fig:PvsN}
 \end{figure}
 
-The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually gets a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artefact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that. To understand this better, once must familiarize himself with the algorithm defined in the Chapter ~\ref{sec:v_p_table_formulas}.
+The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually gets a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artifact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that. To understand this better, once must familiarize himself with the algorithm defined in the Chapter ~\ref{sec:v_p_table_formulas}.
 
 
 \begin{figure}[H]
@@ -803,9 +803,9 @@ def canApproximate(actualPoints, currentPoint, nextPoint):
     if approximateValue == 0:
       return True
 
-    relativeAccuaracy = trueValue / approximateValue
+    relativeaccuracy = trueValue / approximateValue
 
-    if relativeAccuaracy < 0.9 or relativeAccuaracy > 1.1:
+    if relativeaccuracy < 0.9 or relativeaccuracy > 1.1:
       return False
   return True
 
