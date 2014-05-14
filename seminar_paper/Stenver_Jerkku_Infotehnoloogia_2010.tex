@@ -142,11 +142,11 @@ Institute of Computer Science\\
 \newpage
 
 \selectlanguage{estonian}
-\noindent\textbf{\large Paralleelsed Wilcoxoni Astaku testid}
+\noindent\textbf{\large Paralleelsed Wilcoxoni astaku testid}
 \vspace*{3ex}
 
 \noindent\textbf{Lühikokkuvõte:}
-Statistilisi teste kasutatakse tuvastamaks kuidas erinevad eksperimentaalsed stiimulid mõjutavad uuritavaid suurusi. Antud töös uuritav Wilcoxoni test on üks vähestest statilistest testidest, mida saab kasutada juhul kui grupi sees olev loomulik varieeruvus pole normaaljaotusega. Selliste testide kasutamine on tavapärane bioloogiliste andmete uurimisel. Sellest tulenevalt kasutatakse seda testi bioinformaatika, algoritmika ja andmekaeve grupi poolt geenide uurimiseks, analüüsimiseks ja andmekaeveks, bioloogiliseks andmekaeveks ja muudeks ülesanneteks.
+Statistilisi teste kasutatakse tuvastamaks kuidas erinevad eksperimentaalsed stiimulid mõjutavad uuritavaid suurusi. Antud töös uuritav Wilcoxoni test on üks vähestest statilistest testidest, mida saab kasutada juhul kui grupi sees olev loomulik varieeruvus pole normaaljaotusega. Selliste testide kasutamine on tavapärane bioloogiliste andmete uurimisel. Sellest tulenevalt kasutatakse seda testi Bioinformaatika, Algoritmika ja Andmekaeve grupi poolt geenide uurimiseks, analüüsimiseks ja andmekaeveks, bioloogiliseks andmekaeveks ja muudeks ülesanneteks.
 
 Praegused implementatsioonid Wilcoxoni astaku testist on optimeerimata ja aeglased. See projekt vaatab Wilcoxoni testi põhiomadusi ning uurib kuidas selle implementatsioone optimeerida. Selleks, et implementatsiooni teha täpsemaks, uuritakse Wilcoxoni statistiku ja Gaussi jaotuse seost. Selleks, et implementatsioone kiiremaks teha, kasutatakse dünaamilise programmeerimise meetodeid, et säästa arvutusaega. Optimeerimisega tehti teste nii kiiremaks kui ka täpsemaks.
 
@@ -161,7 +161,7 @@ Antud töös loodi täpne ja kiire Wilcoxoni testi implementatsioon C++ jagatud 
 \vspace*{3ex}
 
 {\noindent{\textbf{Abstract:}}
-Statistical tests are used to find out if some sort of experimental stimulation affects observable features. In this paper we researched Wilcoxon signed-rank test which is one of the few statistical tests that can be used when the natural variation inside the group is not normally distributed. The test is used by Bioinformatics, Algorithmics and Data mining group research for gene regulation, gene expression data analysis, biological data mining and others. BIIT is a joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter.
+Statistical tests are used to find out if some sort of experimental stimulation affects observable features. In this paper we researched Wilcoxon signed-rank test which is one of the few statistical tests that can be used when the natural variation inside the group is not normally distributed. The test is used by Bioinformatics, Algorithmics and Data mining group research for gene regulation, gene expression data analysis, biological data mining and others.
 
 The current implementations of the Wilcoxon signed-rank tests are slow and unoptimized. This project looked into the foundations of Wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and Gaussian approximate was observed. In order to make the implementation faster, some dynamic programming methods were used to save computation time. The purpose of optimizing was to make it more accurate and speed up the test running.
 
@@ -196,9 +196,9 @@ Data can be held in structured manner in a NetCDF file. You can define dimension
 \subsection{Current BIIT procedures}
 Currently the BIIT group has 3 ways of analyzing its data with Wilcoxon test. However, all of these solutions ultimately use GNU-R implementation.
 \paragraph{GNU-R.}
-They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after few minutes, or even hours, depending on the processing power of the computer. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
+They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after few minutes, or even hours, depending on the processing power of the computer. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
 \paragraph{Web interface.}
-They could use a web interface, which can take in certain arguments and a command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problem in servers are even more important, since inefficient solutions waste precious server time.
+They could use a web interface, which can take in certain arguments and a command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problems in servers are even more important, since inefficient solutions waste precious server time.
 
 \paragraph{Command line.}
 They could also use the command line directly which has a variety of tools installed. These are needed to create large data processing pipelines. The Wilcoxon test will ultimately call R Wilcoxon function.
@@ -208,10 +208,10 @@ They could also use the command line directly which has a variety of tools insta
 I would like to thank Sven Laur who was a tremendous help with the theoretical framework, analysis and refining this paper.
 
 \paragraph{Analyzing the Wilcoxon signed-rank\\}
-I described how the statistical test works and also gave in-depth overview of the fundamentals of the Wilcoxon test.
+I described how the statistical test works and also gave an in-depth overview of the fundamentals of the Wilcoxon test.
 
 \paragraph{Analyzing the approximation of p-value\\}
-I questioned the common assumption, which is made while using Wilcoxon test - meaning when the sample size is at least ten, then you can already approximate the p-value. The research revealed some interesting results, which proved that when running a single test, this sample size is adequate. On the other hand, when running parallel tests, then the required sample size will get larger, as the number of tests grows.
+I questioned the common assumption, which is made while using Wilcoxon test - meaning when the sample size is at least ten, then you can already approximate the p-value. The research revealed some interesting results, which proved that when running a single test, this sample size is adequate. On the other hand, when running parallel tests, the required sample size will get larger, as the number of tests grows.
 
 \paragraph{Optimizing the Wilcoxon test\\}
 I started with the idea of hardcoding the accurate p-value table. After analyzing the results of Chapter ~\ref{sec:approximating_p_value}, I further optimized the solution, which involved experiments on multiple algorithms for the most efficient solution and approximating the accurate p-value table itself through more accurate algorithms than Gaussian distribution.
@@ -346,11 +346,11 @@ If $ P \geq P_{critical}$, $N$ then reject $H_0$
 Given pairs of measurements $(6, 8), (2, -3), (-3, 3), (1, 3)$.
 
 \begin{enumerate}
-\item Calculate absolute values and signs of the pairs. For example, $(6, 8)$ value becomes $2$ and sign $-1$.
+\item Calculate absolute values and signs of the pairs. For example, $(6, 8)$ value becomes $2$ and sign $1$.
 \item Order the pairs. Ties receive the rank equal to average of the ranks they span. Let $R_i$ be the rank value.
-\item Calculate the test statistic W.
-\item Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $p$ table is shown in Section ~\ref{sec:v_p_table_formulas}. \\
-$P(5, 4) = 0.3125$ \\
+\item Calculate the test statistic $W=1,5-3+4+1.5=4$.
+\item Since $N_r$ is very small, use a table to look up the $p$ value. The calculation of $P$ table is shown in Section ~\ref{sec:v_p_table_formulas}. \\
+$P(4, 4) = 0.3125$ \\
 Since $0.3125 > 0.05$, reject $H_1$
 \end{enumerate}
 
@@ -360,7 +360,7 @@ The calculations can also be seen on Table ~\ref{table:wilx_example}.
   \begin{center}
     \begin{tabular}{ccccccc}
       \hline
-      i & $x_{2, 1}$ & $x_{1, i}$ & $\sign$ & abs & $R_i$ & $\sign * R_i$\\
+      i & $x_{1, 1}$ & $x_{2, i}$ & $\sign$ & abs & $R_i$ & $\sign * R_i$\\
       \hline
       1 & 6 & 8 & 1 & 2 & 1.5 & 1.5 \\
       \hline
@@ -368,7 +368,7 @@ The calculations can also be seen on Table ~\ref{table:wilx_example}.
       \hline
       3 & -3 & 3 & 1 & 6 & 4 & 4 \\
       \hline
-      4 & 1 & 3 & 11 & 2 & 1.5 & 1.5 \\
+      4 & 1 & 3 & 1 & 2 & 1.5 & 1.5 \\
       \hline
     \end{tabular}
     \caption{Initial data}
@@ -503,9 +503,7 @@ You can find a python implementation of a code sample in repository ~\cite{stenv
 
 \subsubsection{Bonferroni correction}
 
-If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when it`s actually true. The Bonferroni test helps to counteract this in a simple and naive way. For each hypothesis you make on a test, you should use a significance level $M$ times lower than before. This ensures that the increased risk in which we can reject null hypothesis will not raise, no matter the number of hypothesis on a test. So for example, if you make $M$ hypothesis and want a significance level $\alpha$,  then you should run each test at a significance level of $\frac{\alpha}{M}$.
-
-If you want to use Bonferroni correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the Bonferroni test divides it by the amount of features tested. This means higher the $N_0$ value, the more features you add in the test.
+If you make multiple hypothesis on a test, then you increase the risk in which you reject null hypotheses when it`s actually true. The Bonferroni test helps to counteract this in a simple and naive way. For each hypothesis you make on a test, you should use a significance level $M$ times lower than before. This ensures that the increased risk in which we can reject null hypothesis will not raise, no matter the number of hypothesis on a test. So for example, if you make $M$ hypothesis and want a significance level $\alpha$,  then you should run each test at a significance level of $\frac{\alpha}{M}$. If you want to use Bonferroni correction with Wilcoxon signed-rank test, then you need to keep in mind that the approximated $P$ value significance level needs to be much more accurate, since the Bonferroni test divides it by the amount of tests made.
 
 \newpage
 
@@ -518,7 +516,7 @@ The current implementations of Wilcoxon signed-rank test usually assume that $p$
 
 In the BIIT research group, and many others, the $N$ is usually not sufficiently large. This means that Gaussian distribution should not be used. Also, since BIIT uses multiple hypothesis testing, the approximation must be good even at the very edges of distribution. As mentioned above, the Bonferroni correction will lower the significance level significantly as $N$ rises. Furthermore, it is not known exactly where the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10. In this work we studied the question whether this assumption is justified in detail.
 
-The approximation is computationally cheap and the preferred method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian distribution is and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintaining a high enough accuracy. Let $N_0$ be high enough $N$, which allows us to use approximation accurately.
+The approximation is computationally cheap and the preferred method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian distribution is and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintaining a high enough accuracy. Let $N_0$ be the number of samples that allows us to use approximation accurately.
 
 The bottleneck of the other implementations of the Wilcoxon test is, when $N$ is low, but the number of tests is high. In this case they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue. To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
 
@@ -545,7 +543,7 @@ The absolute error between accurate table values $P$ and approximate table $P_{a
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{approximate_accurate_epsilon}
-  \caption{Relative error between accurate $P$ and approximate $P_{approx}$ values for sample size $N=50$.}
+  \caption{Relative error $|\epsilon|$ between accurate $P$ and approximate $P_{approx}$ values for sample size $N=50$.}
   \label{fig:epsilon_difference}
 \end{figure}
 
@@ -653,7 +651,7 @@ is constantly a little bit larger. When $N = 25$, the graph is a little less smo
 \end{figure}
 
 \subsection{Finding out when can we approximate p-value}
-Judging by all the data that has been gathered, it can be clearly see that as $N$ grows, accurate $P$ and approximate $P_{approx}$ values grow apart at the edges of distribution. however, overall the distribution gets more and more similar. The most helpful graphs for determining the necessary number of samples $N_0$ we need to approximate p-value is Figure ~\ref{fig:LargestApproxPRelativeError100_500}. Table ~\ref{table:requiredN} illustrates the number of samples $N$ needed for a certain relative accuracy. So the number of samples $N_0$ we need to approximate depends on the number of measurements and the required accuracy.
+Judging by all the data that has been gathered, it can be clearly see that as $N$ grows, accurate $P$ and approximate $P_{approx}$ values grow apart at the edges of distribution. however, overall the distribution gets more and more similar. The most helpful graph for determining the necessary number of samples $N_0$ we need to approximate p-value is Figure ~\ref{fig:LargestApproxPRelativeError100_500}. Table ~\ref{table:requiredN} illustrates the number of samples $N$ needed for a certain relative accuracy. So the number of samples $N_0$ we need to approximate depends on the number of measurements and the required accuracy.
 
 \begin{table}[H]
 	\begin{center}
