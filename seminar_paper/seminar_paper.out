@@ -22,7 +22,7 @@
 \BOOKMARK [1][-]{section.3}{Approximating the p-value}{}% 22
 \BOOKMARK [2][-]{subsection.3.1}{Motivation}{section.3}% 23
 \BOOKMARK [2][-]{subsection.3.2}{When can we approximate}{section.3}% 24
-\BOOKMARK [2][-]{subsection.3.3}{The behaviour of relative error}{section.3}% 25
+\BOOKMARK [2][-]{subsection.3.3}{The behavior of relative error}{section.3}% 25
 \BOOKMARK [2][-]{subsection.3.4}{Finding out when can we approximate p-value}{section.3}% 26
 \BOOKMARK [1][-]{section.4}{Further optimizations}{}% 27
 \BOOKMARK [2][-]{subsubsection.4.0.1}{dose-response curve}{section.4}% 28

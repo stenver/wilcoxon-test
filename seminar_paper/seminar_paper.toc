@@ -34,7 +34,7 @@
 \contentsline {section}{\numberline {3}Approximating the p-value}{21}{section.3}
 \contentsline {subsection}{\numberline {3.1}Motivation}{21}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}When can we approximate}{22}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}The behaviour of relative error}{28}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.3}The behavior of relative error}{28}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Finding out when can we approximate p-value}{31}{subsection.3.4}
 \contentsline {section}{\numberline {4}Further optimizations}{32}{section.4}
 \contentsline {subsubsection}{\numberline {4.0.1}dose-response curve}{33}{subsubsection.4.0.1}
