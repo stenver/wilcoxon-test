@@ -772,7 +772,7 @@ A graphical explanation of the algorithm can be seen on the Figure ~\ref{fig:lin
 
 The Linear approximation algorithm for dropping the data points in python looks like follows.
 
-\begin{verbatim}
+\begin{lstlisting}
 def linearInterpolate(approximatePoint,
                       endPoint,
                       startPoint,
@@ -823,7 +823,7 @@ def calculateApproximateRow(actualPoints):
     currentPoint = nextPoint
   return approximatedPoints
 
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Optimization summary}
 The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, then using straight forward accurate $P$ table. In the end, thanks to linear approximation, the approximated table, when $N=500$ was created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. Its still a lot more accurate then Gaussian P table at the edges of the table. The approximated table is only 1.6 MB large. Smaller then when $N=80$ the accurate P table was, which was around 2.5 MB.
