@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 19:01
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 21:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1195,13 +1195,13 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 951.
 ### simple group (level 1) entered at line 163 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 11804 strings out of 493315
- 165253 string characters out of 6137904
+ 11798 strings out of 493315
+ 165180 string characters out of 6137904
  404905 words of memory out of 5000000
- 14780 multiletter control sequences out of 15000+600000
+ 14774 multiletter control sequences out of 15000+600000
  18841 words of font info for 47 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 30i,10n,47p,1129b,2006s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,10n,47p,1125b,2000s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-super/cm
 -super-t1.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -1222,7 +1222,7 @@ xlive/2013/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texliv
 e/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/
 2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on seminar_paper.pdf (44 pages, 1085115 bytes).
+Output written on seminar_paper.pdf (44 pages, 1084892 bytes).
 PDF statistics:
  807 PDF objects out of 1000 (max. 8388607)
  706 compressed objects within 8 object streams

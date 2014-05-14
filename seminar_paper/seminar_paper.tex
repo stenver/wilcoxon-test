@@ -96,7 +96,7 @@ Institute of Computer Science\\
 
 \vspace{4mm}
 
-\huge Paralell Wilcoxon signed-rank tests
+\huge Parallel Wilcoxon signed-rank tests
 
 %\vspace*{\stretch{7}}
 \vspace{20mm}
@@ -163,7 +163,7 @@ Antud töös loodi täpne ja kiire Wilcoxoni testi implementatsioon C++ jagatud 
 {\noindent{\textbf{Abstract:}}
 Statistical tests are used to find out if some sort of experimental stimulation affects observable features. In this paper we researched Wilcoxon signed-rank test which is one of the few statistical tests that can be used when the natural variation inside the group is not normally distributed. The test is used by Bioinformatics, Algorithmics and Data mining group research group for gene regulation, gene expression data analysis, biological data mining and others. BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter.
 
-The current implementations of the Wilcoxon signed-rank tests are slow and unoptimized. This project looked into the foundations of Wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and Guassian approximate was observed. In order to make the implementation faster, some dynamic programming methods were used to save computation time. The purpose of optimizing was to make it more accurate and speed up the test running.
+The current implementations of the Wilcoxon signed-rank tests are slow and unoptimized. This project looked into the foundations of Wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and Gaussian approximate was observed. In order to make the implementation faster, some dynamic programming methods were used to save computation time. The purpose of optimizing was to make it more accurate and speed up the test running.
 
 In this project an accurate and fast Wilcoxon test shared library was created. In the scope of this project, the library was integrated with two tools - command line and GNU-R. Due to the nature of shared library, it will be easy integrate the library with any other tools one might desire.
 
@@ -182,7 +182,7 @@ In this project an accurate and fast Wilcoxon test shared library was created. I
 \section{Introduction}
 The biologists of BIIT research group are conducting a variety of experiments. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, protein amount in blood, amount of RNA, purity of urine, brainwaves etc. These attributes can be repeatedly measured on the same subject and the results are never exactly the same. There is always a little noise and variance between the samples. Biologists often experiment on the control group and try to manipulate with these observed attributes. They take samples before and after stimulating the observable attribute with some stimulant. This is called the case-control study.
 
-However, even without external stimulation the two results are never the same - human body constantly has minor fluctuations on its observable features. For example, if you measure white blood cell count two times in a row, you almost never get the exact same result. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measurements before and after jogging can have a lot bigger changes than brainwave measurements. Therefore, the biologists need to use statistical tests to find out which case-control studies are actually significant and which are simply random fluctuations.
+However, even without external stimulation the two results are never the same - human body constantly has minor fluctuations on its observable features. For example, if you measure white blood cell count two times in a row, you almost never get the exact same result. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measurements before and after jogging can probably have a lot bigger changes than brainwave measurements. Therefore, the biologists need to use statistical tests to find out which case-control studies are actually significant and which are simply random fluctuations.
 
 There are many case-control tests available. For example paired Students t-test, t-test for matched pairs and Wilcoxon signed-rank test. The Wilcoxon signed-rank test is used when the measurement values are not normally distributed and when the experimental conditions are fixed.  In practice, this means that the histogram of measurements is either asymmetrical or it does not resemble to the bell shape.
 
@@ -196,7 +196,7 @@ Data can be held in structured manner in a NetCDF file. You can define dimension
 \subsection{Current BIIT procedures}
 Currently the BIIT group has 3 ways of analyzing its data with Wilcoxon test. However, all of these solutions ultimately use GNU-R implementation.
 \paragraph{GNU-R.}
-They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after many seconds of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
+They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after few minutes, or even hours, depending on the processing power of the computer. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
 \paragraph{Web interface.}
 They could use a web interface, which can take in certain arguments and a command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problem in servers are even more important, since inefficient solutions waste precious server time.
 
@@ -205,7 +205,7 @@ They could also use the command line directly which has a variety of tools insta
 
 \subsection{List of thesis contributions}
 
-I would like to thank Sven Laur who was a tremendous help in helping out with the theoretical parts, analysis and refining this paper.
+I would like to thank Sven Laur who was a tremendous help with the theoretical framework, analysis and refining this paper.
 
 \paragraph{Analyzing the Wilcoxon signed-rank\\}
 I described how the statistical test works and also gave in-depth overview of the fundamentals of the Wilcoxon test.
@@ -242,7 +242,7 @@ Statistical tests are usually built by first gathering the necessary raw data. F
 
 \subsubsection{Test Statistic}
 
-The test statistic is a scalar function of all the observations, which summarizes the data by a single number. This value is used to estimate a p-value and accept or reject the hypothesis. Commonly, the test statistic is either one-sample, two-sample or paired statistic, depending on the tests~\cite{test_statistic}.
+The test statistic is a scalar function of all the observations, which summarizes the data by a single number. This value is used to estimate a p-value and accept or reject the hypothesis. Commonly, the test statistic is either one-sample, two-sample or paired statistic, depending on the test~\cite{test_statistic}.
 
 A one-sample test investigates whether the data collectively satisfies some hypothesis, e.g. the data is generated by Gaussian distribution or has specific theoretical mean value(expected value).
 
@@ -266,7 +266,7 @@ The alternative hypothesis is the opposite of to the null hypothesis. In simple 
 When the null hypothesis is true, then the test statistic has a well-defined probability distribution. This means that one can predict pretty well the possible outcome of subset of samples. For example, the alternative hypothesis can be separated from the null hypothesis if the distribution of the test statistic is vastly different from the null hypothesis. The alternative hypothesis corresponding to the null hypothesis causes the test statistic to be at the edges of a probability distributions, which makes them hard to predict.
 
 \subsubsection{P-value}
-P-value is estimated from the test statistic. It is used to find out if the test data is interesting. A certain threshold, called significance level (usually 0.05) is accepted as p-value. If the p-value is within significance level, then null hypothesis is rejected. If the p-value is below significance level, then null hypothesis is kept and the data falls into distribution as defined by null hypothesis. A variety of algorithms have been thought for p-value estimation, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the algorithms by taking all these assumptions into an account.
+P-value is estimated from the test statistic. It is used to find out if the test data is interesting. A certain threshold, called significance level (usually 0.05), is chosen. If the p-value is within significance level, then null hypothesis is rejected. If the p-value is below significance level, then null hypothesis is kept and the data falls into distribution as defined by null hypothesis. A variety of algorithms have been thought for p-value estimation, depending on the type of data, goals of the tests and even the amount of data. Statistics need to make the right choice between the algorithms by taking all these assumptions into account.
 
 The p-value can be either one-sided or two-sided. Given a test statistic $T_0$ which we computed from observed data. A one-sided p-value shows the probability that we can get a value $T$ that is larger or equal than the $T_0$ in the distribution defined by $H_0$. This can be seen visually in Figure ~\ref{fig:p_value_one_sided}.
 
@@ -290,7 +290,7 @@ A two-sided p-value shows the probability that we can get a value $T$ that is la
 
 The Wilcoxon signed-rank test is a statistical hypothesis test that is used when comparing two related samples, matched samples, or repeated measurements on a single sample. This means that with Wilcoxon test you can look at some measurable feature, e.g. blood pressure. If two or more experiments in different conditions have been made on it,e.g. gene experiments and their confirmation results, Wilcoxon test can be used to see if the changes of the measurement levels are relevant. The null hypothesis $H_0$ means that the difference between pairs is zero. The alternative $H_1$ means that it is different from zero~\cite{wilcoxon_original}.
 
-It was popularized by Sidney Siegel in his book ``Nonparametric statistics - for the behavioral sciences". Sidney used the symbol $T$, to denote test statistic~\cite{siegel_non_parametric}. Because of this, the test is sometimes referred to as the Wilcoxon $T$ test. However, in this paper the more common $W$ is used to represent the Wilcoxon test statistic value.
+It was popularized by Sidney Siegel in his book ``Nonparametric statistics - for the behavioral sciences''. Sidney used the symbol $T$, to denote test statistic~\cite{siegel_non_parametric}. Because of this, the test is sometimes referred to as the Wilcoxon $T$ test. However, in this paper the more common $W$ is used to represent the Wilcoxon test statistic value.
 
 \subsection{Wilcoxon test assumptions}
 
@@ -378,7 +378,7 @@ The calculations can also be seen on Table ~\ref{table:wilx_example}.
 
 
 \subsection{P-value assignment}
-Let us consider Wilcoxon test if we have 6 measurements. Then there are three differences as shown in in Figure ~\ref{fig:patientExample}. As the test considers only the sign and order of the measurements, then only 8 configurations are possible as shown in Table ~\ref{table:adding_w_results}. Due to the symmetry of the possible configurations under the distribution of the null hypothesis, all 8 configurations can be proven equally probable.
+Let us consider Wilcoxon test if we have 6 measurements. Then there are three differences as shown in in Figure ~\ref{fig:patientExample}. As the test considers only the sign and order of the measurements, then only 8 configurations are possible, as shown in Table ~\ref{table:adding_w_results}. Due to the symmetry of the possible configurations under the distribution of the null hypothesis, all 8 configurations can be proven equally probable.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{patientExample}
@@ -410,7 +410,7 @@ In general, we get $2^n$ equally probable configurations of differences and assi
 
 From this table, the probability that $W\geq k$ can be calculated. This value will show that given $N$ ranks with random signs, how probable it is that a sum $k$ is the result. If this process of calculating values is done repeatedly for every possible $N$ and $k$, a $P$-table forms. The $P$-table shows the probability of every possible sum $k$ appearing given $N$ ranks with random signs. Let $P_{N, k}$ be the function to get the desired $P$ value from that table.
 
-If the $P$-table gets large enough, it will start taking the shape of Guassian distribution. Given enough ranks, a Gaussian distribution can be used to approximate the $P$-table.
+If the $P$-table gets large enough, it will start taking the shape of Gaussian distribution. Given enough ranks, a Gaussian distribution can be used to approximate the $P$-table.
 
 \subsubsection{The V and P table formulas}
 \label{sec:v_p_table_formulas}
@@ -441,7 +441,7 @@ P(T) = \frac{1}{2^n} \cdot \abs{\sum\limits_{K=T}^{\infty}{W_{N,K}}}
 
 To get the P table, we go through all $N$ and $K$ values that we are interested in.
 
-As a concrete example, consider the case where $N=2$, then ranks are ${0, 1, 2}$, one can combine them as follows.
+As a concrete example, consider the case where $N=2$, then ranks are ${0, 1, 2}$. One can combine them as follows.
 \begin{align*}
 0 + 1 + 2 \\
 0 + 1 - 2\\
@@ -516,11 +516,11 @@ If you want to use Bonferroni correction with Wilcoxon signed-rank test, then yo
 
 The current implementations of Wilcoxon signed-rank test usually assume that $p$-value distribution is sufficiently close to Gaussian distribution, so that we can use $Z$ to calculate the $P$ value. They draw this conclusion from the assumption that the number of samples $N$ is sufficiently large to use $Z$. When $N = 1$, then approximation is quite inaccurate. As number of samples increases, then the approximation becomes more and more accurate on absolute scale. When the $N->\infty$, then the $P_{approx}$ approximate region will almost equal the $P$ accurate region, which also means that the region will be almost perfect Gaussian distribution. This means that when $N->\infty$, then there is no reason not to use Gaussian distribution, as it will be almost completely accurate, except at the very edges. This allows them to use Gaussian distributions to approximate the p-value and the accurate $P$ table calculation is often left unoptimized.
 
-In the BIIT research group, and many others, the $N$ is usually not sufficiently large. This means that Gaussian distribution should not be used. Also, since BIIT uses multiple hypothesis testing, the approximation must be good even at the very edges of distribution. As mentioned above, the Bonferroni correction will lower the significance level significantly as $N$ rises. Furthermore, it is not known where exactly the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10. In this work we studied the question whether this assumption is justified in detail.
+In the BIIT research group, and many others, the $N$ is usually not sufficiently large. This means that Gaussian distribution should not be used. Also, since BIIT uses multiple hypothesis testing, the approximation must be good even at the very edges of distribution. As mentioned above, the Bonferroni correction will lower the significance level significantly as $N$ rises. Furthermore, it is not known exactly where the $N$ limit is, so an arbitrary number is used for that purpose. The textbooks~\cite{lowry_concepts} currently suggest a sufficient $N$ is 10. In this work we studied the question whether this assumption is justified in detail.
 
 The approximation is computationally cheap and the preferred method to be used over accurate $P$ table, which is computationally expensive. Because of this, one focus of the paper is finding out how good the approximation of Gaussian distribution is and finding out the exact $N$ where we can use approximation instead on accurate $P$ table while maintaining a high enough accuracy. Let $N_0$ be high enough $N$, which allows us to use approximation accurately.
 
-The bottlenecks of the other implementations of the Wilcoxon test is, when $N$ is low, but the number of tests is high. In this case they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue. To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
+The bottleneck of the other implementations of the Wilcoxon test is, when $N$ is low, but the number of tests is high. In this case they calculate the $P$ and $V$ tables every time the test is run, thus if you run thousands of tests in a row, a lot of complex recomputation is done. This eventually becomes a performance issue. To speed this up - this project will calculate the entire $P_{N, k}$ for every value that is possible where $N < N_0$. Then the $P_{N, k}$ will be hardcoded inside the program for quick lookup of the value.
 
 
 \subsection{When can we approximate}
@@ -571,7 +571,7 @@ The results of the table can be seen on Figure ~\ref{fig:T0vsN}.
 	\label{fig:T0vsN}
 \end{figure}
 
-Much to our surprise, as $N$ grew, the gap between approximate and accurate values grew bigger. This meant that as $N$ grows, the relative approximate error of Gaussian distribution will get more inaccurate toward the tails of the distribution. Previously we thought that with the growth of $N$, Gaussian would surely get more and more accurate.
+Much to our surprise, as $N$ grew, the gap between approximate and accurate values grew bigger. This means that as $N$ grows, the relative approximate error of Gaussian distribution will get more inaccurate toward the tails of the distribution. Previously we thought that with the growth of $N$, Gaussian would surely get more and more accurate.
 From Figure ~\ref{fig:PandPapproxAsKincreases} we cannot really make a difference between accurate $P$ and approximate $P_{approx}$ values, but if we put the values to logarithmic scale, the difference is easier to notice. From Figure ~\ref{fig:logPlogPapproxAsKincreases} we can see that approximated $P_{approx}$ values are a little bit bigger toward the edge of distribution - as can be seen when $k$ grows.
 
 \begin{figure}[H]
@@ -617,7 +617,7 @@ The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error a
 \end{figure}
 
 \subsection{The behavior of relative error}
-To further prove that we can start using Gaussian distribution at a certain $N$, we needed to prove that $P_{approx}$ will get more accurate as the $N$ increases toward the tail of the distribution as-well. To achieve this, we found out the largest relative error $\epsilon$ between $P$ and $P_{approx}$ for each $N$ and for each p-value in the regions $[1, 0.1], [0.1, 0.01], ... , [10^{-6};10^{-7}]$. As can be seen from Figure ~\ref{fig:LargestApproxPRelativeError0_100} and Figure ~\ref{fig:LargestApproxPRelativeError100_500}, the relative error increases fast. When p-value is between $10^{-5}$ and $10^{-6}$ the relative error is massive. When $N=200$, then the error is still around $40\%$. The bigger the $N$ gets, the bigger the error at the tail. However, it can also be seen that the relative error decreases steadily as $N$ grows for each of the p-value ranges chosen. This means that even though the error of the distribution tail edge does increase as $N$ grows, the approximate $P_{approx}$ and accurate $P$ values do get more similar as the $N$ grows.
+To further prove that we can start using Gaussian distribution at a certain $N$, we needed to prove that $P_{approx}$ will get more accurate as the $N$ increases toward the tail of the distribution as well. To achieve this, we found the largest relative error $\epsilon$ between $P$ and $P_{approx}$ for each $N$ and for each p-value in the regions $[1, 0.1], [0.1, 0.01], ... , [10^{-6};10^{-7}]$. As can be seen from Figure ~\ref{fig:LargestApproxPRelativeError0_100} and Figure ~\ref{fig:LargestApproxPRelativeError100_500}, the relative error increases fast. When p-value is between $10^{-5}$ and $10^{-6}$ the relative error is massive. When $N=200$, then the error is still around $40\%$. The bigger the $N$ gets, the bigger the error at the tail. However, it can also be seen that the relative error decreases steadily as $N$ grows for each of the p-value ranges chosen. This means that even though the error of the distribution tail edge does increase as $N$ grows, the approximate $P_{approx}$ and accurate $P$ values do get more similar as the $N$ grows.
 
 \begin{figure}[H]
   \centering
@@ -653,7 +653,7 @@ is constantly a little bit larger. When $N = 25$, the graph is a little less smo
 \end{figure}
 
 \subsection{Finding out when can we approximate p-value}
-Judging by all the data that has been gathered, it be can clearly see that as $N$ grows, accurate $P$ and approximate $P_{approx}$ values grow apart at the edges of distribution. Nevertheless, overall the distribution gets more and more similar. The most helpful graphs to help us determine the necessary number of samples $N_0$ we need to approximate p-value is Figure ~\ref{fig:LargestApproxPRelativeError100_500}. Table ~\ref{table:requiredN} illustrates the number of samples $N$ needed for a certain relative accuracy. So the number of samples $N_0$ we need to approximate depends on the number of measurements and the required accuracy.
+Judging by all the data that has been gathered, it can be clearly see that as $N$ grows, accurate $P$ and approximate $P_{approx}$ values grow apart at the edges of distribution. however, overall the distribution gets more and more similar. The most helpful graphs for determining the necessary number of samples $N_0$ we need to approximate p-value is Figure ~\ref{fig:LargestApproxPRelativeError100_500}. Table ~\ref{table:requiredN} illustrates the number of samples $N$ needed for a certain relative accuracy. So the number of samples $N_0$ we need to approximate depends on the number of measurements and the required accuracy.
 
 \begin{table}[H]
 	\begin{center}
@@ -741,7 +741,7 @@ Initially, when looking at the shape of ratio ~\eqref{eq:p_div_p_approx}, it was
 Since we did not want to do anything really clever, we used linear approximation as the second alternative. Our goal is to drop as many intermediate points from the $P$-table as we can, if they can be approximated with reasonable relative precision using linear interpolation.
 
 \subsubsection{Linear approximation}
-The linear approximation algorithm works by starting from data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until end of range has been reached. This guarantees approximated data range within error margin. The graphical illustration how linear approximation removes data points while approximating the general shape of the data array can be seen on the Figure ~\ref{fig:linear_approximation}.
+The linear approximation algorithm works by starting from a data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until the end of range has been reached. This guarantees approximated data range within error margin. The graphical illustration of how linear approximation removes data points while approximating the general shape of the data array can be seen on the Figure ~\ref{fig:linear_approximation}.
 
 \begin{figure}[H]
   \centering
@@ -825,7 +825,7 @@ def calculateApproximateRow(actualPoints):
 \end{lstlisting}
 
 \subsection{Optimization summary}
-The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, then using straight forward accurate $P$ table. In the end, thanks to linear approximation, the approximated table, when $N=500$ was created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. It is still a lot more accurate then Gaussian P table at the edges of the table. The approximated table is only 1.6 MB large. Smaller then the 2.5 MB accurate $P$ table was when $N=80$.
+The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, than using straight forward accurate $P$ table. In the end, thanks to linear approximation, the approximated table, when $N=500$ was created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. It is still a lot more accurate then Gaussian P table at the edges of the table. The approximated table is only 1.6 MB large. Smaller then the 2.5 MB accurate $P$ table was when $N=80$.
 
 \subsection{Further optimizations}
 A lot of further optimizations could be done on this subject, for example.
@@ -884,7 +884,7 @@ To invoke the Wilcoxon test function, run:
 
 \paragraph{TerminalWilcoxonTest.}
 
-An interface that connects our implementation of the optimized Wilcoxon algorithm to the R. To use the terminal Wilcoxon test, you must first install Wilcoxon Test Library. It currently only supports NetCDF file as input data. The folder also contain example NetCDF file and the help gives instructions how to use it. The interface can be compiled by going to the TerminalWilcoxonTest folder and running the command:
+An interface that connects our implementation of the optimized Wilcoxon algorithm to the R. To use the terminal Wilcoxon test, you must first install Wilcoxon Test Library. It currently only supports NetCDF file as input data. The folder also contains example NetCDF file and the ``help'' gives instructions how to use it. The interface can be compiled by going to the TerminalWilcoxonTest folder and running the command:
 \begin{lstlisting}
 $make
 \end{lstlisting}
@@ -904,7 +904,7 @@ To get around that, we approximated the accurate $P$ table. This allowed us to s
 
 For the time being, we chose $N=500$, with $20\%$ error margin on the approximation. This is still significantly more accurate then Gaussian approximated table at the edges of the distribution. It will allow to make 1000 parallel measurement with 5\% error margin.
 
-The library itself could run over 20000 parallel tests with 100 samples in under a second. It is a shared C++ library with currently implemented interfaces in GNU-R and Terminal.
+The library itself could run over 20000 parallel tests with 100 samples in under a second. It is a shared C++ library that currently has implemented interfaces in GNU-R and Terminal.
 
 Overall the research included some surprising results and can be considered a success.
 
