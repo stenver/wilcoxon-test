@@ -55,7 +55,7 @@
   breaklines=true,
   frame=L,
   xleftmargin=\parindent,
-  language=BASH,
+  language=Python,
   showstringspaces=false,
   basicstyle=\footnotesize\ttfamily,
   keywordstyle=\bfseries\color{green!40!black},
@@ -454,7 +454,7 @@ As mentioned above, if the number of ranks $N$ gets large enough, then Gaussian 
 
 \subsubsection{Code sample}
 A python code to calculate the V table is as follows.
-\begin{verbatim}
+\begin{lstlisting}
 def V(n, k, vTable):
     if((n == 1 and (k == 1 or k == -1)) or (n == 0 and k == 0)):
         return 1
@@ -464,10 +464,8 @@ def V(n, k, vTable):
 
     kIndex =  k + kSize
 
-    leftValue = 0 if kIndex - n - 1 < 0 or \
-      kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex - n - 1]
-    rightValue = 0 if kIndex + n + 1 < 0 or \
-      kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex + n + 1]
+    leftValue = 0 if kIndex - n - 1 < 0 or kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex - n - 1]
+    rightValue = 0 if kIndex + n + 1 < 0 or kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex + n + 1]
 
     return leftValue + rightValue
 
@@ -480,11 +478,11 @@ def calculateVValues():
         vTable.append(tableRow)
     return vTable
 
-\end{verbatim}
-
+\end{lstlisting}
+\newpage
 The python code to calculate the P table is as follows:
 
-\begin{verbatim}
+\begin{lstlisting}
 def calculatePValues(vTable):
     pTable = []
     for n in range(nSize):
@@ -498,7 +496,7 @@ def calculatePValues(vTable):
         pTable.append(tableRow)
     return pTable
 
-\end{verbatim}
+\end{lstlisting}
 
 You can find a python implementation of a code sample in repository ~\cite{stenver_repo_p_accurate_table_py}
 

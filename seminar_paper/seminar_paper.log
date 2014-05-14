@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 14:39
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -719,9 +719,6 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
-)
 (./seminar_paper.aux
 
 LaTeX Warning: Label `r_cron' multiply defined.
@@ -936,32 +933,23 @@ red
                                                   \fi \fi 
 l.411 
        <./Figures/patientExample.png>] [18]
-Overfull \hbox (7.7173pt too wide) in paragraph at lines 483--483
-[]      \T1/cmtt/m/n/12 kIndex - n - 1 >= len(vTable[n]) else vTable[n][kIndex 
-- n - 1][] 
- []
-
-
-Overfull \hbox (7.7173pt too wide) in paragraph at lines 483--483
-[]      \T1/cmtt/m/n/12 kIndex + n + 1 >= len(vTable[n]) else vTable[n][kIndex 
-+ n + 1][] 
- []
-
-[19] [20] [21]
-<Figures/approximate_accurate_difference.png, id=374, 1001.7425pt x 899.36pt>
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 458.
+ [19] [20] [21]
+<Figures/approximate_accurate_difference.png, id=411, 1001.7425pt x 899.36pt>
 File: Figures/approximate_accurate_difference.png Graphic file (type png)
 
 <use Figures/approximate_accurate_difference.png>
 Package pdftex.def Info: Figures/approximate_accurate_difference.png used on in
-put line 541.
+put line 539.
 (pdftex.def)             Requested size: 334.60422pt x 300.3989pt.
 
-<Figures/approximate_accurate_epsilon.png, id=375, 1015.795pt x 926.46124pt>
+<Figures/approximate_accurate_epsilon.png, id=412, 1015.795pt x 926.46124pt>
 File: Figures/approximate_accurate_epsilon.png Graphic file (type png)
 
 <use Figures/approximate_accurate_epsilon.png>
 Package pdftex.def Info: Figures/approximate_accurate_epsilon.png used on input
- line 548.
+ line 546.
 (pdftex.def)             Requested size: 334.60422pt x 305.16768pt.
  [22]
 Overfull \vbox (112.7019pt too high) has occurred while \output is active []
@@ -972,53 +960,53 @@ Overfull \vbox (112.7019pt too high) has occurred while \output is active []
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.552 
+l.550 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 6}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.552 
+l.550 
        <./Figures/approximate_accurate_difference.png> <./Figures/approximate_a
-ccurate_epsilon.png>] <Figures/T0vsN.png, id=390, 1024.82875pt x 891.33pt>
+ccurate_epsilon.png>] <Figures/T0vsN.png, id=428, 1024.82875pt x 891.33pt>
 File: Figures/T0vsN.png Graphic file (type png)
 
 <use Figures/T0vsN.png>
-Package pdftex.def Info: Figures/T0vsN.png used on input line 570.
+Package pdftex.def Info: Figures/T0vsN.png used on input line 568.
 (pdftex.def)             Requested size: 334.60422pt x 291.01167pt.
  [24pdfTeX warning (ext4): destination with the same identifier (name{figure.7}
 ) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.577 
+l.575 
        <./Figures/T0vsN.png>]
-<Figures/PandPapproxAsKincreases.png, id=400, 1031.855pt x 915.42pt>
+<Figures/PandPapproxAsKincreases.png, id=438, 1031.855pt x 915.42pt>
 File: Figures/PandPapproxAsKincreases.png Graphic file (type png)
 
 <use Figures/PandPapproxAsKincreases.png>
 Package pdftex.def Info: Figures/PandPapproxAsKincreases.png used on input line
- 580.
+ 578.
 (pdftex.def)             Requested size: 250.95476pt x 222.6386pt.
 
-<Figures/logPlogPapproxAsKincreases.png, id=401, 1031.855pt x 904.37875pt>
+<Figures/logPlogPapproxAsKincreases.png, id=439, 1031.855pt x 904.37875pt>
 File: Figures/logPlogPapproxAsKincreases.png Graphic file (type png)
 
 <use Figures/logPlogPapproxAsKincreases.png>
 Package pdftex.def Info: Figures/logPlogPapproxAsKincreases.png used on input l
-ine 587.
+ine 585.
 (pdftex.def)             Requested size: 250.95476pt x 219.95326pt.
  [25pdfTeX warning (ext4): destination with the same identifier (name{figure.8}
 ) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.591 
+l.589 
        <./Figures/PandPapproxAsKincreases.png>]
-<Figures/PvsN.png, id=410, 996.72375pt x 905.3825pt>
+<Figures/PvsN.png, id=448, 996.72375pt x 905.3825pt>
 File: Figures/PvsN.png Graphic file (type png)
  <use Figures/PvsN.png>
-Package pdftex.def Info: Figures/PvsN.png used on input line 605.
+Package pdftex.def Info: Figures/PvsN.png used on input line 603.
 (pdftex.def)             Requested size: 334.60422pt x 303.93015pt.
 
 [26pdfTeX warning (ext4): destination with the same identifier (name{figure.9})
@@ -1026,149 +1014,133 @@ Package pdftex.def Info: Figures/PvsN.png used on input line 605.
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.609 
+l.607 
        <./Figures/logPlogPapproxAsKincreases.png>]
-<Figures/RelativeErrorDecreasingPgrowsN20.png, id=420, 1101.11375pt x 1085.0537
+<Figures/RelativeErrorDecreasingPgrowsN20.png, id=458, 1101.11375pt x 1085.0537
 6pt>
 File: Figures/RelativeErrorDecreasingPgrowsN20.png Graphic file (type png)
  <use Figures/RelativeErrorDecreasingPgrowsN20.png>
 Package pdftex.def Info: Figures/RelativeErrorDecreasingPgrowsN20.png used on i
-nput line 615.
+nput line 613.
 (pdftex.def)             Requested size: 334.60422pt x 329.724pt.
  [27pdfTeX warning (ext4): destination with the same identifier (name{figure.10
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.619 
+l.617 
        <./Figures/PvsN.png>]
-<Figures/LargestApproxPRelativeError0_100.png, id=428, 2516.40125pt x 958.58125
+<Figures/LargestApproxPRelativeError0_100.png, id=466, 2516.40125pt x 958.58125
 pt>
 File: Figures/LargestApproxPRelativeError0_100.png Graphic file (type png)
  <use Figures/LargestApproxPRelativeError0_100.png>
 Package pdftex.def Info: Figures/LargestApproxPRelativeError0_100.png used on i
-nput line 625.
+nput line 623.
 (pdftex.def)             Requested size: 418.25368pt x 159.31459pt.
  [28pdfTeX warning (ext4): destination with the same identifier (name{figure.11
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.629 
+l.627 
        <./Figures/RelativeErrorDecreasingPgrowsN20.png>]
-<Figures/LargestApproxPRelativeError100_500.png, id=436, 2369.85374pt x 893.337
+<Figures/LargestApproxPRelativeError100_500.png, id=473, 2369.85374pt x 893.337
 5pt>
 File: Figures/LargestApproxPRelativeError100_500.png Graphic file (type png)
  <use Figures/LargestApproxPRelativeError100_500.png>
 Package pdftex.def Info: Figures/LargestApproxPRelativeError100_500.png used on
- input line 632.
+ input line 630.
 (pdftex.def)             Requested size: 418.25368pt x 157.65863pt.
  [29pdfTeX warning (ext4): destination with the same identifier (name{figure.12
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.637 \newpage
+l.635 \newpage
               pdfTeX warning (ext4): destination with the same identifier (name
 {figure.13}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.637 \newpage
+l.635 \newpage
                <./Figures/LargestApproxPRelativeError0_100.png> <./Figures/Larg
 estApproxPRelativeError100_500.png>]
-<Figures/PvsP50.png, id=443, 1042.89626pt x 1009.7725pt>
+<Figures/PvsP50.png, id=480, 1042.89626pt x 1009.7725pt>
 File: Figures/PvsP50.png Graphic file (type png)
 
 <use Figures/PvsP50.png>
-Package pdftex.def Info: Figures/PvsP50.png used on input line 644.
+Package pdftex.def Info: Figures/PvsP50.png used on input line 642.
 (pdftex.def)             Requested size: 334.60422pt x 323.98123pt.
 
-<Figures/PvsP25.png, id=444, 1045.9075pt x 1004.75375pt>
+<Figures/PvsP25.png, id=481, 1045.9075pt x 1004.75375pt>
 File: Figures/PvsP25.png Graphic file (type png)
 
 <use Figures/PvsP25.png>
-Package pdftex.def Info: Figures/PvsP25.png used on input line 651.
+Package pdftex.def Info: Figures/PvsP25.png used on input line 649.
 (pdftex.def)             Requested size: 334.60422pt x 321.43579pt.
  [30pdfTeX warning (ext4): destination with the same identifier (name{figure.14
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.655 
+l.653 
        <./Figures/PvsP50.png>] [31pdfTeX warning (ext4): destination with the s
 ame identifier (name{figure.15}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.713 
+l.711 
        <./Figures/PvsP25.png>] [32pdfTeX warning (ext4): destination with the s
 ame identifier (name{table.3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.720 \end{equation}
+l.718 \end{equation}
                     ]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 728.
+(hyperref)                than one, level fixed on input line 726.
 
 File: Figures/PvsP50.png Graphic file (type png)
 <use Figures/PvsP50.png>
-Package pdftex.def Info: Figures/PvsP50.png used on input line 733.
+Package pdftex.def Info: Figures/PvsP50.png used on input line 731.
 (pdftex.def)             Requested size: 334.60422pt x 323.98123pt.
  [33] [34pdfTeX warning (ext4): destination with the same identifier (name{figu
 re.16}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.746 
-      ] <Figures/linear_approximation.png, id=480, 670.505pt x 663.47874pt>
+l.744 
+      ] <Figures/linear_approximation.png, id=517, 670.505pt x 663.47874pt>
 File: Figures/linear_approximation.png Graphic file (type png)
 
 <use Figures/linear_approximation.png>
 Package pdftex.def Info: Figures/linear_approximation.png used on input line 74
-9.
+7.
 (pdftex.def)             Requested size: 334.60422pt x 331.09062pt.
 
-<Figures/linear_interpolation.png, id=482, 1204.5pt x 963.6pt>
+<Figures/linear_interpolation.png, id=519, 1204.5pt x 963.6pt>
 File: Figures/linear_interpolation.png Graphic file (type png)
 
 <use Figures/linear_interpolation.png>
 Package pdftex.def Info: Figures/linear_interpolation.png used on input line 76
-6.
+4.
 (pdftex.def)             Requested size: 334.60422pt x 267.68887pt.
  [35pdfTeX warning (ext4): destination with the same identifier (name{figure.17
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.770 
-       <./Figures/linear_approximation.png>]
-Overfull \hbox (13.8908pt too wide) in paragraph at lines 826--826
-[]          \T1/cmtt/m/n/12 ((endValue - startValue) * (approximatePoint - star
-tPoint) /[] 
- []
-
-[36pdfTeX warning (ext4): destination with the same identifier (name{figure.18}
-) has been already used, duplicate ignored
+l.768 
+       <./Figures/linear_approximation.png>] [36pdfTeX warning (ext4): destinat
+ion with the same identifier (name{figure.18}) has been already used, duplicate
+ ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.826 \end{verbatim}
-                     <./Figures/linear_interpolation.png>]
-Overfull \hbox (20.06429pt too wide) in paragraph at lines 826--826
-[]  \T1/cmtt/m/n/12 approximatedPoints.append([currentPoint, actualPoints[curre
-ntPoint]])[] 
- []
-
-
-Overfull \hbox (1.54381pt too wide) in paragraph at lines 826--826
-[]    \T1/cmtt/m/n/12 nextPoint = getNextApproximatedPoint(actualPoints, curren
-tPoint)[] 
- []
-
-[37] [38] [39] [40] (./seminar_paper.bbl
+l.791 ...                            currentPoint,
+                                                   <./Figures/linear_interpolat
+ion.png>] [37] [38] [39] [40] (./seminar_paper.bbl
 Underfull \hbox (badness 1142) in paragraph at lines 11--15
 []\T1/cmr/m/n/12 Siegel, S.  Non-para-met-ric statis-tics for the be-hav-ioral 
 sci-ences.
@@ -1221,43 +1193,43 @@ ron}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.919 
+l.917 
       ]
+Underfull \hbox (badness 10000) in paragraph at lines 933--934
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 935--936
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 937--938
-
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 952.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 950.
 [43]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 952.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 950.
  (./seminar_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 952.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 952.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 950.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 950.
 Package rerunfilecheck Info: File `seminar_paper.out' has not changed.
 (rerunfilecheck)             Checksum: 057213BCD51154CEFC90385FFB0FAB59;2759.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 952.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 950.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 162 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 11715 strings out of 493315
- 163877 string characters out of 6137904
- 318004 words of memory out of 5000000
- 14777 multiletter control sequences out of 15000+600000
+ 11801 strings out of 493315
+ 165211 string characters out of 6137904
+ 404905 words of memory out of 5000000
+ 14779 multiletter control sequences out of 15000+600000
  18841 words of font info for 47 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,10n,56p,1129b,1312s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,10n,47p,1129b,2006s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-super/cm
 -super-t1.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -1278,10 +1250,10 @@ xlive/2013/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texliv
 e/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/
 2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on seminar_paper.pdf (43 pages, 1077922 bytes).
+Output written on seminar_paper.pdf (43 pages, 1084741 bytes).
 PDF statistics:
- 690 PDF objects out of 1000 (max. 8388607)
- 592 compressed objects within 6 object streams
- 178 named destinations out of 1000 (max. 500000)
+ 796 PDF objects out of 1000 (max. 8388607)
+ 697 compressed objects within 7 object streams
+ 264 named destinations out of 1000 (max. 500000)
  403 words of extra memory for PDF output out of 10000 (max. 10000000)
 
