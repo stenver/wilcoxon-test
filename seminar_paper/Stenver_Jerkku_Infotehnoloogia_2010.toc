@@ -1,0 +1,55 @@
+\select@language {english}
+\select@language {estonian}
+\select@language {english}
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{7}{section.1}
+\contentsline {subsection}{\numberline {1.1}NetCDF}{7}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Current BIIT procedures}{8}{subsection.1.2}
+\contentsline {paragraph}{GNU-R.}{8}{section*.2}
+\contentsline {paragraph}{Web interface.}{8}{section*.3}
+\contentsline {paragraph}{Command line.}{8}{section*.4}
+\contentsline {subsection}{\numberline {1.3}List of thesis contributions}{8}{subsection.1.3}
+\contentsline {paragraph}{Analyzing the Wilcoxon signed-rank\\}{8}{section*.5}
+\contentsline {paragraph}{Analyzing the approximation of p-value\\}{8}{section*.6}
+\contentsline {paragraph}{Optimizing the Wilcoxon test\\}{9}{section*.7}
+\contentsline {paragraph}{Implementation\\}{9}{section*.8}
+\contentsline {paragraph}{Integration\\}{9}{section*.9}
+\contentsline {section}{\numberline {2}Wilcoxon signed-rank test}{10}{section.2}
+\contentsline {subsection}{\numberline {2.1}Statistical Tests}{10}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Test Statistic}{10}{subsubsection.2.1.1}
+\contentsline {subsection}{\numberline {2.2}Hypothesis}{11}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Null hypothesis}{11}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Alternative hypothesis}{11}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}P-value}{12}{subsubsection.2.2.3}
+\contentsline {subsection}{\numberline {2.3}Wilcoxon test}{13}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Wilcoxon test assumptions}{13}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}How to compute}{14}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Example}{15}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}P-value assignment}{15}{subsection.2.7}
+\contentsline {subsubsection}{\numberline {2.7.1}Exact computation of P-value}{17}{subsubsection.2.7.1}
+\contentsline {subsubsection}{\numberline {2.7.2}The V and P table formulas}{18}{subsubsection.2.7.2}
+\contentsline {subsubsection}{\numberline {2.7.3}The Gaussian approximation of P table}{19}{subsubsection.2.7.3}
+\contentsline {subsubsection}{\numberline {2.7.4}Code sample}{19}{subsubsection.2.7.4}
+\contentsline {subsubsection}{\numberline {2.7.5}Bonferroni correction}{20}{subsubsection.2.7.5}
+\contentsline {section}{\numberline {3}Approximating the p-value}{21}{section.3}
+\contentsline {subsection}{\numberline {3.1}Motivation}{21}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}When can we approximate}{22}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}The behavior of relative error}{28}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Finding out when can we approximate p-value}{31}{subsection.3.4}
+\contentsline {section}{\numberline {4}Further optimizations}{32}{section.4}
+\contentsline {subsubsection}{\numberline {4.0.1}dose-response curve}{33}{subsubsection.4.0.1}
+\contentsline {subsection}{\numberline {4.1}Linear approximation}{34}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Goal}{34}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}Linear approximation}{34}{subsubsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.3}Linear interpolation}{35}{subsubsection.4.1.3}
+\contentsline {subsubsection}{\numberline {4.1.4}Algorithm for dropping intermediate points}{36}{subsubsection.4.1.4}
+\contentsline {subsection}{\numberline {4.2}Optimization summary}{37}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Further optimizations}{38}{subsection.4.3}
+\contentsline {section}{\numberline {5}The implementation}{39}{section.5}
+\contentsline {subsection}{\numberline {5.1}Library description}{39}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Repository description}{39}{subsection.5.2}
+\contentsline {paragraph}{WilcoxonTestLibrary.}{39}{section*.10}
+\contentsline {paragraph}{RcppWilcoxonTest.}{39}{section*.11}
+\contentsline {paragraph}{TerminalWilcoxonTest.}{40}{section*.12}
+\contentsline {paragraph}{WilcoxonVTable.}{40}{section*.13}
+\contentsline {section}{\numberline {6}Conclusion}{41}{section.6}
