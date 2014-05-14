@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 18:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.10)  14 MAY 2014 18:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -861,14 +861,14 @@ Package pdftex.def Info: Figures/statisticalTestFlow.png used on input line 236
                                                   \fi \fi 
 l.252 
        <./Figures/statisticalTestFlow.png>] [11]
-<Figures/p_value_one_sided.png, id=279, 416.55624pt x 246.9225pt>
+<Figures/p_value_one_sided.png, id=281, 416.55624pt x 246.9225pt>
 File: Figures/p_value_one_sided.png Graphic file (type png)
 
 <use Figures/p_value_one_sided.png>
 Package pdftex.def Info: Figures/p_value_one_sided.png used on input line 275.
 (pdftex.def)             Requested size: 167.2989pt x 99.17038pt.
 
-<Figures/p_value_two_sided.png, id=283, 416.55624pt x 246.9225pt>
+<Figures/p_value_two_sided.png, id=285, 416.55624pt x 246.9225pt>
 File: Figures/p_value_two_sided.png Graphic file (type png)
 
 <use Figures/p_value_two_sided.png>
@@ -888,7 +888,7 @@ ored
                                                   \fi \fi 
 l.308 
        <./Figures/p_value_two_sided.png>] [14]
-<Figures/patientExample.png, id=327, 386.44376pt x 274.02374pt>
+<Figures/patientExample.png, id=329, 386.44376pt x 274.02374pt>
 File: Figures/patientExample.png Graphic file (type png)
 
 <use Figures/patientExample.png>
@@ -898,7 +898,7 @@ Package pdftex.def Info: Figures/patientExample.png used on input line 384.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figures/rankSignsExample.png, id=329, 523.9575pt x 302.12875pt>
+<Figures/rankSignsExample.png, id=331, 523.9575pt x 302.12875pt>
 File: Figures/rankSignsExample.png Graphic file (type png)
 
 <use Figures/rankSignsExample.png>
@@ -927,7 +927,7 @@ l.412
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 459.
  [19] [20] [21]
-<Figures/approximate_accurate_difference.png, id=417, 1001.7425pt x 899.36pt>
+<Figures/approximate_accurate_difference.png, id=419, 1001.7425pt x 899.36pt>
 File: Figures/approximate_accurate_difference.png Graphic file (type png)
 
 <use Figures/approximate_accurate_difference.png>
@@ -935,7 +935,7 @@ Package pdftex.def Info: Figures/approximate_accurate_difference.png used on in
 put line 540.
 (pdftex.def)             Requested size: 334.60422pt x 300.3989pt.
 
-<Figures/approximate_accurate_epsilon.png, id=418, 1015.795pt x 926.46124pt>
+<Figures/approximate_accurate_epsilon.png, id=420, 1015.795pt x 926.46124pt>
 File: Figures/approximate_accurate_epsilon.png Graphic file (type png)
 
 <use Figures/approximate_accurate_epsilon.png>
@@ -959,7 +959,7 @@ l.551
                                                   \fi \fi 
 l.551 
        <./Figures/approximate_accurate_difference.png> <./Figures/approximate_a
-ccurate_epsilon.png>] <Figures/T0vsN.png, id=434, 1024.82875pt x 891.33pt>
+ccurate_epsilon.png>] <Figures/T0vsN.png, id=436, 1024.82875pt x 891.33pt>
 File: Figures/T0vsN.png Graphic file (type png)
 
 <use Figures/T0vsN.png>
@@ -972,7 +972,7 @@ Package pdftex.def Info: Figures/T0vsN.png used on input line 569.
                                                   \fi \fi 
 l.576 
        <./Figures/T0vsN.png>]
-<Figures/PandPapproxAsKincreases.png, id=444, 1031.855pt x 915.42pt>
+<Figures/PandPapproxAsKincreases.png, id=446, 1031.855pt x 915.42pt>
 File: Figures/PandPapproxAsKincreases.png Graphic file (type png)
 
 <use Figures/PandPapproxAsKincreases.png>
@@ -980,7 +980,7 @@ Package pdftex.def Info: Figures/PandPapproxAsKincreases.png used on input line
  579.
 (pdftex.def)             Requested size: 250.95476pt x 222.6386pt.
 
-<Figures/logPlogPapproxAsKincreases.png, id=445, 1031.855pt x 904.37875pt>
+<Figures/logPlogPapproxAsKincreases.png, id=447, 1031.855pt x 904.37875pt>
 File: Figures/logPlogPapproxAsKincreases.png Graphic file (type png)
 
 <use Figures/logPlogPapproxAsKincreases.png>
@@ -994,7 +994,7 @@ ine 586.
                                                   \fi \fi 
 l.590 
        <./Figures/PandPapproxAsKincreases.png>]
-<Figures/PvsN.png, id=454, 996.72375pt x 905.3825pt>
+<Figures/PvsN.png, id=456, 996.72375pt x 905.3825pt>
 File: Figures/PvsN.png Graphic file (type png)
  <use Figures/PvsN.png>
 Package pdftex.def Info: Figures/PvsN.png used on input line 604.
@@ -1007,7 +1007,7 @@ Package pdftex.def Info: Figures/PvsN.png used on input line 604.
                                                   \fi \fi 
 l.608 
        <./Figures/logPlogPapproxAsKincreases.png>]
-<Figures/RelativeErrorDecreasingPgrowsN20.png, id=464, 1101.11375pt x 1085.0537
+<Figures/RelativeErrorDecreasingPgrowsN20.png, id=466, 1101.11375pt x 1085.0537
 6pt>
 File: Figures/RelativeErrorDecreasingPgrowsN20.png Graphic file (type png)
  <use Figures/RelativeErrorDecreasingPgrowsN20.png>
@@ -1021,7 +1021,7 @@ nput line 614.
                                                   \fi \fi 
 l.618 
        <./Figures/PvsN.png>]
-<Figures/LargestApproxPRelativeError0_100.png, id=472, 2516.40125pt x 958.58125
+<Figures/LargestApproxPRelativeError0_100.png, id=474, 2516.40125pt x 958.58125
 pt>
 File: Figures/LargestApproxPRelativeError0_100.png Graphic file (type png)
  <use Figures/LargestApproxPRelativeError0_100.png>
@@ -1035,7 +1035,7 @@ nput line 624.
                                                   \fi \fi 
 l.628 
        <./Figures/RelativeErrorDecreasingPgrowsN20.png>]
-<Figures/LargestApproxPRelativeError100_500.png, id=479, 2369.85374pt x 893.337
+<Figures/LargestApproxPRelativeError100_500.png, id=481, 2369.85374pt x 893.337
 5pt>
 File: Figures/LargestApproxPRelativeError100_500.png Graphic file (type png)
  <use Figures/LargestApproxPRelativeError100_500.png>
@@ -1056,14 +1056,14 @@ l.636 \newpage
 l.636 \newpage
                <./Figures/LargestApproxPRelativeError0_100.png> <./Figures/Larg
 estApproxPRelativeError100_500.png>]
-<Figures/PvsP50.png, id=486, 1042.89626pt x 1009.7725pt>
+<Figures/PvsP50.png, id=488, 1042.89626pt x 1009.7725pt>
 File: Figures/PvsP50.png Graphic file (type png)
 
 <use Figures/PvsP50.png>
 Package pdftex.def Info: Figures/PvsP50.png used on input line 643.
 (pdftex.def)             Requested size: 334.60422pt x 323.98123pt.
 
-<Figures/PvsP25.png, id=487, 1045.9075pt x 1004.75375pt>
+<Figures/PvsP25.png, id=489, 1045.9075pt x 1004.75375pt>
 File: Figures/PvsP25.png Graphic file (type png)
 
 <use Figures/PvsP25.png>
@@ -1102,7 +1102,7 @@ re.16}) has been already used, duplicate ignored
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.745 
-      ] <Figures/linear_approximation.png, id=525, 670.505pt x 663.47874pt>
+      ] <Figures/linear_approximation.png, id=527, 670.505pt x 663.47874pt>
 File: Figures/linear_approximation.png Graphic file (type png)
 
 <use Figures/linear_approximation.png>
@@ -1110,7 +1110,7 @@ Package pdftex.def Info: Figures/linear_approximation.png used on input line 74
 8.
 (pdftex.def)             Requested size: 334.60422pt x 331.09062pt.
 
-<Figures/linear_interpolation.png, id=527, 1204.5pt x 963.6pt>
+<Figures/linear_interpolation.png, id=530, 1204.5pt x 963.6pt>
 File: Figures/linear_interpolation.png Graphic file (type png)
 
 <use Figures/linear_interpolation.png>
@@ -1138,30 +1138,30 @@ sci-ences.
  []
 
 
-Underfull \hbox (badness 2293) in paragraph at lines 80--84
+Underfull \hbox (badness 2293) in paragraph at lines 68--72
 \T1/cmr/m/n/12 able from []$\T1/cmtt/m/n/12 http : / / en . wikipedia . org / w
 iki / File : P-[]value _ Graph .
  []
 
-[42]
-Underfull \hbox (badness 2460) in paragraph at lines 86--90
+
+Underfull \hbox (badness 2460) in paragraph at lines 74--78
 []\T1/cmr/m/n/12 Jerkku, S.  Ac-cu-rate $\OML/cmm/m/it/12 P$ \T1/cmr/m/n/12 ta-
 ble cal-cu-la-tion .  Avail-able from
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 86--90
+Underfull \hbox (badness 10000) in paragraph at lines 74--78
 []$\T1/cmtt/m/n/12 https : / / github . com / stenver / wilcoxon-[]test / blob 
 / master /
  []
 
-pdfTeX warning (ext4): destination with the same identifier (name{cite.linear_i
-nterpolation}) has been already used, duplicate ignored
+[42]pdfTeX warning (ext4): destination with the same identifier (name{cite.line
+ar_interpolation}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.97 \bibitem[BLI2007]{linear_interpolation}
+l.85 \bibitem[BLI2007]{linear_interpolation}
                                             
-Underfull \hbox (badness 1152) in paragraph at lines 98--102
+Underfull \hbox (badness 1152) in paragraph at lines 86--90
 \T1/cmr/m/n/12 po-la-tion.  Avail-able from []$\T1/cmtt/m/n/12 http : / / en . 
 wikipedia . org / wiki / File :
  []
@@ -1195,10 +1195,10 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 951.
 ### simple group (level 1) entered at line 163 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 11808 strings out of 493315
- 165329 string characters out of 6137904
+ 11804 strings out of 493315
+ 165253 string characters out of 6137904
  404905 words of memory out of 5000000
- 14782 multiletter control sequences out of 15000+600000
+ 14780 multiletter control sequences out of 15000+600000
  18841 words of font info for 47 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  30i,10n,47p,1129b,2006s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1222,10 +1222,10 @@ xlive/2013/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texliv
 e/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/
 2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on seminar_paper.pdf (44 pages, 1085706 bytes).
+Output written on seminar_paper.pdf (44 pages, 1085105 bytes).
 PDF statistics:
- 811 PDF objects out of 1000 (max. 8388607)
- 710 compressed objects within 8 object streams
- 268 named destinations out of 1000 (max. 500000)
+ 807 PDF objects out of 1000 (max. 8388607)
+ 706 compressed objects within 8 object streams
+ 266 named destinations out of 1000 (max. 500000)
  403 words of extra memory for PDF output out of 10000 (max. 10000000)
 

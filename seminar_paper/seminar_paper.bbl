@@ -52,23 +52,11 @@ Eddelbuettel, D. and Francois, R.
 \newblock Available from \url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}.
 \newblock Pages 3-15. 2014.
 
-\bibitem[RFDE14]{standard_score}
-Wikipedia Foundation Inc.
-\newblock {z-score}.
-\newblock Available from \url{http://en.wikipedia.org/wiki/Standard_score}.
-\newblock Last visited 16 January 2014
-
 \bibitem[RFDE14]{linear_interpolation}
 Wikipedia Foundation Inc.
 \newblock {linear interpolation}.
 \newblock Available from \url{http://en.wikipedia.org/wiki/Linear_interpolation}.
 \newblock Last visited 10 January 2014.
-
-\bibitem[RFDE14]{gaussian_function}
-Wikipedia Foundation Inc.
-\newblock {Gaussian function}.
-\newblock Available from \url{http://en.wikipedia.org/wiki/Gaussian_function}.
-\newblock Last visited 8 January 2014.
 
 \bibitem[RFDE14]{test_statistic}
 Wikipedia Foundation Inc.
