@@ -1,0 +1,102 @@
+\begin{thebibliography}{Kam12}
+
+\bibitem[FWil45]{wilcoxon_original}
+Wilcoxon, F.
+\newblock {Individual Comparisons by Ranking Methods}.
+\newblock {International Biometric Society}.
+\newblock {\em Biometrics Bulletin, Vol. 1}.
+\newblock Pages 80-83. 1945.
+
+\bibitem[SSieg56]{siegel_non_parametric}
+Siegel, S.
+\newblock {Nonparametric statistics for the behavioral sciences}.
+\newblock {McGraw-Hill Humanities/Social Sciences/Languages; 2 edition}.
+\newblock Pages 75-83. 1956.
+
+\bibitem[RGSH11]{Netcdf}
+Rew, R., Davis, G., Emmerson, S. and Daview, H.
+\newblock {The NetCDF Users Guide}.
+\newblock {Unidata Program Center}.
+\newblock Pages 5-7, 17-23. 2011.
+
+\bibitem[RLow11]{lowry_concepts}
+Lowry, R.
+\newblock {Concepts \& Applications of Inferential Statistics}.
+\newblock {Vassar College}.
+\newblock Available from \url{http://vassarstats.net/textbook/ch12a.html}.
+\newblock ch.12a. 2011.
+
+\bibitem[MTrio01]{triola_elementary_statistics}
+Triola, M.
+\newblock {Elementary statistics (8 ed.)}.
+\newblock {Addison Wesley}.
+\newblock Pages 388. 2001.
+
+\bibitem[JsCr13]{dose_curve}
+Ritz, C. and Strebig, J.
+\newblock {Dose-reponse curve}.
+\newblock Available from \url{http://cran.r-project.org/web/packages/drc/index.html}.
+\newblock Pages 111. 2013.
+
+\bibitem[ATSD14]{writing_r_extensions}
+DebRoy, S. and Trapletti, A.
+\newblock {Writing R extensions}.
+\newblock {Free Software Foundation}.
+\newblock Available from \url{http://cran.r-project.org/doc/manuals/R-exts.html}.
+\newblock ch 5-6. 2014.
+
+\bibitem[RFDE14]{r_cron}
+Eddelbuettel, D. and Francois, R.
+\newblock {Seamless R and C++ integration}.
+\newblock {Springer; 2013 edition}.
+\newblock Available from \url{http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf}.
+\newblock Pages 3-15. 2014.
+
+\bibitem[RFDE14]{r_cron}
+Wikipedia Foundation Inc.
+\newblock {z-score}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/Standard_score}.
+\newblock Last visited 16 January 2014
+
+\bibitem[RFDE14]{r_cron}
+Wikipedia Foundation Inc.
+\newblock {linear interpolation}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/Linear_interpolation}.
+\newblock Last visited 10 January 2014.
+
+\bibitem[RFDE14]{r_cron}
+Wikipedia Foundation Inc.
+\newblock {Gaussian function}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/Gaussian_function}.
+\newblock Last visited 8 January 2014.
+
+\bibitem[RFDE14]{r_cron}
+Wikipedia Foundation Inc.
+\newblock {Test Statistic}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/Test_statistic}.
+\newblock Last visited 10 January 2014.
+
+\bibitem[ReWi14]{p_value_pic_cite}
+Repapetilto, Wikipedia Foundation Inc.
+\newblock {Illustration of p-value}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/File:P-value_Graph.png}.
+\newblock 24 March 2014.
+
+\bibitem[JSpac14]{stenver_repo_p_accurate_table_py}
+Jerkku, S.
+\newblock {Accurate $P$ table calculation }.
+\newblock Available from \url{https://github.com/stenver/wilcoxon-test/blob/master/WilcoxonVTable/pAccurateTable.py}.
+\newblock 2014.
+
+\bibitem[JSrepo14]{wilx_repo}
+Jerkku, S.
+\newblock {Project repository}.
+\newblock Available from \url{https://github.com/stenver/wilcoxon-test/}.
+\newblock 2014.
+
+\bibitem[BLI2007]{linear_interpolation}
+Berland, Wikipedia Foundation Inc.
+\newblock {Illustration of linear interpolation}.
+\newblock Available from \url{http://en.wikipedia.org/wiki/File:LinearInterpolation.svg}.
+\newblock 2007.
+\end{thebibliography}
