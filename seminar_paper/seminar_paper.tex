@@ -148,7 +148,7 @@ Institute of Computer Science\\
 \noindent\textbf{Lühikokkuvõte:}
 Statistilisi teste kasutatakse tuvastamaks kuidas erinevad eksperimentaalsed stiimulid mõjutavad uuritavaid suurusi. Antud töös uuritav Wilcoxoni test on üks vähestest statilistest testidest, mida saab kasutada juhul kui grupi sees olev loomulik varieeruvus pole normaaljaotusega. Selliste testide kasutamine on tavapärane bioloogiliste andmete uurimisel. Sellest tulenevalt kasutatakse seda testi bioinformaatika, algoritmika ja andmekaeve grupi poolt geenide uurimiseks, analüüsimiseks ja andmekaeveks, bioloogilisteks andmekaeveks ja muudeks ülesanneteks.
 
-Praegused implementatsioonid Wilcoxoni astaku testist on optimeerimatta ja aeglased. See projekt vaatab Wilcoxoni testi põhiomadusi ning uurib kuidas selle implementatsioone optimeerida. Selleks, et implementatsiooni teha täpsemaks, uuritakse Wilcoxoni statistiku ja Gaussi jaotuse seost. Selleks, et implementatsioone kiiremaks teha, kasutatakse dünaamilise programmeerimise meetodeid, et säästa arvutusaega. Optimeerimisega tehti teste nii kiiremaks kui ka täpsemaks.
+Praegused implementatsioonid Wilcoxoni astaku testist on optimeerimata ja aeglased. See projekt vaatab Wilcoxoni testi põhiomadusi ning uurib kuidas selle implementatsioone optimeerida. Selleks, et implementatsiooni teha täpsemaks, uuritakse Wilcoxoni statistiku ja Gaussi jaotuse seost. Selleks, et implementatsioone kiiremaks teha, kasutatakse dünaamilise programmeerimise meetodeid, et säästa arvutusaega. Optimeerimisega tehti teste nii kiiremaks kui ka täpsemaks.
 
 Antud töös loodi täpne ja kiire Wilcoxoni testi implementatsioon C++ jagatud teek. Selle projekti skoobis on ka nimetatud teegi integreerimine käsureaga ja GNU-R projektiga. Tänu enda jagatud teegi olemusele, on seda lihtne kasutada ja implementeerida ka teistes tööriistades.
 \vspace*{3ex}
@@ -159,10 +159,11 @@ Antud töös loodi täpne ja kiire Wilcoxoni testi implementatsioon C++ jagatud 
 \selectlanguage{english}
 \noindent\textbf{\large Parallel Wilcoxon signed-rank tests}
 \vspace*{3ex}
+
 {\noindent{\textbf{Abstract:}}
 Statistical tests are used to find out if some sort of experimental stimulation affects observable features. In this paper we researched Wilcoxon signed-rank test which is one of the few statistical tests that can be used when the natural variation inside the group is not normally distributed. The test is used by Bioinformatics, Algorithmics and Data mining group research group for gene regulation, gene expression data analysis, biological data mining and others. BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter.
 
-The current implementations of the Wilcoxon signed-rank tests are slow and unoptimized. This project will looked into the foundations of Wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and Guassian approximate was observed. In order to make the implementation faster, some dynamic programming methods were used to save computation time. The purpose of optimizing was to make it more accurate and speed up the test running.
+The current implementations of the Wilcoxon signed-rank tests are slow and unoptimized. This project looked into the foundations of Wilcoxon signed-rank test, its current implementations and how to optimize it. In order to make the implementation more accurate, the relationship between Wilcoxon statistic and Guassian approximate was observed. In order to make the implementation faster, some dynamic programming methods were used to save computation time. The purpose of optimizing was to make it more accurate and speed up the test running.
 
 In this project an accurate and fast Wilcoxon test shared library was created. In the scope of this project, the library was integrated with two tools - command line and GNU-R. Due to the nature of shared library, it will be easy integrate the library with any other tools one might desire.
 
@@ -181,7 +182,7 @@ In this project an accurate and fast Wilcoxon test shared library was created. I
 \section{Introduction}
 The biologists of BIIT research group are conducting a variety of experiments. They try to measure, compare and test different attributes of a living organism. These attributes might be, but not limited to blood pressure, protein amount in blood, amount of RNA, purity of urine, brainwaves etc. These attributes can be repeatedly measured on the same subject and the results are never exactly the same. There is always a little noise and variance between the samples. Biologists often experiment on the control group and try to manipulate with these observed attributes. They take samples before and after stimulating the observable attribute with some stimulant. This is called the case-control study.
 
-However, even without external stimulation the two results are never the same - human body constantly has minor fluctuations on its observable features. For example, if you measure white blood cell count two times in a row, you almost never get the exact same result. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measurements before and after jogging can have a lot bigger changes when in brainwave measurements. Therefore, the biologists need to use statistical tests to find out which case-control studies are actually significant and which are simply random fluctuations.
+However, even without external stimulation the two results are never the same - human body constantly has minor fluctuations on its observable features. For example, if you measure white blood cell count two times in a row, you almost never get the exact same result. Also, different experiments can have wildly different assumptions, so you cannot simply use a constant error margin on all your tests. For example, the blood pressure measurements before and after jogging can have a lot bigger changes than brainwave measurements. Therefore, the biologists need to use statistical tests to find out which case-control studies are actually significant and which are simply random fluctuations.
 
 There are many case-control tests available. For example paired Students t-test, t-test for matched pairs and Wilcoxon signed-rank test. The Wilcoxon signed-rank test is used when the measurement values are not normally distributed and when the experimental conditions are fixed.  In practice, this means that the histogram of measurements is either asymmetrical or it does not resemble to the bell shape.
 
@@ -195,9 +196,9 @@ Data can be held in structured manner in a NetCDF file. You can define dimension
 \subsection{Current BIIT procedures}
 Currently the BIIT group has 3 ways of analyzing its data with Wilcoxon test. However, all of these solutions ultimately use GNU-R implementation.
 \paragraph{GNU-R.}
-They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after a few minutes of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
+They could use GNU-R project to make statistical analyses. To achieve this purpose, they manually read the NetCDF file to the R and then call the built in R function \texttt{wilcoxon.test} to use Wilcoxon test. The problem with R Wilcoxon test is that it is slow. If you run thousands of tests in a row, the results might come after many seconds of computer processing. One of the goals of this paper and project is to make Wilcoxon test run on command line in mere seconds.
 \paragraph{Web interface.}
-They could use a web interface, which can take in certain arguments and command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problem in servers are even more important, since inefficient solutions waste precious server time.
+They could use a web interface, which can take in certain arguments and a command line script. Subsequently it will use whatever command line tools it has available and visualizes the output. The efficiency problem in servers are even more important, since inefficient solutions waste precious server time.
 
 \paragraph{Command line.}
 They could also use the command line directly which has a variety of tools installed. These are needed to create large data processing pipelines. The Wilcoxon test will ultimately call R Wilcoxon function.
@@ -272,7 +273,7 @@ The p-value can be either one-sided or two-sided. Given a test statistic $T_0$ w
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{p_value_one_sided}
-  \caption{One sided p-value representation. A p-value(shaded green area) is the probability of an observed (or more extreme) result arising by chance. ~\cite{p_value_pic_cite}}
+  \caption{One sided p-value representation. A p-value(shaded green area) is the probability of an observed (or more extreme) result arising by chance~\cite{p_value_pic_cite}.}
   \label{fig:p_value_one_sided}
 \end{figure}
 
@@ -281,7 +282,7 @@ A two-sided p-value shows the probability that we can get a value $T$ that is la
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{p_value_two_sided}
-  \caption{Two sided p-value representation. A p-value(shaded green area) is the probability of an observed (or more extreme) result arising by chance. ~\cite{p_value_pic_cite}}
+  \caption{Two sided p-value representation. A p-value(shaded green area) is the probability of an observed (or more extreme) result arising by chance ~\cite{p_value_pic_cite}.}
   \label{fig:p_value_two_sided}
 \end{figure}
 
@@ -294,7 +295,7 @@ It was popularized by Sidney Siegel in his book ``Nonparametric statistics - for
 \subsection{Wilcoxon test assumptions}
 
 \begin{enumerate}
-  \item Two measurements can always be compared and thus ordered. For example, measurements are real values or ordered categorical values
+  \item Two measurements can always be compared and thus ordered. For example, measurements are real values or ordered categorical values.
   \item Measurements can be naturally paired into case-control or before-after experiments. For example, measurements of patient`s white blood cell levels before and after treatment.
   \item All measurement pairs are independent from other pairs. For example, measurement of one individual does not influence the other. In medicine studies, the patients are sampled randomly. There is no evident procedure in selecting patients or no planned action to organize a study so one could get the ``desired'' result.
 \end{enumerate}
@@ -405,7 +406,7 @@ Wilcoxon test neglects the actual value of the tests. To estimate the p-value, w
 
 \subsubsection{Exact computation of P-value}
 \label{sec:exact_computation_of_p-value}
-In general, we get $2^n$ equally probable configurations of differences and assigning a $p$-value can be reduced to the following problem. Given a $N$ ranks, we assign + or - sign to each rank randomly and each sign has equal probability to be assigned. We can consider all $2^n$ possible sign assignments and find out in how many ways we can assign the ranks to get a certain sum $k$. If we do this for every possible $k$, then a $V$-array is formed. It signifies all the possible random signed rank combination sums in an $N$ sized ranked array, where $k$ shows how many times a certain sum was achieved. If we calculate $V$-array for every possible number of ranks up to the fixed $N$, then a $V$-table is formed which we can use through $V_{N, k}$ to find out how many times a certain sum $k$ was achieved.
+In general, we get $2^n$ equally probable configurations of differences and assigning a $p$-value can be reduced to the following problem. Given $N$ ranks, we assign + or - sign to each rank randomly and each sign has equal probability to be assigned. We can consider all $2^n$ possible sign assignments and find out in how many ways we can assign the ranks to get a certain sum $k$. If we do this for every possible $k$, then a $V$-array is formed. It signifies all the possible random signed rank combination sums in an $N$ sized ranked array, where $k$ shows how many times a certain sum was achieved. If we calculate $V$-array for every possible number of ranks up to the fixed $N$, then a $V$-table is formed which we can use through $V_{N, k}$ to find out how many times a certain sum $k$ was achieved.
 
 From this table, the probability that $W\geq k$ can be calculated. This value will show that given $N$ ranks with random signs, how probable it is that a sum $k$ is the result. If this process of calculating values is done repeatedly for every possible $N$ and $k$, then a $P$-table forms. The $P$-table shows the probability of every possible sum $k$ appearing given $N$ ranks with random signs. Let $P_{N, k}$ be the function to get the desired $P$ value from that table.
 
@@ -414,7 +415,7 @@ If the $P$-table gets large enough, it will start taking the shape of Guassian d
 \subsubsection{The V and P table formulas}
 \label{sec:v_p_table_formulas}
 
-Given $N$ which shows us the number of ranks starting from $0$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
+Given $N$ which shows us the number of ranks starting from $1$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
 
 \begin{equation}
   V_{N+1, k} = V_{N, k-1} + V_{N, k+N+1}
@@ -596,7 +597,7 @@ Then we choose the minimal approximate $P$ value.
 p = min\{P_{approx, k}: k \in \mathcal{K}\}
 \end{equation}
 
-The thresholds chosen were $\epsilon=5\%, \epsilon=10\%, \epsilon=20\%, \epsilon=50\%$. From Figure ~\ref{fig:PvsN} we can see that as the $N$ grows, the graph becomes stable, meaning that the distribution becomes a Gaussian distribution at around $N > 10$ and $N < 25$.  When $N < 10$, then the approximation is so random that it cannot be used reliably. For example, if $N=30$, we can read form this graph that relative error $\epsilon<5\%$ is attainable only for p-values that are larger than $0.012$. We can also see from the figure that relative error $\epsilon$ does not increase monotonically when $k$ grows, thats why there are fluctuations on the graph.We can see that the minimum $P$ value under error threshold does get smaller, as $N$ increases, so this further proves that Gaussian distribution does get more accurate as $N$ grows. This is because as $N$ increases, we can take a $P$ value closer to the tail of the distribution and still get an accurate value.
+The thresholds chosen were $\epsilon=5\%, \epsilon=10\%, \epsilon=20\%, \epsilon=50\%$. From Figure ~\ref{fig:PvsN} we can see that as the $N$ grows, the graph becomes stable, meaning that the distribution becomes a Gaussian distribution at around $N > 10$ and $N < 25$.  When $N < 10$, then the approximation is so random that it cannot be used reliably. As an example of reading the graph, if $N=30$, we can read form this graph that relative error $\epsilon<5\%$ is attainable only for p-values that are larger than $0.012$. We can also see from the figure that relative error $\epsilon$ does not increase monotonically when $k$ grows, thats why there are fluctuations on the graph.We can see that the minimum $P$ value under error threshold does get smaller, as $N$ increases, so this further proves that Gaussian distribution does get more accurate as $N$ grows. This is because as $N$ increases, we can take a $P$ value closer to the tail of the distribution and still get an accurate value.
 
 \begin{figure}[H]
   \centering
@@ -605,7 +606,7 @@ The thresholds chosen were $\epsilon=5\%, \epsilon=10\%, \epsilon=20\%, \epsilon
   \label{fig:PvsN}
 \end{figure}
 
-The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually gets a little small tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artifact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that. To understand this better, once must familiarize himself with the algorithm defined in the Chapter ~\ref{sec:v_p_table_formulas}.
+The Figure ~\ref{fig:RelativeErrorDecresingPgrows} shows us the relative error as $P$ grows when $N = 20$. The $P$ values are logged on this graph. There are two noteworthy things here, however. First, around $P = 0.05$, the relative error actually gets a little tip toward accuracy. Second, it can be seen that there are two accuracy paths that the error takes, depending on weather in $P_{approx N, K}$  the $K$ is even or odd number. This is a computational artifact caused by the recurrence of the $V_{N, K}$ values and we will not make any conclusions of that. To understand this better, one must familiarize himself with the algorithm defined in the Chapter ~\ref{sec:v_p_table_formulas}.
 
 
 \begin{figure}[H]
@@ -710,7 +711,7 @@ Judging by all the data that has been gathered, it be can clearly see that as $N
 \end{table}
 
 \section{Further optimizations}
-At the beginning of this chapter, we raised the goal of optimizing our implementation on Wilcoxon test by hardcoding the accurate $P$ value table $P_{N, K}$, so the program would not need to recompute it all the time. When given $N = 80$, then the table $P_{N, K}$ size was 2.5 MB. As pointed out in the beginning, when the $N$ grows, the table $P_{N, k}$ size grows with it with the speed $O(n^2)$. At $N = 500$, the file size was over 10 GB. This raised the need to optimize the table $P_{N, k}$ further.
+At the beginning of this paper, we raised the goal of optimizing our implementation on Wilcoxon test by hardcoding the accurate $P$ value table $P_{N, K}$, so the program would not need to recompute it all the time. When given $N = 80$, then the table $P_{N, K}$ size was 2.5 MB. As pointed out in the beginning, when the $N$ grows, the table $P_{N, k}$ size grows with it with the speed $O(n^2)$. At $N = 500$, the file size was over 5 GB. This raised the need to optimize the table $P_{N, k}$ further.
 
 As the research found out, the required sample size $N_0$ to approximate p-value was very large and thus the corresponding p-value table is really large. To make it more practical, we need a way to pack the p-value table further. For that we used several methods. We noticed that the ration between true $P$ values and approximated $P_{approx}$ values (Equation ~\eqref{eq:p_div_p_approx}) is 1 until around the middle-range of the $P$ value table.
 \begin{equation}\label{eq:p_div_p_approx}
@@ -724,7 +725,7 @@ Hence it makes sense to approximate equation ~\eqref{eq:p_div_p_approx} by some 
 
 
 \subsubsection{dose-response curve}
-Initially, when looking at the shape of ratio ~\eqref{eq:p_div_p_approx}, it was clear that sigmoid functions used to represent dose-response curves should approximate the ratio pretty well. Since the curve is determined by up to 5 parameters, it was a good candidate for approximating the ration. Unfortunately, experiments showed that the data range, as shown in Figure~\ref{fig:PdivPapproxDrcWhenN500}, changes sharply toward the edge of the range. Further experiments showed that the algorithm was completely inaccurate at the end of the far edge, so in conclusion it only worked for the middle range and not for the edges of the distribution
+Initially, when looking at the shape of ratio ~\eqref{eq:p_div_p_approx}, it was clear that sigmoid functions used to represent dose-response curves should approximate the ratio pretty well. Since the curve is determined by up to 5 parameters, it was a good candidate for approximating the ration. Unfortunately, experiments showed that the data range, as shown in Figure~\ref{fig:PdivPapproxDrcWhenN500}, changes a lot toward the edge of the range. Further experiments showed that the algorithm was completely inaccurate at the far edge, so in conclusion it only worked for the middle range and not for the edges of the distribution.
 
 \begin{figure}[H]
   \centering
@@ -740,12 +741,12 @@ Initially, when looking at the shape of ratio ~\eqref{eq:p_div_p_approx}, it was
 Since we did not want to do anything really clever, we used linear approximation as the second alternative. Our goal is to drop as many intermediate points from the $P$-table as we can, if they can be approximated with reasonable relative precision using linear interpolation.
 
 \subsubsection{Linear approximation}
-The linear approximation algorithm works by starting from data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until end of range has been reached. This guarantees approximated data range within error margin. The graphical illustration how linear approximation removes data points while approximating the general shape of the data array can be seen on the ~\ref{fig:linear_approximation}
+The linear approximation algorithm works by starting from data point in the data range and then one by one moving to the next data point, until the points between them cannot be approximated with enough accuracy. Then the last accurate point is saved, picked as the next starting point and the process is repeated until end of range has been reached. This guarantees approximated data range within error margin. The graphical illustration how linear approximation removes data points while approximating the general shape of the data array can be seen on the Figure ~\ref{fig:linear_approximation}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{linear_approximation}
-  \caption{Linear approximation removing data points while staying within a certain error threshold and taking the general data array shape}
+  \caption{Linear approximation removing data points while staying within a certain error threshold and taking the general data array shape.}
   \label{fig:linear_approximation}
 \end{figure}
 
@@ -762,13 +763,13 @@ A graphical explanation of the algorithm can be seen on the Figure ~\ref{fig:lin
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{linear_interpolation}
-  \caption{Linear interpolation finding $y$, when given $x$, start point and end point ~\cite{linear_interpolation}}
+  \caption{Linear interpolation finding $y$, when given $x$, start point and end point ~\cite{linear_interpolation}.}
   \label{fig:linear_interpolation}
 \end{figure}
 
 \subsubsection{Algorithm for dropping intermediate points}
 
-The Linear approximation algorithm for dropping the data points in python looks like follows.
+The Linear approximation algorithm for dropping the data points in python looks as follows.
 
 \begin{lstlisting}
 def linearInterpolate(approximatePoint,
@@ -824,10 +825,10 @@ def calculateApproximateRow(actualPoints):
 \end{lstlisting}
 
 \subsection{Optimization summary}
-The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, then using straight forward accurate $P$ table. In the end, thanks to linear approximation, the approximated table, when $N=500$ was created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. Its still a lot more accurate then Gaussian P table at the edges of the table. The approximated table is only 1.6 MB large. Smaller then when $N=80$ the accurate P table was, which was around 2.5 MB.
+The tests showed that using relative $P$ values between the $P$ tables gave less approximated data points, then using straight forward accurate $P$ table. In the end, thanks to linear approximation, the approximated table, when $N=500$ was created. The error margin for the chosen approximated table was chosen to be $20\%$, since that was deemed as accurate enough. Its still a lot more accurate then Gaussian P table at the edges of the table. The approximated table is only 1.6 MB large. Smaller then the 2.5 MB accurate $P$ table was when $N=80$.
 
 \subsection{Further optimizations}
-A lot of further optimizations could be done on this subject, for example
+A lot of further optimizations could be done on this subject, for example.
 
 \begin{enumerate}
 \item The algorithm to approximate accurate P table could be improved.
@@ -863,7 +864,7 @@ An interface that connects our implementation of the optimized Wilcoxon algorith
 $install.packages("Rcpp")
 \end{lstlisting}
 
-After that, the our Wilcoxon signed-rank implementation package can be installed to R by going to the RcppWilcoxonTest folder and running the command in the command line in the folder:
+After that, the Wilcoxon signed-rank implementation package can be installed to R by going to the RcppWilcoxonTest folder and running the command in the command line in the folder:
 
 \begin{lstlisting}
 $R CMD INSTALL .
@@ -895,7 +896,7 @@ $./WilcoxonTest --help
 
 \paragraph{WilcoxonVTable.}
 Python program that can calculate $V$, $P$ and approximated $P$ tables, print them, create files of the tables and create a number of graphs on the tables. The python version used is 3. The main file is called main.py, which is in the WilcoxonVTable directory.
-
+\newpage
 \section{Conclusion}
 We found out that Gaussian distribution tail edge grows larger apart from the $P_{N, k}$ as $N$ increases while the overall distribution grows more similar. In addition, we confirmed that if thousands of parallel tests are ran, then using approximation is not reliable and instead an accurate table of p-values must be used. Calculating that table is very expensive and thus we advice to pre-calculate the table for the program. However, the research shows that if 10 000 measurements are run under 5\% relative error, then the hardcoded $N$ should be over 1000. Table of that size would take many gigabytes of space and is impractical to use.
 

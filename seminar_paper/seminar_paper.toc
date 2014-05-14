@@ -52,4 +52,4 @@
 \contentsline {paragraph}{RcppWilcoxonTest.}{39}{section*.11}
 \contentsline {paragraph}{TerminalWilcoxonTest.}{40}{section*.12}
 \contentsline {paragraph}{WilcoxonVTable.}{40}{section*.13}
-\contentsline {section}{\numberline {6}Conclusion}{40}{section.6}
+\contentsline {section}{\numberline {6}Conclusion}{41}{section.6}
