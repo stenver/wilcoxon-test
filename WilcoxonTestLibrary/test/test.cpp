@@ -83,6 +83,6 @@ int main(int argc, char* argv[])
   fillDataMatrix(data, testData);
 
   WilcoxonTest wilx(data, dataXsize, dataYsize, testIndexes, controlIndexes);
-  cout << "Test result: " << wilx.test()->at(0) << endl;
+  cout << "Test result: " << wilx.test()->at(0) << ", control: " << testResult  << endl;
 }
 

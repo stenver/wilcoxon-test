@@ -62,7 +62,8 @@ clean:
 	rm -rf src/WilcoxonTest.o
 	rm -rf src/WilcoxonTest.so
 	rm -rf Rcpp
-
+	rm -rf rumDemTests 
+  
 distclean:
 	rm -rf obj
 	rm -rf lib
@@ -70,3 +71,4 @@ distclean:
 	rm -rf src/WilcoxonTest.o
 	rm -rf src/WilcoxonTest.so
 	rm -rf Rcpp
+	rm -rf rumDemTests

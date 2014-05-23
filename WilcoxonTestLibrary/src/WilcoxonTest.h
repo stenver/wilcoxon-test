@@ -41,20 +41,20 @@ private:
     vector<int> * parseIntString(string input);
 
     //Wilcoxon Test main methods
-    float calculateWValue(int yIndex, float * absoluteValues, float * signs);
+    float calculateWValue(int yIndex, vector<float> * absoluteValues, vector<float> * signs);
     double calculatePValue(float w, int numberOfZeroes);
     float calculateZValue(float w, int Nr);
 
     //Wilcoxon Test helper methods
     double getApproximatePValue(float w);
     double approximateP(float w, approximatePosition beginningPos, approximatePosition endPos);
-    float * rankThePairs(int yIndex, float * absoluteValues);
+    float * rankThePairs(int yIndex, vector<float> * absoluteValues);
     int getSign(float value);
-    int getNumberOfZeroes(float * absoluteValues);
+    int getNumberOfZeroes(vector<float> * absoluteValues);
     void trim(string& str);
     
     //sorting
-    void quicksort(int m, int n, float * absoluteValues, float * signs);
+    void quicksort(int m, int n, vector<float> * absoluteValues, vector<float> * signs);
     void swap(float * x, float * y);
     int choose_pivot(int i, int j );
 };
