@@ -72,7 +72,7 @@ $WilcoxonTest --help
 for further help. Currently only supports NetCDF file as input data.
 
 ##WilcoxonVTable
-Python program that can calculate $V$ and $P$ tables, print them, create files of the tables and create a number of graphs on the tables. These methods were mostly made for caulculations and research and are not structured very well, nor meant to be used publicly. Use them at your own risk.
+Python program that can calculate V and P tables, print them, create files of the tables and create a number of graphs on the tables. These methods were mostly made for caulculations and research and are not structured very well, nor meant to be used publicly. Use them at your own risk.
 
 ##Seminar_paper
 The folder that contains this paper and all images attached to it. It also contains R programs to create those images.
