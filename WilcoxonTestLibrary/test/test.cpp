@@ -66,13 +66,12 @@ void fillDataMatrix(float * data, std::vector<std::vector<string> *> * testData)
   }
 }
 
-int main(int argc, char* argv[])
-{
+void runTest(string testFilePath)
+{ 
   std::vector<int> * testIndexes = new std::vector<int>();
   std::vector<int> * controlIndexes = new std::vector<int>();
   testIndexes->push_back(1);
   controlIndexes->push_back(2);
-
   std::vector<std::vector<string> *> * testData = new std::vector<std::vector<string> *>();
   float testResult = readTestFile("test/test1.data", testData);
 
@@ -83,6 +82,28 @@ int main(int argc, char* argv[])
   fillDataMatrix(data, testData);
 
   WilcoxonTest wilx(data, dataXsize, dataYsize, testIndexes, controlIndexes);
-  cout << "Test result: " << wilx.test()->at(0) << ", control: " << testResult  << endl;
+  if (wilx.test()->at(0) == testResult){
+    cout << ".";
+  }else{
+    cout << "F";
+    ostringstream os;
+    os << testFilePath << ": expected: " << testResult << ", got: " << wilx.test()->at(0);
+    errorMessages->push_back(os.str()); 
+  }
+}
+
+void printFailures()
+{ 
+  cout << endl << endl;
+  for(unsigned int i = 0; i < errorMessages->size(); i++){
+    cout << "Failure at: " << endl << errorMessages->at(i) << endl << endl;; 
+  }
+}
+
+int main(int argc, char* argv[])
+{
+  
+  runTest("test/test1.data");
+  printFailures();
 }
 
