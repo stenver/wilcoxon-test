@@ -1,7 +1,5 @@
 #Wilcoxon Signed-rank test
 
-##This readme might be outdated, as this project is in active development
-
 This project is an implementation of Wilcoxon signed-rank test.
 
 For more information about the test, read:
