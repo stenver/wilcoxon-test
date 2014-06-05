@@ -3,4 +3,4 @@
 
 PKG_CPPFLAGS = -I/lib/include -L/usr/lib -lwilcoxontest
 
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()" ` -L/usr/lib -lwilcoxontest `gsl-config --libs`
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()" ` -lz -L/usr/lib -lwilcoxontest `gsl-config --libs`

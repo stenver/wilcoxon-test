@@ -18,7 +18,6 @@ BEGIN_RCPP
     Rcpp::NumericMatrix rccpData(dataMatrix);
     Rcpp::NumericVector rccpTestIndexes(testIndexes);
     Rcpp::NumericVector rccpControlIndexes(controlIndexes);
-    gsl_cdf_gaussian_P(1, 1);
     std::vector<float> dataVector = Rcpp::as<std::vector<float> >(rccpData);
     float* _data = &dataVector[0];
     int _dataXsize = rccpData.ncol();
@@ -36,7 +35,7 @@ BEGIN_RCPP
 
   }catch(exception& e)
   {
-    std::cout << 'Error' << std::endl;
+    std::cout << "Error" << std::endl;
     std::cout << e.what() << std::endl;
     return R_NilValue;
   }
