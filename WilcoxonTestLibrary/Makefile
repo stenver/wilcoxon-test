@@ -10,7 +10,7 @@ INSTALL_LIB = /usr/lib/
 INSTALL_HEADER = /usr/include/
 
 TESTCPP = test/test.cpp
-TESTEXECUTABLE = rumDemTests
+TESTEXECUTABLE = runDemTests
 
 PKG_LIBS = -lgsl
 

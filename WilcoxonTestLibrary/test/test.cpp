@@ -57,11 +57,12 @@ float readTestFile(string fileLocation, std::vector<std::vector<string> * > * te
 
 void fillDataMatrix(float * data, std::vector<std::vector<string> *> * testData)
 {
+  unsigned int dataXsize = testData->at(0)->size();
   for(unsigned int i = 0; i < testData->size(); i++)
   {
-    for(unsigned int j = 0; j < testData->at(i)->size(); j++)
+    for(unsigned int j = 0; j < dataXsize; j++)
     {
-      data[i + (j * i)] = atof(testData->at(i)->at(j).c_str());
+      data[j + (dataXsize * i)] = atof(testData->at(i)->at(j).c_str());
     }
   }
 }
@@ -70,8 +71,8 @@ void runTest(string testFilePath)
 { 
   std::vector<int> * testIndexes = new std::vector<int>();
   std::vector<int> * controlIndexes = new std::vector<int>();
-  testIndexes->push_back(1);
-  controlIndexes->push_back(2);
+  testIndexes->push_back(0);
+  controlIndexes->push_back(1);
   std::vector<std::vector<string> *> * testData = new std::vector<std::vector<string> *>();
   float testResult = readTestFile("test/test1.data", testData);
 
@@ -82,12 +83,13 @@ void runTest(string testFilePath)
   fillDataMatrix(data, testData);
 
   WilcoxonTest wilx(data, dataXsize, dataYsize, testIndexes, controlIndexes);
-  if (wilx.test()->at(0) == testResult){
+  double result = wilx.test()->at(0);
+  if (result < testResult * 1.2 && result > testResult * 0.8){
     cout << ".";
   }else{
     cout << "F";
     ostringstream os;
-    os << testFilePath << ": expected: " << testResult << ", got: " << wilx.test()->at(0);
+    os << testFilePath << ": expected: " << testResult << ", got: " << result;
     errorMessages->push_back(os.str()); 
   }
 }
@@ -102,8 +104,8 @@ void printFailures()
 
 int main(int argc, char* argv[])
 {
-  
   runTest("test/test1.data");
+  runTest("test/test2.data");
   printFailures();
 }
 

@@ -133,27 +133,22 @@ float WilcoxonTest::calculateWValue(int yIndex, vector<float> * absoluteValues, 
     for (int i = 0; i < dataXsize; i++)
     {   
         int testIndex = testIndexes->at(yIndex);
-        int controlIntex = controlIndexes->at(yIndex);
-        
-        float x1 = data[(i * dataYsize) + testIndex];
-        float x2 = data[(i * dataYsize) + controlIntex];
-
-        float value = x1-x2;
+        int controlIndex = controlIndexes->at(yIndex);
+        float x1 = data[(testIndex * dataXsize) + i];
+        float x2 = data[(controlIndex * dataXsize) + i];
+        float value = x2-x1;
         absoluteValues->push_back(abs(value));
         signs->push_back(getSign(value));
     }
 
     //Sort the list
     quicksort(0, dataXsize-1, absoluteValues, signs);
-    
-    float * ranks = rankThePairs(yIndex, absoluteValues);
+     
+    double * ranks = rankThePairs(yIndex, absoluteValues);
     float w = 0;
     for (int i = 0; i < dataXsize; i++)
     {
-        if(absoluteValues->at(i) != 0)
-        {  
-            w += ranks[i] * signs->at(i);
-        }
+         w += ranks[i] * signs->at(i);
     }
     delete ranks;
     return abs(w);
@@ -166,8 +161,8 @@ double WilcoxonTest::calculatePValue(float w, int numberOfZeroes)
     {
         Nr++;
     }
+    float z = calculateZValue(w, Nr);
     if(Nr > 500){
-        float z = calculateZValue(w, Nr);
         if(z < 0)
         {
             return gsl_cdf_gaussian_P(z, 1);
@@ -176,7 +171,7 @@ double WilcoxonTest::calculatePValue(float w, int numberOfZeroes)
     }
     else
     {
-        return getApproximatePValue(w);
+        return getApproximatePValue(w, z);
     }
 }
 
@@ -186,7 +181,7 @@ float WilcoxonTest::calculateZValue(float w, int Nr)
     return (w - 0.5) / sigma;
 }
 
-double WilcoxonTest::getApproximatePValue(float w)
+double WilcoxonTest::getApproximatePValue(float w, float z)
 { 
     std::vector<approximatePosition> * approximatePositions = approximatePTable->at(dataXsize);
     approximatePosition beginningPos = approximatePositions->at(0);
@@ -194,14 +189,14 @@ double WilcoxonTest::getApproximatePValue(float w)
     {   
         approximatePosition endPos = approximatePositions->at(i);
         if (w >= beginningPos.x && w <= endPos.x){
-            return approximateP(w, beginningPos, endPos);
+            return approximateP(w, z, beginningPos, endPos);
         }
         beginningPos = endPos;
     }
     return 0;
 }
 
-double WilcoxonTest::approximateP(float w, approximatePosition beginningPos, approximatePosition endPos)
+double WilcoxonTest::approximateP(float w, float z, approximatePosition beginningPos, approximatePosition endPos)
 {
     double relativeValue; 
     if(w == beginningPos.x)
@@ -214,14 +209,17 @@ double WilcoxonTest::approximateP(float w, approximatePosition beginningPos, app
     }
     else
     {
-        relativeValue = beginningPos.y + (endPos.y - beginningPos.y) * (w - beginningPos.x) / (endPos.x - beginningPos.x);
+        relativeValue = beginningPos.y + (endPos.y - beginningPos.y) * (abs(w) - beginningPos.x) / (endPos.x - beginningPos.x);
     }
-    return relativeValue * gsl_cdf_gaussian_P(w, 1); 
+    if (z < 0) {
+      return relativeValue * gsl_cdf_gaussian_P(z, 1);
+    }
+    return relativeValue * gsl_cdf_gaussian_Q(z, 1); 
 }
 
-float * WilcoxonTest::rankThePairs(int yIndex, vector<float> * absoluteValues)
+double * WilcoxonTest::rankThePairs(int yIndex, vector<float> * absoluteValues)
 {
-    float * ranks = new float[dataXsize];
+    double * ranks = new double[dataXsize];
 
     int i = 0;
     while (i < dataXsize)
@@ -236,7 +234,7 @@ float * WilcoxonTest::rankThePairs(int yIndex, vector<float> * absoluteValues)
             j++;
         }
         for(int k = i; k <= j-1; k++)
-        {  
+        {   
             ranks[k] = 1 + (double)(i + j-1)/(double)2;
         }
         i = j;

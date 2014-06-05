@@ -46,9 +46,9 @@ private:
     float calculateZValue(float w, int Nr);
 
     //Wilcoxon Test helper methods
-    double getApproximatePValue(float w);
-    double approximateP(float w, approximatePosition beginningPos, approximatePosition endPos);
-    float * rankThePairs(int yIndex, vector<float> * absoluteValues);
+    double getApproximatePValue(float w, float z);
+    double approximateP(float w, float z, approximatePosition beginningPos, approximatePosition endPos);
+    double * rankThePairs(int yIndex, vector<float> * absoluteValues);
     int getSign(float value);
     int getNumberOfZeroes(vector<float> * absoluteValues);
     void trim(string& str);
