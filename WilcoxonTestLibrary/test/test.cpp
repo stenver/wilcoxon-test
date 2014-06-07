@@ -9,6 +9,7 @@
 using namespace std;
 
 std::vector<string> * errorMessages = new std::vector<string>();
+bool verbose;
 
 std::vector<string> * splitLine(string inputString, char delimitter)
 {
@@ -74,7 +75,7 @@ void runTest(string testFilePath)
   testIndexes->push_back(0);
   controlIndexes->push_back(1);
   std::vector<std::vector<string> *> * testData = new std::vector<std::vector<string> *>();
-  float testResult = readTestFile("test/test1.data", testData);
+  float testResult = readTestFile(testFilePath.c_str(), testData);
 
   int dataYsize = testData->size();
   int dataXsize = testData->at(0)->size();
@@ -84,8 +85,14 @@ void runTest(string testFilePath)
 
   WilcoxonTest wilx(data, dataXsize, dataYsize, testIndexes, controlIndexes);
   double result = wilx.test()->at(0);
-  if (result < testResult * 1.2 && result > testResult * 0.8){
-    cout << ".";
+  if (result <= testResult * 1.1 && result >= testResult * 0.9){
+    if(verbose == true){
+      ostringstream os;
+      os << testFilePath << ": expected: " << testResult << ", got: " << result;
+      cout << os.str() << endl; 
+    }else{
+      cout << ".";
+    }
   }else{
     cout << "F";
     ostringstream os;
@@ -104,8 +111,15 @@ void printFailures()
 
 int main(int argc, char* argv[])
 {
+  if(argc > 1 && strcmp(argv[1], "-v") == 0){
+    verbose = true;
+  }
+  else{
+    verbose = false;
+  }
   runTest("test/test1.data");
   runTest("test/test2.data");
+  runTest("test/test3.data");
   printFailures();
 }
 

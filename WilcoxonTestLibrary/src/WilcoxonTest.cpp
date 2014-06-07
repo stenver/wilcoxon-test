@@ -185,7 +185,7 @@ double WilcoxonTest::getApproximatePValue(float w, float z)
 { 
     std::vector<approximatePosition> * approximatePositions = approximatePTable->at(dataXsize);
     approximatePosition beginningPos = approximatePositions->at(0);
-    for (int i = 1; i < dataXsize; i++)
+    for (unsigned int i = 1; i < approximatePositions->size(); i++)
     {   
         approximatePosition endPos = approximatePositions->at(i);
         if (w >= beginningPos.x && w <= endPos.x){

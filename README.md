@@ -18,7 +18,12 @@ Implementation of the wilcoxon test shared library. Since this is a shared libra
 After installing, you can run tests of the project with the command(Note, these are not completely ready yet):
 ```
 >make test
->./runDemTests
+>./runTests
+```
+
+To get verbose output, use the command:
+```
+>./runTests -v
 ```
 
 ##RcppWilcoxonTest

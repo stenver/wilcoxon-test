@@ -18,8 +18,15 @@ BEGIN_RCPP
     Rcpp::NumericMatrix rccpData(dataMatrix);
     Rcpp::NumericVector rccpTestIndexes(testIndexes);
     Rcpp::NumericVector rccpControlIndexes(controlIndexes);
-    std::vector<float> dataVector = Rcpp::as<std::vector<float> >(rccpData);
-    float* _data = &dataVector[0];
+    
+    std::vector<float> transposedData;
+    for(unsigned int i = 0; i < rccpData.nrow(); i++){
+      for(unsigned int j = 0; j < rccpData.ncol(); j++){
+        transposedData.push_back(rccpData(i, j));
+      }
+    }
+    
+    float* _data = &transposedData[0];
     int _dataXsize = rccpData.ncol();
     int _dataYsize = rccpData.nrow();
     std::vector<int> _testIndexes = Rcpp::as<std::vector<int> >(rccpTestIndexes);
