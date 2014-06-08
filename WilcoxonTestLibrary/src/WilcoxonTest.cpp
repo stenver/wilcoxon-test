@@ -147,8 +147,11 @@ float WilcoxonTest::calculateWValue(int yIndex, vector<float> * absoluteValues, 
     double * ranks = rankThePairs(yIndex, absoluteValues);
     float w = 0;
     for (int i = 0; i < dataXsize; i++)
-    {
-         w += ranks[i] * signs->at(i);
+    { 
+        if (absoluteValues->at(i) != 0)
+        {
+           w += ranks[i] * signs->at(i);
+        }
     }
     delete ranks;
     return abs(w);
