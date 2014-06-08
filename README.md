@@ -86,4 +86,6 @@ The folder that contains this paper and all images attached to it. It also conta
 For any suggestions, send me a message.
 
 #Troubleshooting
-Make sure that you have the latest version of R and Rcpp installed.
+If R cant run it - make sure that you have the latest version of R and Rcpp installed.
+
+In case of any errors, contact me directly.
