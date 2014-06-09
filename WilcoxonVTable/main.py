@@ -10,7 +10,7 @@ __author__ = 'stenver'
 
 pTable = []
 gaussianPTable = []
-nSize = 50
+nSize = 9
 kSize = 0
 for n in range (nSize):
     kSize += n
@@ -36,10 +36,13 @@ def readFile(name):
 
 
 #Calculate the v and p tables. Create files
-'''
+
 pAccurateTable.kSize = kSize
 pAccurateTable.nSize = nSize
 vTable = pAccurateTable.calculateVValues()
+for i in range(9):
+    print(vTable[i])
+'''
 #pAccurateTable.printVValues(vTable)
 #pAccurateTable.createVValuesFile(vValuesFileName, vTable)
 
@@ -50,8 +53,8 @@ pTable = pAccurateTable.calculatePValues(vTable)
 '''
 
 #Read the already calculated files in
-gaussianPTable = readFile(gaussianPValuesFileName)
-pTable = readFile(pValuesFileName)
+#gaussianPTable = readFile(gaussianPValuesFileName)
+#pTable = readFile(pValuesFileName)
 
 #Do various calculations or graphs on the tables
 '''
@@ -67,7 +70,7 @@ calculateVtableStandardDeviations(vTable)
 '''
 
 #calculateGraphs.printDifference(pTable, gaussianPTable, 49)
-calculateGraphs.printPandPapprox(pTable, gaussianPTable, 30)
+#calculateGraphs.printPandPapprox(pTable, gaussianPTable, 30)
 
 #printKRelativeValues(499, pTable, gaussianPTable)
 #approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPTable)
