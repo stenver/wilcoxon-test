@@ -418,7 +418,7 @@ If the $P$-table gets large enough, it will start taking the shape of Gaussian d
 Given $N$ which shows us the number of ranks starting from $1$ and $k$ which shows us the sum that we are interested in. Recursively apply this algorithm until you reach to the $N = 1$.
 
 \begin{equation}
-  V_{N+1, k} = V_{N, k-1} + V_{N, k+N+1}
+  V_{N+1, k} = V_{N, k-N-1} + V_{N, k+N+1}
 \end{equation}
 
 There are some additional conditions to the formula:

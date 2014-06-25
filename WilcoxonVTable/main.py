@@ -1,57 +1,38 @@
 import math
 import sys
 sys.path.append('lib')
-import pAccurateTable
+import vTable
+import pTable
+import matrixUtils
 import calculateGraphs
 import calculateApproximateTable
 
 __author__ = 'stenver'
 
+n = 10
 
-pTable = []
-gaussianPTable = []
-nSize = 50
-kSize = 0
-for n in range (nSize):
-    kSize += n
-vValuesFileName = 'vTable' + str(nSize) + '.txt'
-pValuesFileName = 'pTable' + str(nSize) + '.txt'
-gaussianPValuesFileName = 'gaussianPvalues' + str(nSize) + '.txt'
-
-
-def readFile(name):
-    table = []
-    f = open("wilxdata/" + name, 'r')
-    i = 0
-    for line in f:
-        tableRow = []
-        splittedString = line.split(";")
-        for s in splittedString:
-            readyToConvert = s.replace("\n", "").replace(" ", "")
-            if(readyToConvert != ""):
-                tableRow.append(float(readyToConvert))
-        table.append(tableRow)
-        i += 1
-    return table
-
+vValuesFileName = 'vTable' + str(n) + '.txt'
+pValuesFileName = 'pTable' + str(n) + '.txt'
+gaussianPValuesFileName = 'gaussianPvalues' + str(n) + '.txt'
 
 #Calculate the v and p tables. Create files
 '''
-pAccurateTable.kSize = kSize
-pAccurateTable.nSize = nSize
-vTable = pAccurateTable.calculateVValues()
-#pAccurateTable.printVValues(vTable)
-#pAccurateTable.createVValuesFile(vValuesFileName, vTable)
+vTable = vTable.calculate(n)
 
-#vTable = readFile(vValuesFileName)
-pTable = pAccurateTable.calculatePValues(vTable)
-#pAccurateTable.printPValues(pTable)
-#pAccurateTable.createPValuesFile(pTable, pValuesFileName)
+matrixUtils.show(vTable)
+matrixUtils.write(vValuesFileName, vTable)
+
+vTable = matrixUtils.read(vValuesFileName)
+pTable = pTable.calculate(vTable)
+matrixUtils.show(pTable)
+matrixUtils.write(pTable, pValuesFileName)
 '''
 
 #Read the already calculated files in
-gaussianPTable = readFile(gaussianPValuesFileName)
-pTable = readFile(pValuesFileName)
+'''
+gaussianPTable = matrixUtils.read(gaussianPValuesFileName)
+pTable = matrixUtils.read(pValuesFileName)
+'''
 
 #Do various calculations or graphs on the tables
 '''
@@ -59,16 +40,16 @@ pTable = readFile(pValuesFileName)
 table = findHighestApproximationError(pTable, gaussianPTable)
 printHighestApproxPTable(table)
 
-printPvsPdata(pTable, gaussianPTable, 50)
-printPvsPdata(pTable, gaussianPTable, 25)
+calculateGraphs.printPvsPdata(pTable, gaussianPTable, 50)
+calculateGraphs.printPvsPdata(pTable, gaussianPTable, 25)
 
-readFile(vValuesFileName, vTable)
+matrixUtils.read(vValuesFileName, vTable)
 calculateVtableStandardDeviations(vTable)
-'''
 
-#calculateGraphs.printDifference(pTable, gaussianPTable, 49)
+calculateGraphs.printDifference(pTable, gaussianPTable, 49)
 calculateGraphs.printPandPapprox(pTable, gaussianPTable, 30)
 
-#printKRelativeValues(499, pTable, gaussianPTable)
-#approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPTable)
-#calculateApproximateTable.writeApproximateTableFile(approximateTable, nSize)
+printKRelativeValues(499, pTable, gaussianPTable)
+approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPTable)
+calculateApproximateTable.writeApproximateTableFile(approximateTable, n)
+'''
