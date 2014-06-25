@@ -1,6 +1,7 @@
 import unittest
 import sys
 sys.path.append('../lib')
+sys.path.append('helpers')
 import vTableServer
 import pTableServer
 import pTable

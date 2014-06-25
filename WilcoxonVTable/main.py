@@ -20,18 +20,18 @@ gaussianPValuesFileName = 'gaussianPvalues' + str(n) + '.txt'
 vTable = vTable.calculate(n)
 
 matrixUtils.show(vTable)
-matrixUtils.write(vValuesFileName, vTable)
+matrixUtils.write_V_table(vValuesFileName, vTable)
 
-vTable = matrixUtils.read(vValuesFileName)
+vTable = matrixUtils.read_V_table(vValuesFileName)
 pTable = pTable.calculate(vTable)
 matrixUtils.show(pTable)
-matrixUtils.write(pTable, pValuesFileName)
+matrixUtils.write_P_table(pTable, pValuesFileName)
 '''
 
 #Read the already calculated files in
 '''
-gaussianPTable = matrixUtils.read(gaussianPValuesFileName)
-pTable = matrixUtils.read(pValuesFileName)
+gaussianPTable = matrixUtils.read_P_table(gaussianPValuesFileName)
+pTable = matrixUtils.read_P_table(pValuesFileName)
 '''
 
 #Do various calculations or graphs on the tables
@@ -43,7 +43,7 @@ printHighestApproxPTable(table)
 calculateGraphs.printPvsPdata(pTable, gaussianPTable, 50)
 calculateGraphs.printPvsPdata(pTable, gaussianPTable, 25)
 
-matrixUtils.read(vValuesFileName, vTable)
+matrixUtils.read_V_table(vValuesFileName, vTable)
 calculateVtableStandardDeviations(vTable)
 
 calculateGraphs.printDifference(pTable, gaussianPTable, 49)
