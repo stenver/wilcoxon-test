@@ -8,6 +8,15 @@ def calculate(pTable, gaussianPTable, verbose = False):
       if(i%10 == 0): print(i)
   return approximateTable
 
+def getKRelativeValues(n, pTable, gaussianPTable):
+    pRelativeValues = []
+    for j in range(len(pTable[n])):
+      relativeValue = pTable[n][j] / gaussianPTable[n][j]
+      pRelativeValues.append(relativeValue)
+      if(pTable[n][j] == 0):
+          break
+    return pRelativeValues
+
 def calculateApproximateRow(actualPoints):
   approximatedPoints = []
   currentPoint = 0
@@ -21,13 +30,15 @@ def calculateApproximateRow(actualPoints):
 
 def getNextApproximatedPoint(actualPoints, currentPoint):
   nextPoint = currentPoint + 1
+  savedNextPoint = nextPoint
 
   while(canApproximate(actualPoints, currentPoint, nextPoint)):
     if(nextPoint == len(actualPoints) - 1):
       break
+    savedNextPoint = nextPoint
     nextPoint += 1
-  return nextPoint
 
+  return savedNextPoint
 
 def canApproximate(actualPoints, currentPoint, nextPoint):
   startValue = actualPoints[currentPoint]
@@ -35,30 +46,21 @@ def canApproximate(actualPoints, currentPoint, nextPoint):
 
   for i in range(1, nextPoint - currentPoint):
     approximatePoint = currentPoint + i
-    trueValue = actualPoints[approximatePoint]
+    actualValue = actualPoints[approximatePoint]
     approximateValue = linearInterpolate(approximatePoint, currentPoint, nextPoint, startValue, endValue)
     if approximateValue == 0:
       return True
 
-    relativeAccuaracy = trueValue / approximateValue
+    relativeAccuaracy = actualValue / approximateValue
 
     if relativeAccuaracy < 0.9 or relativeAccuaracy > 1.1:
       return False
   return True
 
-def getKRelativeValues(n, pTable, gaussianPTable):
-    pRelativeValues = []
-    for j in range(len(pTable[n])):
-      relativeValue = pTable[n][j] / gaussianPTable[n][j]
-      pRelativeValues.append(relativeValue)
-      if(pTable[n][j] == 0):
-          break
-    return pRelativeValues
-
 def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
   return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
 
-def printKRelativeValues(n, pTable, gaussianPTable):
+def printKRelativeValuesForR(n, pTable, gaussianPTable):
     relativeValues = getKRelativeValues(n, pTable, gaussianPTable)
     #print(len(relativeValues))
     print("relativeValues <- c(", end="")
