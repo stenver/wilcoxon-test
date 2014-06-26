@@ -5,11 +5,11 @@ import vTable
 import pTable
 import matrixUtils
 import calculateGraphs
-import calculateApproximateTable
+import approximateTable
 
 __author__ = 'stenver'
 
-n = 10
+n = 50
 
 vValuesFileName = 'vTable' + str(n) + '.txt'
 pValuesFileName = 'pTable' + str(n) + '.txt'
@@ -48,8 +48,11 @@ calculateVtableStandardDeviations(vTable)
 
 calculateGraphs.printDifference(pTable, gaussianPTable, 49)
 calculateGraphs.printPandPapprox(pTable, gaussianPTable, 30)
+'''
 
+# Calculate approximate table and write it
+'''
 printKRelativeValues(499, pTable, gaussianPTable)
-approximateTable = calculateApproximateTable.calculateApproximateTable(pTable, gaussianPTable)
-calculateApproximateTable.writeApproximateTableFile(approximateTable, n)
+approximateTable = approximateTable.calculate(pTable, gaussianPTable)
+calculateApproximateTable.write(approximateTable)
 '''

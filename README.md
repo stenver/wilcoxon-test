@@ -7,7 +7,7 @@ http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
 
 The goal of this project is to create a C++ library that can be run from R statistics program and terminal. The library should be able to run tens of thousands of Wilcoxon Signed Ranked Tests in in mere seconds. It should also be able to run these tests relatevly accurately, regardless of the sample size(The number of pairs) and take into account that some test might be missing or flawed. The library is developed for BIIT(Bioinformatics, Algorithmics and Data mining group). BIIT is joint research group between the Department of Computer Science (University of Tartu), Quretec, and the Estonian Biocenter. Its main research topics and capabilities include the gene regulation, gene expression data analysis, biological data mining and others.
 
-Note that you must use Linux system to use this repository and it has been tested on Linux Mint KDE and Ubuntu distributions. 
+Note that you must use Linux system to use this repository and it has been tested on Linux Mint KDE and Ubuntu distributions.
 
 The repository contains a number of folders.
 
@@ -79,6 +79,11 @@ for further help. Currently only supports NetCDF file as input data.
 
 ##WilcoxonVTable
 Python program that can calculate V and P tables, print them, create files of the tables and create a number of graphs on the tables. These methods were mostly made for caulculations and research and are not structured very well, nor meant to be used publicly. Use them at your own risk.
+
+If you want to run tests, use the following command in the ```test``` folder
+```
+python3 -m unittest discover . '*Test.py'
+```
 
 ##Seminar_paper
 The folder that contains this paper and all images attached to it. It also contains R programs to create those images.

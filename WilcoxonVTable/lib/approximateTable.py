@@ -47,12 +47,13 @@ def getKRelativeValues(n, pTable, gaussianPTable):
           break
     return pRelativeValues
 
-def calculateApproximateTable(pTable, gaussianPTable):
+def calculate(pTable, gaussianPTable, verbose = False):
   approximateTable = []
   for i in range(len(pTable)):
     points = getKRelativeValues(i, pTable, gaussianPTable)
     approximateTable.append(calculateApproximateRow(points))
-    if(i%10 == 0): print(i)
+    if verbose:
+      if(i%10 == 0): print(i)
   return approximateTable
 
 def printKRelativeValues(n, pTable, gaussianPTable):
@@ -69,11 +70,12 @@ def printKRelativeValues(n, pTable, gaussianPTable):
         first = False
     print(")")
 
-def writeApproximateTableFile(approximateTable, nSize):
-  f = open('approximateTable' + str(nSize) + '.txt', 'w')
+def write(approximateTable, verbose = False):
+  f = open('approximateTable' + str(len(approximateTable) - 1) + '.txt', 'w')
   for i in range(len(approximateTable)):
     f.write(str(approximateTable[i]))
     f.write("\n")
-    if(i%10 == 0): print(i)
+    if(i%10 == 0 and verbose): print(i)
   f.close()
-  print('approximateTable file created')
+  if(verbose):
+    print('approximateTable file created')
