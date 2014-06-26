@@ -55,7 +55,7 @@ def write_P_table(table, fileName, verbose = False):
         if verbose:
             print("File created")
 
-def show(table, width = 10):
+def show_V_table(table, width = 4):
     nSize = len(table)
     kSize = (int)(len(table[0]) / 2)
     for n in range (-kSize, kSize + 1):
@@ -65,3 +65,16 @@ def show(table, width = 10):
         for T0 in range (kSize * 2 + 1):
             print ('{0: {width}}'.format(table[n][T0], width = width), end = '')
         print()
+
+def show_P_table(table, width = 10):
+    nSize = len(table)
+    kSize = len(table[0])
+    for n in range (kSize):
+        print ('{0: {width}}'.format(n, width = width), end = '')
+    print()
+
+    for n in range (nSize):
+        for T0 in range (kSize):
+            print ('{0: {width}}'.format(table[n][T0], width = width), end = '')
+        print()
+
