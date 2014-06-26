@@ -1,5 +1,33 @@
-def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
-  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
+
+def calculate(pTable, gaussianPTable, verbose = False):
+  approximateTable = []
+  for i in range(len(pTable)):
+    points = getKRelativeValues(i, pTable, gaussianPTable)
+    approximateTable.append(calculateApproximateRow(points))
+    if verbose:
+      if(i%10 == 0): print(i)
+  return approximateTable
+
+def calculateApproximateRow(actualPoints):
+  approximatedPoints = []
+  currentPoint = 0
+  approximatedPoints.append([currentPoint, actualPoints[currentPoint]])
+
+  while(currentPoint != len(actualPoints) - 1):
+    nextPoint = getNextApproximatedPoint(actualPoints, currentPoint)
+    approximatedPoints.append([nextPoint, actualPoints[nextPoint]])
+    currentPoint = nextPoint
+  return approximatedPoints
+
+def getNextApproximatedPoint(actualPoints, currentPoint):
+  nextPoint = currentPoint + 1
+
+  while(canApproximate(actualPoints, currentPoint, nextPoint)):
+    if(nextPoint == len(actualPoints) - 1):
+      break
+    nextPoint += 1
+  return nextPoint
+
 
 def canApproximate(actualPoints, currentPoint, nextPoint):
   startValue = actualPoints[currentPoint]
@@ -18,26 +46,6 @@ def canApproximate(actualPoints, currentPoint, nextPoint):
       return False
   return True
 
-def getNextApproximatedPoint(actualPoints, currentPoint):
-  nextPoint = currentPoint + 1
-
-  while(canApproximate(actualPoints, currentPoint, nextPoint)):
-    if(nextPoint == len(actualPoints) - 1):
-      break
-    nextPoint += 1
-  return nextPoint
-
-def calculateApproximateRow(actualPoints):
-  approximatedPoints = []
-  currentPoint = 0
-  approximatedPoints.append([currentPoint, actualPoints[currentPoint]])
-
-  while(currentPoint != len(actualPoints) - 1):
-    nextPoint = getNextApproximatedPoint(actualPoints, currentPoint)
-    approximatedPoints.append([nextPoint, actualPoints[nextPoint]])
-    currentPoint = nextPoint
-  return approximatedPoints
-
 def getKRelativeValues(n, pTable, gaussianPTable):
     pRelativeValues = []
     for j in range(len(pTable[n])):
@@ -47,14 +55,8 @@ def getKRelativeValues(n, pTable, gaussianPTable):
           break
     return pRelativeValues
 
-def calculate(pTable, gaussianPTable, verbose = False):
-  approximateTable = []
-  for i in range(len(pTable)):
-    points = getKRelativeValues(i, pTable, gaussianPTable)
-    approximateTable.append(calculateApproximateRow(points))
-    if verbose:
-      if(i%10 == 0): print(i)
-  return approximateTable
+def linearInterpolate(approximatePoint, endPoint, startPoint, endValue, startValue):
+  return startValue + ((endValue - startValue) * (approximatePoint - startPoint) / (endPoint - startPoint))
 
 def printKRelativeValues(n, pTable, gaussianPTable):
     relativeValues = getKRelativeValues(n, pTable, gaussianPTable)
